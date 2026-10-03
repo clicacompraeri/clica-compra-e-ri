@@ -33,6 +33,68 @@ html{
   scroll-behavior:smooth;
 }
 
+<script>
+function upgradeCards(){
+  document.querySelectorAll('.product-card').forEach(function(card){
+
+    /* 1. Botão de favoritar (coração) */
+    var imgBox = card.querySelector('.product-image');
+    if(imgBox && !card.querySelector('.fav-btn')){
+      var fav = document.createElement('button');
+      fav.type = 'button';
+      fav.className = 'fav-btn';
+      fav.innerHTML = '\u2665';
+      fav.title = 'Favoritar';
+      fav.addEventListener('click', function(e){
+        e.preventDefault();
+        fav.classList.toggle('active');
+      });
+      imgBox.appendChild(fav);
+    }
+
+    /* 2. Selo de desconto calculado automaticamente */
+    if(!card.querySelector('.discount-badge')){
+      var current = null, old = null;
+      card.querySelectorAll('*').forEach(function(el){
+        if(el.children.length === 0 && /R\$\s?\d/.test(el.textContent)){
+          var deco = getComputedStyle(el).textDecorationLine || '';
+          if(deco.indexOf('line-through') !== -1){ old = el; } else { current = el; }
+        }
+      });
+      function parsePrice(el){
+        var m = el.textContent.replace(/\./g,'').replace(',','.').match(/\d+(\.\d+)?/);
+        return m ? parseFloat(m[0]) : 0;
+      }
+      if(current && old){
+        var pc = parsePrice(current), po = parsePrice(old);
+        if(po > pc && pc > 0){
+          var badge = document.createElement('span');
+          badge.className = 'discount-badge';
+          badge.textContent = '-' + Math.round((1 - pc/po) * 100) + '%';
+          current.parentNode.insertBefore(badge, current.nextSibling);
+        }
+      }
+    }
+
+    /* 3. Estrelas de avaliação */
+    if(!card.querySelector('.stars')){
+      card.querySelectorAll('*').forEach(function(el){
+        if(el.children.length === 0 && /avalia/i.test(el.textContent)){
+          var m = el.textContent.match(/(\d+(?:[.,]\d+)?)/);
+          var val = m ? parseFloat(m[1].replace(',','.')) : 5;
+          var full = Math.round(val), stars = '';
+          for(var i = 1; i <= 5; i++){ stars += (i <= full ? '\u2605' : '\u2606'); }
+          el.innerHTML = '<span class="stars">' + stars + '</span> ' + val.toFixed(1).replace('.', ',');
+        }
+      });
+    }
+
+  });
+}
+document.addEventListener('DOMContentLoaded', upgradeCards);
+window.addEventListener('load', upgradeCards);
+</script>
+
 body{
   font-family:Inter,Arial,Helvetica,sans-serif;
   background:#fff;
