@@ -816,6 +816,123 @@ footer{
   width:100%;
   height:auto;
 }
+
+/* =========================================
+   1. UPGRADE DOS CARDS DE PRODUTO
+   ========================================= */
+
+/* Card levanta e ganha sombra/borda amarela */
+.product-card {
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(0,0,0,.10);
+  border-color: #ffd21c;
+}
+
+/* Imagem dá zoom no hover */
+.product-image {
+  overflow: hidden;
+}
+.product-image img {
+  transition: transform .35s ease;
+}
+.product-card:hover .product-image img {
+  transform: scale(1.3);
+}
+
+/* Botões do card com efeito de clique */
+.product-card a, .product-card button {
+  transition: filter .2s ease, transform .2s ease;
+}
+.product-card a:hover, .product-card button:hover {
+  filter: brightness(.92);
+  transform: translateY(-1px);
+}
+.product-card a:active, .product-card button:active {
+  transform: translateY(0);
+}
+
+/* =========================================
+   2. UPGRADE DAS CATEGORIAS
+   ========================================= */
+
+.category-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+}
+
+/* Levanta + sombra + borda amarela + fundo esfumado */
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 26px rgba(0,0,0,.10);
+  border-color: #ffd21c;
+  background: linear-gradient(180deg,#ffffff 0%,#fffbea 100%);
+}
+
+/* "Holofote" amarelo acendendo atrás do ícone */
+.category-card::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 38%;
+  width: 110px; height: 110px;
+  transform: translate(-50%,-50%) scale(.4);
+  background: radial-gradient(circle, rgba(255,210,28,.28) 0%, rgba(255,210,28,0) 70%);
+  opacity: 0;
+  transition: opacity .3s ease, transform .3s ease;
+  pointer-events: none;
+}
+.category-card:hover::before {
+  opacity: 1;
+  transform: translate(-50%,-50%) scale(1);
+}
+
+/* Ícone com animação de "mola" + inclinação */
+.category-card > :first-child {
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.category-card:hover > :first-child {
+  transform: scale(1.18) rotate(-6deg);
+}
+
+/* Setinha → aparecendo no canto superior direito */
+.category-card::after {
+  content: "→";
+  position: absolute;
+  top: 10px; right: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #e8be00;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.category-card:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Sublinhado amarelo crescendo sob o nome */
+.category-card > :last-child {
+  position: relative;
+}
+.category-card > :last-child::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: #ffd21c;
+  transition: width .25s ease;
+}
+.category-card:hover > :last-child::after {
+  width: 26px;
+}
 </style>
 </head>
 
