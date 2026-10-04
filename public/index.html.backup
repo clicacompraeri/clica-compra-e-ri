@@ -254,130 +254,6 @@ header{
   box-shadow:0 24px 72px rgba(0,0,0,.12);
 }
 
-/* ================= HERO CAROUSEL ================= */
-
-.hero-carousel-container{
-  position:relative;
-  width:100%;
-  overflow:hidden;
-  border-radius:26px;
-  box-shadow:0 20px 60px rgba(0,0,0,.08);
-}
-
-.hero-carousel-track{
-  display:flex;
-  transition:transform .6s cubic-bezier(.4,0,.2,1);
-  width:100%;
-}
-
-.hero-carousel-slide{
-  min-width:100%;
-  flex-shrink:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#f5f5f5;
-}
-
-.hero-carousel-slide img{
-  display:block;
-  width:100%;
-  height:auto;
-}
-
-.hero-carousel-controls{
-  position:absolute;
-  bottom:16px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  align-items:center;
-  gap:12px;
-  z-index:10;
-}
-
-.carousel-btn{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  border:none;
-  background:rgba(255,255,255,.9);
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:.2s;
-  box-shadow:0 4px 12px rgba(0,0,0,.15);
-}
-
-.carousel-btn:hover{
-  background:#fff;
-  transform:scale(1.08);
-}
-
-.carousel-btn:active{
-  transform:scale(.96);
-}
-
-.carousel-prev::before{
-  content:"‹";
-  font-size:24px;
-  font-weight:bold;
-  color:#333;
-}
-
-.carousel-next::before{
-  content:"›";
-  font-size:24px;
-  font-weight:bold;
-  color:#333;
-}
-
-.carousel-dots{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-
-.carousel-dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:rgba(255,255,255,.6);
-  cursor:pointer;
-  transition:.3s;
-  border:none;
-  padding:0;
-}
-
-.carousel-dot.active{
-  background:#ffd21c;
-  transform:scale(1.2);
-}
-
-.carousel-dot:hover{
-  background:rgba(255,255,255,.9);
-}
-
-@media(max-width:900px){
-  .carousel-btn{
-    width:36px;
-    height:36px;
-    font-size:16px;
-  }
-  
-  .carousel-prev::before,
-  .carousel-next::before{
-    font-size:18px;
-  }
-  
-  .carousel-dot{
-    width:8px;
-    height:8px;
-  }
-}
-
-
 @keyframes fadeInUp {
   from {
     opacity:0;
@@ -1140,22 +1016,14 @@ footer{
   </div>
 </div>
 
-<!-- BANNER CAROUSEL START -->
 <div class="hero-banner-wrapper">
-  <div class="hero-carousel-container">
-    <div class="hero-carousel-track" id="carouselTrack">
-      <div class="hero-carousel-slide">
-        <img src="/assets/banner-clica-compra.png" alt="Clica, Compra e Ri">
-      </div>
-    </div>
-    <div class="hero-carousel-controls">
-      <button class="carousel-btn carousel-prev" id="carouselPrev" aria-label="Slide anterior"></button>
-      <div class="carousel-dots" id="carouselDots"></div>
-      <button class="carousel-btn carousel-next" id="carouselNext" aria-label="Proximo slide"></button>
-    </div>
+  <div class="hero-new">
+    <img
+      src="/assets/banner-clica-compra.png"
+      alt="Clica, Compra e Ri"
+    >
   </div>
 </div>
-<!-- BANNER CAROUSEL END -->
 
 <div class="hero-cta-section">
   <a href="#destaques" class="cta-primary">Começar a comprar</a>
@@ -1572,97 +1440,6 @@ function upgradeCards(){
 }
 document.addEventListener('DOMContentLoaded', upgradeCards);
 window.addEventListener('load', upgradeCards);
-
-/* ================= CAROUSEL INITIALIZATION ================= */
-class BannerCarousel{
-  constructor(){
-    this.track = document.getElementById('carouselTrack');
-    this.prevBtn = document.getElementById('carouselPrev');
-    this.nextBtn = document.getElementById('carouselNext');
-    this.dotsContainer = document.getElementById('carouselDots');
-    
-    if(!this.track) return;
-    
-    this.slides = Array.from(this.track.querySelectorAll('.hero-carousel-slide'));
-    this.currentIndex = 0;
-    this.autoPlayInterval = null;
-    this.autoPlayDelay = 5000;
-    
-    this.init();
-  }
-  
-  init(){
-    this.createDots();
-    this.attachEventListeners();
-    this.startAutoPlay();
-  }
-  
-  createDots(){
-    this.slides.forEach((_, index) => {
-      const dot = document.createElement('button');
-      dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
-      dot.type = 'button';
-      dot.setAttribute('aria-label', `Slide ${index + 1}`);
-      dot.addEventListener('click', () => this.goToSlide(index));
-      this.dotsContainer.appendChild(dot);
-    });
-  }
-  
-  attachEventListeners(){
-    this.prevBtn.addEventListener('click', () => this.prev());
-    this.nextBtn.addEventListener('click', () => this.next());
-    
-    this.track.parentElement.addEventListener('mouseenter', () => this.stopAutoPlay());
-    this.track.parentElement.addEventListener('mouseleave', () => this.startAutoPlay());
-  }
-  
-  goToSlide(index){
-    this.currentIndex = (index + this.slides.length) % this.slides.length;
-    this.updateCarousel();
-    this.restartAutoPlay();
-  }
-  
-  prev(){
-    this.goToSlide(this.currentIndex - 1);
-  }
-  
-  next(){
-    this.goToSlide(this.currentIndex + 1);
-  }
-  
-  updateCarousel(){
-    const offset = -this.currentIndex * 100;
-    this.track.style.transform = `translateX(${offset}%)`;
-    
-    document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
-      dot.classList.toggle('active', index === this.currentIndex);
-    });
-  }
-  
-  startAutoPlay(){
-    if(this.slides.length <= 1) return;
-    this.autoPlayInterval = setInterval(() => {
-      this.next();
-    }, this.autoPlayDelay);
-  }
-  
-  stopAutoPlay(){
-    if(this.autoPlayInterval){
-      clearInterval(this.autoPlayInterval);
-      this.autoPlayInterval = null;
-    }
-  }
-  
-  restartAutoPlay(){
-    this.stopAutoPlay();
-    this.startAutoPlay();
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  new BannerCarousel();
-});
-
 
 </script>
 
