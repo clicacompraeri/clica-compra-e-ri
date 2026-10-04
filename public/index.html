@@ -1811,7 +1811,7 @@ function renderProducts(containerId, items = products) {
           <strong>${product.price}</strong>
           <span class="old-price">${product.oldPrice}</span>
         </div>
-        <button class="product-btn" onclick="addToCart(event, product.name)">Comprar agora</button>
+        <button class="product-btn" type="button" onclick='addToCart(event, ${JSON.stringify(product.name)})'>Comprar agora</button>
       </div>
     </a>
   `).join('');
