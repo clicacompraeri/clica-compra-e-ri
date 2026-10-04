@@ -95,6 +95,17 @@ document.addEventListener('DOMContentLoaded', upgradeCards);
 window.addEventListener('load', upgradeCards);
 </script>
 
+<script>
+window.addEventListener('load', function(){
+  var cards = document.querySelectorAll('.product-card');
+  var imgs  = document.querySelectorAll('.product-image');
+  var favs  = document.querySelectorAll('.fav-btn');
+  alert('Cards: ' + cards.length + 
+        ' | Imagens .product-image: ' + imgs.length + 
+        ' | Botões coração criados: ' + favs.length);
+});
+</script>
+
 body{
   font-family:Inter,Arial,Helvetica,sans-serif;
   background:#fff;
