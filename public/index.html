@@ -398,108 +398,142 @@ section{
 .products{
   display:grid;
   grid-template-columns:repeat(5,1fr);
-  gap:14px;
+  gap:16px;
 }
 
 .product{
-  border:1px solid #e3e5e8;
-  border-radius:20px;
+  border:1px solid #e8eaed;
+  border-radius:16px;
   overflow:hidden;
   background:#fff;
-  transition:.22s;
+  transition:all .28s cubic-bezier(.34,.1,.64,.94);
+  display:flex;
+  flex-direction:column;
+  height:100%;
 }
 
 .product:hover{
-  transform:translateY(-4px);
-  box-shadow:var(--shadow);
+  transform:translateY(-8px);
+  border-color:#ffd21c;
+  box-shadow:0 16px 48px rgba(255,210,28,.18);
 }
 
 .product-image{
-    height:230px;
-    background:#eef1f4;
-    position:relative;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:10px;
-    overflow:hidden;
+  height:280px;
+  background:linear-gradient(135deg,#f8fafb 0%,#eef1f4 100%);
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  overflow:hidden;
+  flex-shrink:0;
 }
 
 .product-image img{
-    position:relative;
-    z-index:1;
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    transform:scale(1.18);
+  position:relative;
+  z-index:1;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+
+.product:hover .product-image img{
+  transform:scale(1.12);
 }
 
 .badge{
   position:absolute;
-  left:10px;
-  top:10px;
+  left:12px;
+  top:12px;
   background:var(--yellow);
   color:#111;
-  padding:6px 9px;
-  border-radius:7px;
-  font-size:9px;
+  padding:7px 12px;
+  border-radius:8px;
+  font-size:10px;
   font-weight:900;
   text-transform:uppercase;
+  letter-spacing:.5px;
+  z-index:2;
 }
 
 .product-info{
-  padding:14px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  flex-grow:1;
 }
 
 .product-name{
-  font-size:13px;
-  font-weight:900;
-  margin-bottom:4px;
+  font-size:14px;
+  font-weight:800;
+  line-height:1.3;
+  margin-bottom:6px;
+  color:#000;
+  letter-spacing:-.3px;
 }
 
 .product-desc{
-  color:var(--muted);
-  font-size:10px;
-  min-height:30px;
+  color:#6b7280;
+  font-size:12px;
+  line-height:1.4;
+  margin-bottom:10px;
+  flex-grow:1;
 }
 
 .rating{
-  margin-top:10px;
-  color:#d49e00;
-  font-size:10px;
+  margin:8px 0;
+  color:#f59e0b;
+  font-size:11px;
+  font-weight:600;
 }
 
-.price{
-  margin-top:7px;
+.price-section{
+  margin:12px 0;
+  display:flex;
+  align-items:baseline;
+  gap:8px;
 }
 
-.price strong{
-  font-size:18px;
+.price-section strong{
+  font-size:20px;
+  font-weight:900;
+  color:#000;
+  letter-spacing:-.4px;
 }
 
 .old-price{
-  color:#a1a5aa;
+  color:#9ca3af;
   text-decoration:line-through;
-  font-size:9px;
-  margin-left:5px;
+  font-size:12px;
+  font-weight:500;
 }
 
 .product-btn{
   width:100%;
   border:0;
-  height:40px;
-  margin-top:12px;
-  border-radius:12px;
+  height:44px;
+  margin-top:auto;
+  border-radius:10px;
   background:var(--yellow);
   color:#111;
-  font-size:11px;
+  font-size:13px;
   font-weight:900;
   cursor:pointer;
-  transition:.2s;
+  transition:all .2s ease;
+  letter-spacing:.4px;
+  text-transform:uppercase;
 }
 
 .product-btn:hover{
   background:#f5c500;
+  transform:translateY(-2px);
+  box-shadow:0 8px 16px rgba(255,210,28,.25);
+}
+
+.product-btn:active{
+  transform:translateY(0);
 }
 
 /* ================= OFFER BANNER ================= */
@@ -758,32 +792,39 @@ footer{
 
   .products{
     grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
+    gap:12px;
   }
 
   .product-image{
-    height:155px;
-    padding:14px;
+    height:200px;
+    padding:12px;
   }
 
   .product-info{
-    padding:11px;
+    padding:14px;
   }
 
   .product-name{
-    font-size:12px;
+    font-size:13px;
   }
 
   .product-desc{
-    font-size:9px;
+    font-size:11px;
+    margin-bottom:8px;
   }
 
-  .price strong{
-    font-size:16px;
+  .rating{
+    font-size:10px;
+  }
+
+  .price-section strong{
+    font-size:18px;
   }
 
   .product-btn{
-    height:38px;
+    height:40px;
+    font-size:12px;
+    margin-top:10px;
   }
 
   .offer-banner{
@@ -837,15 +878,15 @@ footer{
   }
 
   .products{
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:1fr;
   }
 
   .product-image{
-    height:135px;
+    height:180px;
   }
 
   .product-desc{
-    min-height:42px;
+    min-height:auto;
   }
 
   .footer-grid{
@@ -1353,93 +1394,25 @@ function renderProducts(containerId, items = products) {
         <div class="product-name">${product.name}</div>
         <div class="product-desc">${product.description}</div>
         <div class="rating">5.0 ★ (127 avaliações)</div>
-        <div class="price">
+        <div class="price-section">
           <strong>${product.price}</strong>
           <span class="old-price">${product.oldPrice}</span>
         </div>
-        <button class="product-btn" onclick="event.preventDefault(); event.stopPropagation();">
-          Adicionar ao carrinho
-        </button>
+        <button class="product-btn" onclick="event.preventDefault();">Comprar agora</button>
       </div>
     </a>
   `).join('');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderProducts('productsGrid', products.slice(0, 5));
-  renderProducts('popularGrid', products.slice(5, 10));
+renderProducts('productsGrid');
+renderProducts('popularGrid');
+
+document.getElementById('searchForm')?.addEventListener('submit', e => {
+  e.preventDefault();
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+  renderProducts('productsGrid', filtered.length ? filtered : products);
 });
-
-function upgradeCards(){
-  document.querySelectorAll('.product-card').forEach(function(card){
-
-    var imgBox = card.querySelector('.product-image');
-    if(imgBox && !card.querySelector('.fav-btn')){
-      var fav = document.createElement('button');
-      fav.type = 'button';
-      fav.className = 'fav-btn';
-      fav.innerHTML = '♡';
-      fav.title = 'Favoritar';
-      fav.style.position = 'absolute';
-      fav.style.right = '12px';
-      fav.style.top = '12px';
-      fav.style.width = '36px';
-      fav.style.height = '36px';
-      fav.style.background = '#fff';
-      fav.style.border = 'none';
-      fav.style.borderRadius = '50%';
-      fav.style.cursor = 'pointer';
-      fav.style.zIndex = '2';
-      fav.style.fontSize = '18px';
-      fav.style.display = 'flex';
-      fav.style.alignItems = 'center';
-      fav.style.justifyContent = 'center';
-      fav.style.transition = '.2s';
-      fav.addEventListener('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        fav.classList.toggle('active');
-        fav.style.background = fav.classList.contains('active') ? '#ffd21c' : '#fff';
-      });
-      imgBox.appendChild(fav);
-    }
-
-    if(!card.querySelector('.discount-badge')){
-      var current = null, old = null;
-      card.querySelectorAll('*').forEach(function(el){
-        if(el.children.length === 0 && /R\$\s?\d/.test(el.textContent)){
-          var deco = getComputedStyle(el).textDecorationLine || '';
-          if(deco.indexOf('line-through') !== -1){ old = el; } else { current = el; }
-        }
-      });
-      function parsePrice(el){
-        var m = el.textContent.replace(/\./g,'').replace(',','.').match(/\d+(\.\d+)?/);
-        return m ? parseFloat(m[0]) : 0;
-      }
-      if(current && old){
-        var pc = parsePrice(current), po = parsePrice(old);
-        if(po > pc && pc > 0){
-          var badge = document.createElement('span');
-          badge.className = 'discount-badge';
-          badge.textContent = '-' + Math.round((1 - pc/po) * 100) + '%';
-          badge.style.position = 'absolute';
-          badge.style.top = '10px';
-          badge.style.left = '10px';
-          badge.style.background = '#ffd21c';
-          badge.style.padding = '4px 8px';
-          badge.style.borderRadius = '6px';
-          badge.style.fontSize = '11px';
-          badge.style.fontWeight = '900';
-          badge.style.color = '#111';
-          current.parentNode.insertBefore(badge, current.nextSibling);
-        }
-      }
-    }
-
-  });
-}
-document.addEventListener('DOMContentLoaded', upgradeCards);
-window.addEventListener('load', upgradeCards);
 
 </script>
 
