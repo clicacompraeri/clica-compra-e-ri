@@ -254,6 +254,8 @@ header{
 
 .hero-carousel-inner {
   position: absolute;
+  touch-action: pan-y;
+  user-select: none;
   top: 0;
   left: 0;
   width: 100%;
@@ -1684,6 +1686,33 @@ class HeroCarousel {
   }
   
   attachEvents() {
+    let startX = 0;
+    let startY = 0;
+    let dragging = false;
+
+    this.inner.addEventListener('touchstart', (event) => {
+      if (!event.touches.length) return;
+      startX = event.touches[0].clientX;
+      startY = event.touches[0].clientY;
+      dragging = true;
+      this.stopAutoplay();
+    }, { passive: true });
+
+    this.inner.addEventListener('touchend', (event) => {
+      if (!dragging || !event.changedTouches.length) return;
+      const endX = event.changedTouches[0].clientX;
+      const endY = event.changedTouches[0].clientY;
+      const diffX = endX - startX;
+      const diffY = endY - startY;
+      dragging = false;
+
+      if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX < 0) this.nextSlide();
+        else this.prevSlide();
+      }
+      this.startAutoplay();
+    }, { passive: true });
+
     this.prev.addEventListener('click', () => {
       this.prevSlide();
       this.resetAutoplay();
