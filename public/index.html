@@ -1821,13 +1821,6 @@ document.getElementById('sortProducts')?.addEventListener('change', e => {
 renderProducts('popularGrid');
 restoreFavorites();
 
-document.getElementById('searchForm')?.addEventListener('submit', e => {
-  e.preventDefault();
-  const query = document.getElementById('searchInput').value.toLowerCase();
-  const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
-  renderProducts('productsGrid', filtered.length ? filtered : products);
-});
-
 </script>
 
 
