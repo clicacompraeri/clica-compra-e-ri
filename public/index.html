@@ -12,6 +12,7 @@
 :root{
   --yellow:#ffd21c;
   --yellow-dark:#f2bd00;
+  --yellow-bright:#ffee4d;
   --black:#111315;
   --black-2:#191c20;
   --gray:#f4f5f6;
@@ -239,9 +240,10 @@ header{
   width: 100%;
   border-radius: 26px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, .08);
+  box-shadow: 0 24px 72px rgba(0, 0, 0, .12), 0 8px 24px rgba(0, 0, 0, .08);
   position: relative;
   background: #f0f0f0;
+  touch-action: pan-y pinch-zoom;
 }
 
 .hero-carousel {
@@ -259,7 +261,8 @@ header{
   width: 100%;
   height: 100%;
   display: flex;
-  transition: transform .6s cubic-bezier(.25, .46, .45, .94);
+  transition: transform .7s cubic-bezier(.2, .8, .2, 1);
+  user-select: none;
 }
 
 .hero-carousel-item {
@@ -269,6 +272,16 @@ header{
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.hero-carousel-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.04) 100%);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .hero-carousel-item img {
@@ -276,15 +289,20 @@ header{
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform .8s cubic-bezier(.25, .46, .45, .94);
+}
+
+.hero-carousel-item.active img {
+  transform: scale(1.02);
 }
 
 .hero-carousel-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
-  background: rgba(255, 255, 255, .85);
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, .92);
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -292,81 +310,87 @@ header{
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
   color: #111315;
-  transition: background .2s, transform .2s;
+  transition: all .3s cubic-bezier(.34, 1.56, .64, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
 }
 
 .hero-carousel-nav:hover {
-  background: rgba(255, 255, 255, .95);
-  transform: translateY(-50%) scale(1.1);
+  background: rgba(255, 255, 255, .98);
+  transform: translateY(-50%) scale(1.15);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .18);
 }
 
 .hero-carousel-nav:active {
-  transform: translateY(-50%) scale(.95);
+  transform: translateY(-50%) scale(.92);
 }
 
 .hero-carousel-prev {
-  left: 16px;
+  left: 20px;
 }
 
 .hero-carousel-next {
-  right: 16px;
+  right: 20px;
 }
 
 .hero-carousel-indicators {
   position: absolute;
-  bottom: 16px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 8px;
+  gap: 10px;
   z-index: 10;
 }
 
 .hero-carousel-dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, .6);
-  border: none;
+  background: rgba(255, 255, 255, .5);
+  border: 2px solid rgba(255, 255, 255, .3);
   cursor: pointer;
-  transition: background .3s, transform .3s;
+  transition: all .4s cubic-bezier(.34, 1.56, .64, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
 }
 
 .hero-carousel-dot.active {
-  background: #ffd21c;
-  transform: scale(1.2);
+  background: #ffee4d;
+  border-color: #ffd21c;
+  transform: scale(1.4);
+  box-shadow: 0 4px 16px rgba(255, 210, 28, .35);
 }
 
-.hero-carousel-dot:hover {
-  background: rgba(255, 255, 255, .9);
+.hero-carousel-dot:hover:not(.active) {
+  background: rgba(255, 255, 255, .75);
+  border-color: rgba(255, 255, 255, .6);
 }
 
 @media (max-width: 600px) {
   .hero-carousel-nav {
-    width: 42px;
-    height: 42px;
+    width: 46px;
+    height: 46px;
     font-size: 18px;
   }
   
-  .hero-carousel-nav-prev {
-    left: 12px;
+  .hero-carousel-prev {
+    left: 14px;
   }
   
-  .hero-carousel-nav-next {
-    right: 12px;
+  .hero-carousel-next {
+    right: 14px;
   }
   
   .hero-carousel-indicators {
-    bottom: 12px;
-    gap: 6px;
+    bottom: 14px;
+    gap: 8px;
   }
   
   .hero-carousel-dot {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
   }
 }
 
@@ -1009,115 +1033,6 @@ footer{
     grid-template-columns:1fr;
   }
 }
-
-/* =========================================
-   PRODUCT CARD ENHANCEMENTS
-   ========================================= */
-
-.product-card {
-  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-}
-.product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 14px 30px rgba(0,0,0,.10);
-  border-color: #ffd21c;
-}
-
-.product-image {
-  overflow: hidden;
-}
-.product-image img {
-  transition: transform .35s ease;
-}
-.product-card:hover .product-image img {
-  transform: scale(1.3);
-}
-
-.product-card a, .product-card button {
-  transition: filter .2s ease, transform .2s ease;
-}
-.product-card a:hover, .product-card button:hover {
-  filter: brightness(.92);
-  transform: translateY(-1px);
-}
-.product-card a:active, .product-card button:active {
-  transform: translateY(0);
-}
-
-/* =========================================
-   CATEGORY CARD ENHANCEMENTS
-   ========================================= */
-
-.category-card {
-  position: relative;
-  overflow: hidden;
-  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
-}
-
-.category-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 26px rgba(0,0,0,.10);
-  border-color: #ffd21c;
-  background: linear-gradient(180deg,#ffffff 0%,#fffbea 100%);
-}
-
-.category-card::before {
-  content: "";
-  position: absolute;
-  left: 50%; top: 38%;
-  width: 110px; height: 110px;
-  transform: translate(-50%,-50%) scale(.4);
-  background: radial-gradient(circle, rgba(255,210,28,.28) 0%, rgba(255,210,28,0) 70%);
-  opacity: 0;
-  transition: opacity .3s ease, transform .3s ease;
-  pointer-events: none;
-}
-.category-card:hover::before {
-  opacity: 1;
-  transform: translate(-50%,-50%) scale(1);
-}
-
-.category-card > :first-child {
-  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
-}
-.category-card:hover > :first-child {
-  transform: scale(1.18) rotate(-6deg);
-}
-
-.category-card::after {
-  content: "→";
-  position: absolute;
-  top: 10px; right: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  color: #e8be00;
-  opacity: 0;
-  transform: translateX(-8px);
-  transition: opacity .25s ease, transform .25s ease;
-}
-.category-card:hover::after {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.category-card > :last-child {
-  position: relative;
-}
-.category-card > :last-child::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -6px;
-  transform: translateX(-50%);
-  width: 0;
-  height: 3px;
-  border-radius: 2px;
-  background: #ffd21c;
-  transition: width .25s ease;
-}
-.category-card:hover > :last-child::after {
-  width: 26px;
-}
 </style>
 </head>
 
@@ -1177,7 +1092,7 @@ footer{
   <div class="hero-carousel-container">
     <div class="hero-carousel">
       <div class="hero-carousel-inner" id="heroCarouselInner">
-        <div class="hero-carousel-item">
+        <div class="hero-carousel-item active">
           <img src="/assets/banner-clica-compra.png" alt="Banner Clica, Compra e Ri">
         </div>
         <div class="hero-carousel-item">
@@ -1369,19 +1284,17 @@ footer{
         <h3>Receba novidades</h3>
 
         <p>
-          Ofertas e novos achados direto no seu e-mail.
+          Assine e tenha ofertas exclusivas entregues no seu email.
         </p>
 
-        <form class="newsletter-form" onsubmit="return false;">
+        <form class="newsletter-form" id="newsletterForm">
           <input
             type="email"
-            placeholder="Seu e-mail"
-            aria-label="Seu e-mail"
+            placeholder="Seu melhor email"
+            required
+            aria-label="Email para newsletter"
           >
-
-          <button type="submit" aria-label="Cadastrar">
-            →
-          </button>
+          <button type="submit" aria-label="Inscrever">→</button>
         </form>
 
       </div>
@@ -1389,260 +1302,132 @@ footer{
     </div>
 
     <div class="copyright">
-      © 2026 Clica, Compra e Ri. Todos os direitos reservados.
+      Clica, Compra e Ri © 2024 · Todos os direitos reservados
     </div>
 
   </div>
 
 </footer>
 
-
 <script>
-
-const products = [
-
-  {
-    name:"Air Fryer 4L",
-    description:"Cozinha prática para todos os dias",
-    price:"R$ 249,90",
-    oldPrice:"R$ 349,90",
-    category:"Casa",
-    badge:"Mais vendido",
-    image:"/assets/produto-airfryer.png",
-    link:"#"
-  },
-
-  {
-    name:"Smartwatch",
-    description:"Tecnologia e estilo no pulso",
-    price:"R$ 159,90",
-    oldPrice:"R$ 220,90",
-    category:"Tecnologia",
-    badge:"Oferta",
-    image:"/assets/produto-smartwatch.png",
-    link:"#"
-  },
-
-  {
-    name:"Fone Bluetooth",
-    description:"Liberdade para ouvir onde quiser",
-    price:"R$ 89,90",
-    oldPrice:"R$ 129,90",
-    category:"Tecnologia",
-    badge:"",
-    image:"/assets/produto-fone.png",
-    link:"#"
-  },
-
-  {
-    name:"Liquidificador 1200W",
-    description:"Potência para sua rotina",
-    price:"R$ 189,90",
-    oldPrice:"R$ 260,00",
-    category:"Casa",
-    badge:"",
-    image:"/assets/produto-liquidificador.png",
-    link:"#"
-  },
-
-  {
-    name:"Tênis Casual",
-    description:"Conforto para todos os dias",
-    price:"R$ 179,90",
-    oldPrice:"R$ 249,90",
-    category:"Moda",
-    badge:"Lançamento",
-    image:"/assets/produto-tenis.png",
-    link:"#"
-  },
-
-  {
-    name:"Kit de Pincéis",
-    description:"Para sua rotina de beleza",
-    price:"R$ 69,90",
-    oldPrice:"R$ 99,90",
-    category:"Beleza",
-    badge:"",
-    image:"/assets/produto-beleza.png",
-    link:"#"
-  },
-
-  {
-    name:"Organizador Multifuncional",
-    description:"Mais espaço e organização",
-    price:"R$ 49,90",
-    oldPrice:"R$ 69,90",
-    category:"Casa",
-    badge:"",
-    image:"/assets/produto-organizador.png",
-    link:"#"
-  },
-
-  {
-    name:"Projetor Portátil",
-    description:"Cinema em qualquer lugar",
-    price:"R$ 399,90",
-    oldPrice:"R$ 599,90",
-    category:"Tecnologia",
-    badge:"Desconto",
-    image:"/assets/produto-projetor.png",
-    link:"#"
-  },
-
-  {
-    name:"Almofada Ergonômica",
-    description:"Conforto para seu descanso",
-    price:"R$ 79,90",
-    oldPrice:"R$ 119,90",
-    category:"Casa",
-    badge:"",
-    image:"/assets/produto-almofada.png",
-    link:"#"
-  },
-
-  {
-    name:"Mochila Tática",
-    description:"Resistência e funcionalidade",
-    price:"R$ 129,90",
-    oldPrice:"R$ 179,90",
-    category:"Moda",
-    badge:"",
-    image:"/assets/produto-mochila.png",
-    link:"#"
-  }
-
-];
-
-function renderProducts(containerId, items = products) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = items.map(product => `
-    <a href="${product.link}" class="product product-card" style="display:flex; flex-direction:column;">
-      <div class="product-image">
-        <img src="${product.image}" alt="${product.name}">
-        ${product.badge ? `<span class="badge">${product.badge}</span>` : ''}
-      </div>
-      <div class="product-info">
-        <div class="product-name">${product.name}</div>
-        <div class="product-desc">${product.description}</div>
-        <div class="rating">5.0 ★ (127 avaliações)</div>
-        <div class="price-section">
-          <strong>${product.price}</strong>
-          <span class="old-price">${product.oldPrice}</span>
-        </div>
-        <button class="product-btn" onclick="event.preventDefault();">Comprar agora</button>
-      </div>
-    </a>
-  `).join('');
-}
-
-renderProducts('productsGrid');
-renderProducts('popularGrid');
-
-document.getElementById('searchForm')?.addEventListener('submit', e => {
-  e.preventDefault();
-  const query = document.getElementById('searchInput').value.toLowerCase();
-  const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
-  renderProducts('productsGrid', filtered.length ? filtered : products);
-});
-
-</script>
-
-
-<script>
-class HeroCarousel {
-  constructor(containerId) {
-    this.inner = document.getElementById('heroCarouselInner');
-    this.prev = document.getElementById('heroPrev');
-    this.next = document.getElementById('heroNext');
-    this.indicators = document.getElementById('heroIndicators');
+class BannerCarousel {
+  constructor(carouselSelector, prevBtn, nextBtn, indicatorsContainer, autoplayInterval = 5000) {
+    this.inner = document.querySelector(carouselSelector);
+    this.items = Array.from(this.inner.querySelectorAll('.hero-carousel-item'));
+    this.prevBtn = document.querySelector(prevBtn);
+    this.nextBtn = document.querySelector(nextBtn);
+    this.indicatorsContainer = document.querySelector(indicatorsContainer);
+    this.autoplayInterval = autoplayInterval;
     
     this.currentIndex = 0;
-    this.totalItems = 4;
-    this.autoplayInterval = null;
-    this.autoplayDelay = 5000;
-    
+    this.totalItems = this.items.length;
+    this.isTransitioning = false;
+    this.touchStartX = 0;
+    this.touchEndX = 0;
+    this.autoplayTimer = null;
+
     this.init();
   }
-  
+
   init() {
-    this.renderIndicators();
-    this.attachEvents();
+    this.createIndicators();
+    this.attachEventListeners();
     this.startAutoplay();
-    
-    this.inner.parentElement.addEventListener('mouseenter', () => this.stopAutoplay());
-    this.inner.parentElement.addEventListener('mouseleave', () => this.startAutoplay());
   }
-  
-  renderIndicators() {
+
+  createIndicators() {
     for (let i = 0; i < this.totalItems; i++) {
       const dot = document.createElement('button');
-      dot.className = 'hero-carousel-dot' + (i === 0 ? ' active' : '');
+      dot.className = 'hero-carousel-dot';
+      if (i === 0) dot.classList.add('active');
+      dot.setAttribute('aria-label', `Slide ${i + 1}`);
       dot.addEventListener('click', () => this.goToSlide(i));
-      this.indicators.appendChild(dot);
+      this.indicatorsContainer.appendChild(dot);
     }
+    this.dots = Array.from(this.indicatorsContainer.querySelectorAll('.hero-carousel-dot'));
   }
-  
-  updateIndicators() {
-    document.querySelectorAll('.hero-carousel-dot').forEach((dot, i) => {
-      dot.classList.toggle('active', i === this.currentIndex);
-    });
+
+  attachEventListeners() {
+    this.prevBtn.addEventListener('click', () => this.prevSlide());
+    this.nextBtn.addEventListener('click', () => this.nextSlide());
+    this.inner.addEventListener('touchstart', (e) => this.touchStart(e), false);
+    this.inner.addEventListener('touchend', (e) => this.touchEnd(e), false);
+    this.inner.parentElement.addEventListener('mouseenter', () => this.pauseAutoplay());
+    this.inner.parentElement.addEventListener('mouseleave', () => this.startAutoplay());
   }
-  
+
+  nextSlide() {
+    this.goToSlide((this.currentIndex + 1) % this.totalItems);
+  }
+
+  prevSlide() {
+    this.goToSlide((this.currentIndex - 1 + this.totalItems) % this.totalItems);
+  }
+
   goToSlide(index) {
+    if (this.isTransitioning || index === this.currentIndex) return;
+    
+    this.isTransitioning = true;
     this.currentIndex = index;
     this.updateCarousel();
-    this.updateIndicators();
+    
+    setTimeout(() => {
+      this.isTransitioning = false;
+    }, 700);
+
     this.resetAutoplay();
   }
-  
-  nextSlide() {
-    this.currentIndex = (this.currentIndex + 1) % this.totalItems;
-    this.updateCarousel();
-    this.updateIndicators();
-  }
-  
-  prevSlide() {
-    this.currentIndex = (this.currentIndex - 1 + this.totalItems) % this.totalItems;
-    this.updateCarousel();
-    this.updateIndicators();
-  }
-  
+
   updateCarousel() {
     const offset = -this.currentIndex * 100;
-    this.inner.style.transform = 'translateX(' + offset + '%)';
-  }
-  
-  startAutoplay() {
-    this.autoplayInterval = setInterval(() => this.nextSlide(), this.autoplayDelay);
-  }
-  
-  stopAutoplay() {
-    clearInterval(this.autoplayInterval);
-  }
-  
-  resetAutoplay() {
-    this.stopAutoplay();
-    this.startAutoplay();
-  }
-  
-  attachEvents() {
-    this.prev.addEventListener('click', () => {
-      this.prevSlide();
-      this.resetAutoplay();
+    this.inner.style.transform = `translateX(${offset}%)`;
+
+    this.items.forEach((item, idx) => {
+      item.classList.toggle('active', idx === this.currentIndex);
     });
+
+    this.dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === this.currentIndex);
+    });
+  }
+
+  touchStart(e) {
+    this.touchStartX = e.changedTouches[0].screenX;
+  }
+
+  touchEnd(e) {
+    this.touchEndX = e.changedTouches[0].screenX;
+    const diff = this.touchStartX - this.touchEndX;
     
-    this.next.addEventListener('click', () => {
-      this.nextSlide();
-      this.resetAutoplay();
-    });
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        this.nextSlide();
+      } else {
+        this.prevSlide();
+      }
+    }
+  }
+
+  startAutoplay() {
+    if (this.autoplayTimer) clearInterval(this.autoplayTimer);
+    this.autoplayTimer = setInterval(() => this.nextSlide(), this.autoplayInterval);
+  }
+
+  pauseAutoplay() {
+    if (this.autoplayTimer) clearInterval(this.autoplayTimer);
+  }
+
+  resetAutoplay() {
+    this.pauseAutoplay();
+    this.startAutoplay();
   }
 }
 
+// Initialize carousel
 document.addEventListener('DOMContentLoaded', () => {
-  new HeroCarousel('heroCarouselInner');
+  new BannerCarousel('#heroCarouselInner', '#heroPrev', '#heroNext', '#heroIndicators', 5000);
 });
 </script>
 
 </body>
 </html>
-
