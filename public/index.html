@@ -235,23 +235,139 @@ header{
   animation:fadeInUp .7s ease-out .2s both;
 }
 
-.hero-new{
-  width:100%;
-  border-radius:26px;
-  overflow:hidden;
-  box-shadow:0 20px 60px rgba(0,0,0,.08);
-  transition:transform .3s ease, box-shadow .3s ease;
+.hero-carousel-container {
+  width: 100%;
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .08);
+  position: relative;
+  background: #f0f0f0;
 }
 
-.hero-new img{
-  display:block;
-  width:100%;
-  height:auto;
+.hero-carousel {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 37.5%;
+  overflow: hidden;
 }
 
-.hero-new:hover{
-  transform:translateY(-4px);
-  box-shadow:0 24px 72px rgba(0,0,0,.12);
+.hero-carousel-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  transition: transform .6s cubic-bezier(.25, .46, .45, .94);
+}
+
+.hero-carousel-item {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, .85);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 900;
+  color: #111315;
+  transition: background .2s, transform .2s;
+}
+
+.hero-carousel-nav:hover {
+  background: rgba(255, 255, 255, .95);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.hero-carousel-nav:active {
+  transform: translateY(-50%) scale(.95);
+}
+
+.hero-carousel-prev {
+  left: 16px;
+}
+
+.hero-carousel-next {
+  right: 16px;
+}
+
+.hero-carousel-indicators {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.hero-carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .6);
+  border: none;
+  cursor: pointer;
+  transition: background .3s, transform .3s;
+}
+
+.hero-carousel-dot.active {
+  background: #ffd21c;
+  transform: scale(1.2);
+}
+
+.hero-carousel-dot:hover {
+  background: rgba(255, 255, 255, .9);
+}
+
+@media (max-width: 600px) {
+  .hero-carousel-nav {
+    width: 42px;
+    height: 42px;
+    font-size: 18px;
+  }
+  
+  .hero-carousel-nav-prev {
+    left: 12px;
+  }
+  
+  .hero-carousel-nav-next {
+    right: 12px;
+  }
+  
+  .hero-carousel-indicators {
+    bottom: 12px;
+    gap: 6px;
+  }
+  
+  .hero-carousel-dot {
+    width: 8px;
+    height: 8px;
+  }
 }
 
 @keyframes fadeInUp {
@@ -1058,11 +1174,26 @@ footer{
 </div>
 
 <div class="hero-banner-wrapper">
-  <div class="hero-new">
-    <img
-      src="/assets/banner-clica-compra.png"
-      alt="Clica, Compra e Ri"
-    >
+  <div class="hero-carousel-container">
+    <div class="hero-carousel">
+      <div class="hero-carousel-inner" id="heroCarouselInner">
+        <div class="hero-carousel-item">
+          <img src="/assets/banner-clica-compra.png" alt="Banner Clica, Compra e Ri">
+        </div>
+        <div class="hero-carousel-item">
+          <img src="/assets/banner_casa.png" alt="Banner Casa">
+        </div>
+        <div class="hero-carousel-item">
+          <img src="/assets/banner_esportes.png" alt="Banner Esportes">
+        </div>
+        <div class="hero-carousel-item">
+          <img src="/assets/banner_tecnologia.png" alt="Banner Tecnologia">
+        </div>
+      </div>
+      <button class="hero-carousel-nav hero-carousel-prev" id="heroPrev" aria-label="Slide anterior">←</button>
+      <button class="hero-carousel-nav hero-carousel-next" id="heroNext" aria-label="Próximo slide">→</button>
+      <div class="hero-carousel-indicators" id="heroIndicators"></div>
+    </div>
   </div>
 </div>
 
@@ -1414,6 +1545,102 @@ document.getElementById('searchForm')?.addEventListener('submit', e => {
   renderProducts('productsGrid', filtered.length ? filtered : products);
 });
 
+</script>
+
+
+<script>
+class HeroCarousel {
+  constructor(containerId) {
+    this.inner = document.getElementById('heroCarouselInner');
+    this.prev = document.getElementById('heroPrev');
+    this.next = document.getElementById('heroNext');
+    this.indicators = document.getElementById('heroIndicators');
+    
+    this.currentIndex = 0;
+    this.totalItems = 4;
+    this.autoplayInterval = null;
+    this.autoplayDelay = 5000;
+    
+    this.init();
+  }
+  
+  init() {
+    this.renderIndicators();
+    this.attachEvents();
+    this.startAutoplay();
+    
+    this.inner.parentElement.addEventListener('mouseenter', () => this.stopAutoplay());
+    this.inner.parentElement.addEventListener('mouseleave', () => this.startAutoplay());
+  }
+  
+  renderIndicators() {
+    for (let i = 0; i < this.totalItems; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'hero-carousel-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => this.goToSlide(i));
+      this.indicators.appendChild(dot);
+    }
+  }
+  
+  updateIndicators() {
+    document.querySelectorAll('.hero-carousel-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === this.currentIndex);
+    });
+  }
+  
+  goToSlide(index) {
+    this.currentIndex = index;
+    this.updateCarousel();
+    this.updateIndicators();
+    this.resetAutoplay();
+  }
+  
+  nextSlide() {
+    this.currentIndex = (this.currentIndex + 1) % this.totalItems;
+    this.updateCarousel();
+    this.updateIndicators();
+  }
+  
+  prevSlide() {
+    this.currentIndex = (this.currentIndex - 1 + this.totalItems) % this.totalItems;
+    this.updateCarousel();
+    this.updateIndicators();
+  }
+  
+  updateCarousel() {
+    const offset = -this.currentIndex * 100;
+    this.inner.style.transform = 'translateX(' + offset + '%)';
+  }
+  
+  startAutoplay() {
+    this.autoplayInterval = setInterval(() => this.nextSlide(), this.autoplayDelay);
+  }
+  
+  stopAutoplay() {
+    clearInterval(this.autoplayInterval);
+  }
+  
+  resetAutoplay() {
+    this.stopAutoplay();
+    this.startAutoplay();
+  }
+  
+  attachEvents() {
+    this.prev.addEventListener('click', () => {
+      this.prevSlide();
+      this.resetAutoplay();
+    });
+    
+    this.next.addEventListener('click', () => {
+      this.nextSlide();
+      this.resetAutoplay();
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  new HeroCarousel('heroCarouselInner');
+});
 </script>
 
 </body>
