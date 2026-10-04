@@ -559,6 +559,29 @@ section{
   transform:scale(1.12);
 }
 
+.favorite-btn{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:38px;
+  height:38px;
+  border:1px solid #e5e7eb;
+  border-radius:50%;
+  background:rgba(255,255,255,.94);
+  color:#555;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  line-height:1;
+  cursor:pointer;
+  z-index:4;
+  transition:all .2s ease;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+.favorite-btn:hover{transform:scale(1.08);border-color:#ffd21c;color:#d6a900;}
+.favorite-btn.active{background:#ffd21c;border-color:#ffd21c;color:#111;}
+
 .badge{
   position:absolute;
   left:12px;
@@ -1518,6 +1541,7 @@ function renderProducts(containerId, items = products) {
   container.innerHTML = items.map(product => `
     <a href="${product.link}" class="product product-card" style="display:flex; flex-direction:column;">
       <div class="product-image">
+        <button class="favorite-btn" type="button" aria-label="Adicionar aos favoritos" aria-pressed="false" data-product="${product.name.replace(/"/g,'&quot;')}" onclick="toggleFavorite(event, this)">♡</button>
         <img src="${product.image}" alt="${product.name}">
         ${product.badge ? `<span class="badge">${product.badge}</span>` : ''}
       </div>
@@ -1535,8 +1559,42 @@ function renderProducts(containerId, items = products) {
   `).join('');
 }
 
+function toggleFavorite(event, button) {
+  event.preventDefault();
+  event.stopPropagation();
+  const name = button.dataset.product;
+  const favorites = JSON.parse(localStorage.getItem('clicaFavoritos') || '[]');
+  const index = favorites.indexOf(name);
+  if (index >= 0) {
+    favorites.splice(index, 1);
+    button.classList.remove('active');
+    button.textContent = '♡';
+    button.setAttribute('aria-label', 'Adicionar aos favoritos');
+    button.setAttribute('aria-pressed', 'false');
+  } else {
+    favorites.push(name);
+    button.classList.add('active');
+    button.textContent = '♥';
+    button.setAttribute('aria-label', 'Remover dos favoritos');
+    button.setAttribute('aria-pressed', 'true');
+  }
+  localStorage.setItem('clicaFavoritos', JSON.stringify(favorites));
+}
+function restoreFavorites() {
+  const favorites = JSON.parse(localStorage.getItem('clicaFavoritos') || '[]');
+  document.querySelectorAll('.favorite-btn').forEach(button => {
+    if (favorites.includes(button.dataset.product)) {
+      button.classList.add('active');
+      button.textContent = '♥';
+      button.setAttribute('aria-label', 'Remover dos favoritos');
+      button.setAttribute('aria-pressed', 'true');
+    }
+  });
+}
+
 renderProducts('productsGrid');
 renderProducts('popularGrid');
+restoreFavorites();
 
 document.getElementById('searchForm')?.addEventListener('submit', e => {
   e.preventDefault();
