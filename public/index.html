@@ -1955,7 +1955,13 @@ document.getElementById('sortProducts')?.addEventListener('change', e => {
 const offerProducts = [...products].sort((a,b) => discountPercent(b) - discountPercent(a)).slice(0,4);
 renderProducts('offersGrid', offerProducts);
 
-renderProducts('popularGrid');
+const popularProducts = [
+  products.find(product => product.name === 'Air Fryer 4L'),
+  products.find(product => product.name === 'Smartwatch'),
+  products.find(product => product.name === 'Fone Bluetooth'),
+  products.find(product => product.name === 'Projetor Portátil')
+].filter(Boolean);
+renderProducts('popularGrid', popularProducts);
 restoreFavorites();
 renderFavorites();
 updateFavoritesCount();
