@@ -444,6 +444,22 @@ header{
   color:var(--black);
 }
 
+.favorites-count{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:20px;
+  height:20px;
+  padding:0 6px;
+  margin-left:4px;
+  border-radius:999px;
+  background:var(--yellow);
+  color:#111;
+  font-size:10px;
+  font-weight:900;
+  vertical-align:middle;
+}
+
 /* ================= SECTIONS ================= */
 
 section{
@@ -1268,7 +1284,7 @@ footer{
       <a href="#destaques">Mais vendidos</a>
       <a href="#categorias">Categorias</a>
       <a href="#novidades">Novidades</a>
-      <a href="#favoritos">Favoritos</a>
+      <a href="#favoritos">Favoritos <span class="favorites-count" id="favoritesCount" aria-label="Quantidade de favoritos">0</span></a>
     </nav>
 
     <form class="search" id="searchForm">
@@ -1745,6 +1761,7 @@ function toggleFavorite(event, button) {
     button.setAttribute('aria-pressed', 'true');
   }
   localStorage.setItem('clicaFavoritos', JSON.stringify(favorites));
+  updateFavoritesCount();
   renderFavorites();
 }
 
@@ -1758,6 +1775,12 @@ function restoreFavorites() {
       button.setAttribute('aria-pressed', 'true');
     }
   });
+}
+
+function updateFavoritesCount(){
+  const favorites = JSON.parse(localStorage.getItem('clicaFavoritos') || '[]');
+  const count = document.getElementById('favoritesCount');
+  if (count) count.textContent = favorites.length;
 }
 
 function renderFavorites() {
@@ -1844,6 +1867,7 @@ document.getElementById('sortProducts')?.addEventListener('change', e => {
 renderProducts('popularGrid');
 restoreFavorites();
 renderFavorites();
+updateFavoritesCount();
 
 </script>
 
