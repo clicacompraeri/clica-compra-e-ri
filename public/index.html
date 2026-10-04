@@ -677,7 +677,114 @@ section{
   transform:translateY(0);
 }
 
+/* ================= PRODUCT TOOLS ================= */
+
+.product-tools{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin:0 0 20px;
+}
+
+.category-filters{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  padding-bottom:3px;
+}
+
+.category-filters::-webkit-scrollbar{display:none;}
+
+.filter-btn{
+  flex:0 0 auto;
+  border:1px solid #e4e6e9;
+  background:#fff;
+  color:#333;
+  border-radius:10px;
+  padding:9px 14px;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.filter-btn:hover,
+.filter-btn.active{
+  background:var(--yellow);
+  border-color:var(--yellow);
+  color:#111;
+}
+
+.sort-control{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex:0 0 auto;
+}
+
+.sort-control span{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+}
+
+.sort-control select{
+  height:38px;
+  border:1px solid #e4e6e9;
+  border-radius:10px;
+  background:#fff;
+  padding:0 30px 0 10px;
+  color:#222;
+  font-size:12px;
+  font-weight:700;
+  outline:none;
+}
+
+.search-status{
+  min-height:20px;
+  margin:-4px 0 12px;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:600;
+}
+
+.no-results{
+  grid-column:1/-1;
+  border:1px dashed #dfe2e5;
+  border-radius:16px;
+  padding:35px 20px;
+  text-align:center;
+  color:var(--muted);
+  background:#fafbfc;
+}
+
+.no-results strong{
+  display:block;
+  color:var(--text);
+  font-size:15px;
+  margin-bottom:5px;
+}
+
+@media(max-width:900px){
+  .product-tools{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .sort-control{
+    justify-content:space-between;
+  }
+
+  .sort-control select{
+    flex:1;
+    max-width:220px;
+  }
+}
+
 /* ================= OFFER BANNER ================= */
+
 
 .offer-banner{
   min-height:150px;
@@ -1243,42 +1350,42 @@ footer{
 
   <div class="categories">
 
-    <a class="category" data-category="Casa" href="#destaques">
+    <a class="category" data-category="Casa" href="#destaques" onclick="selectCategory(event, 'Casa')">
       <img class="category-image" src="/assets/casa.png" alt="Casa">
       <span>Casa</span>
     </a>
 
-    <a class="category" data-category="Tecnologia" href="#destaques">
+    <a class="category" data-category="Tecnologia" href="#destaques" onclick="selectCategory(event, 'Tecnologia')">
       <img class="category-image" src="/assets/tecnologia.png" alt="Tecnologia">
       <span>Tecnologia</span>
     </a>
 
-    <a class="category" data-category="Beleza" href="#destaques">
+    <a class="category" data-category="Beleza" href="#destaques" onclick="selectCategory(event, 'Beleza')">
       <img class="category-image" src="/assets/beleza.png" alt="Beleza">
       <span>Beleza</span>
     </a>
 
-    <a class="category" data-category="Moda" href="#destaques">
+    <a class="category" data-category="Moda" href="#destaques" onclick="selectCategory(event, 'Moda')">
       <img class="category-image" src="/assets/moda.png" alt="Moda">
       <span>Moda</span>
     </a>
 
-    <a class="category" data-category="Esportes" href="#destaques">
+    <a class="category" data-category="Esportes" href="#destaques" onclick="selectCategory(event, 'Esportes')">
       <img class="category-image" src="/assets/esportes.png" alt="Esportes">
       <span>Esportes</span>
     </a>
 
-    <a class="category" data-category="Presentes" href="#destaques">
+    <a class="category" data-category="Presentes" href="#destaques" onclick="selectCategory(event, 'Presentes')">
       <img class="category-image" src="/assets/presentes.png" alt="Presentes">
       <span>Presentes</span>
     </a>
 
-    <a class="category" data-category="Pet" href="#destaques">
+    <a class="category" data-category="Pet" href="#destaques" onclick="selectCategory(event, 'Pet')">
       <img class="category-image" src="/assets/pet.png" alt="Pet">
       <span>Pet</span>
     </a>
 
-    <a class="category" data-category="Automotivo" href="#destaques">
+    <a class="category" data-category="Automotivo" href="#destaques" onclick="selectCategory(event, 'Automotivo')">
       <img class="category-image" src="/assets/automotivo.png" alt="Automotivo">
       <span>Automotivo</span>
     </a>
@@ -1299,6 +1406,27 @@ footer{
     <a class="see-all" href="#destaques">Ver todos</a>
   </div>
 
+  <div class="product-tools" aria-label="Filtros e ordenação de produtos">
+    <div class="category-filters" id="categoryFilters">
+      <button type="button" class="filter-btn active" data-filter="Todos">Todos</button>
+      <button type="button" class="filter-btn" data-filter="Casa">Casa</button>
+      <button type="button" class="filter-btn" data-filter="Tecnologia">Tecnologia</button>
+      <button type="button" class="filter-btn" data-filter="Beleza">Beleza</button>
+      <button type="button" class="filter-btn" data-filter="Moda">Moda</button>
+      <button type="button" class="filter-btn" data-filter="Esportes">Esportes</button>
+    </div>
+    <label class="sort-control">
+      <span>Ordenar</span>
+      <select id="sortProducts" aria-label="Ordenar produtos">
+        <option value="relevance">Relevância</option>
+        <option value="price-asc">Menor preço</option>
+        <option value="price-desc">Maior preço</option>
+        <option value="discount">Maior desconto</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="search-status" id="searchStatus" aria-live="polite"></div>
   <div class="products" id="productsGrid"></div>
 
 </section>
@@ -1538,8 +1666,29 @@ const products = [
 
 ];
 
+let activeCategory = 'Todos';
+let activeQuery = '';
+let activeSort = 'relevance';
+
+function priceToNumber(value){
+  return Number(String(value).replace(/[^0-9,]/g,'').replace('.','').replace(',','.')) || 0;
+}
+
+function discountPercent(product){
+  const oldValue = priceToNumber(product.oldPrice);
+  const currentValue = priceToNumber(product.price);
+  return oldValue > 0 ? (oldValue - currentValue) / oldValue : 0;
+}
+
 function renderProducts(containerId, items = products) {
   const container = document.getElementById(containerId);
+  if (!container) return;
+
+  if (!items.length) {
+    container.innerHTML = '<div class="no-results"><strong>Nenhum produto encontrado</strong>Tente outro termo ou escolha outra categoria.</div>';
+    return;
+  }
+
   container.innerHTML = items.map(product => `
     <a href="${product.link}" class="product product-card" style="display:flex; flex-direction:column;">
       <div class="product-image">
@@ -1582,6 +1731,7 @@ function toggleFavorite(event, button) {
   }
   localStorage.setItem('clicaFavoritos', JSON.stringify(favorites));
 }
+
 function restoreFavorites() {
   const favorites = JSON.parse(localStorage.getItem('clicaFavoritos') || '[]');
   document.querySelectorAll('.favorite-btn').forEach(button => {
@@ -1594,7 +1744,80 @@ function restoreFavorites() {
   });
 }
 
-renderProducts('productsGrid');
+function applyProductView(){
+  const query = activeQuery.trim().toLowerCase();
+
+  let filtered = products.filter(product => {
+    const matchesQuery = !query ||
+      product.name.toLowerCase().includes(query) ||
+      product.category.toLowerCase().includes(query) ||
+      product.description.toLowerCase().includes(query);
+
+    const matchesCategory = activeCategory === 'Todos' || product.category === activeCategory;
+    return matchesQuery && matchesCategory;
+  });
+
+  if (activeSort === 'price-asc') {
+    filtered.sort((a,b) => priceToNumber(a.price) - priceToNumber(b.price));
+  } else if (activeSort === 'price-desc') {
+    filtered.sort((a,b) => priceToNumber(b.price) - priceToNumber(a.price));
+  } else if (activeSort === 'discount') {
+    filtered.sort((a,b) => discountPercent(b) - discountPercent(a));
+  }
+
+  renderProducts('productsGrid', filtered);
+
+  const status = document.getElementById('searchStatus');
+  if (status) {
+    if (query || activeCategory !== 'Todos') {
+      status.textContent = filtered.length + ' produto' + (filtered.length === 1 ? '' : 's') + ' encontrado' + (filtered.length === 1 ? '' : 's') + '.';
+    } else {
+      status.textContent = '';
+    }
+  }
+
+  restoreFavorites();
+}
+
+function selectCategory(event, category){
+  event.preventDefault();
+  activeCategory = category;
+  const filter = document.querySelector('.filter-btn[data-filter="' + category + '"]');
+  if (filter) {
+    document.querySelectorAll('.filter-btn').forEach(item => item.classList.toggle('active', item === filter));
+  }
+  document.getElementById('destaques')?.scrollIntoView({behavior:'smooth', block:'start'});
+  applyProductView();
+}
+
+applyProductView();
+
+document.getElementById('searchInput')?.addEventListener('input', e => {
+  activeQuery = e.target.value;
+  applyProductView();
+});
+
+document.getElementById('searchForm')?.addEventListener('submit', e => {
+  e.preventDefault();
+  activeQuery = document.getElementById('searchInput').value;
+  document.getElementById('destaques')?.scrollIntoView({behavior:'smooth', block:'start'});
+  applyProductView();
+});
+
+document.querySelectorAll('.filter-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    activeCategory = button.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(item => item.classList.toggle('active', item === button));
+    applyProductView();
+  });
+});
+
+document.getElementById('sortProducts')?.addEventListener('change', e => {
+  activeSort = e.target.value;
+  applyProductView();
+});
+
+
 renderProducts('popularGrid');
 restoreFavorites();
 
