@@ -1810,7 +1810,7 @@ function renderCart(){
   const totalValue=cart.reduce((sum,item)=>sum+priceToNumber(item.price)*item.quantity,0);
   total.textContent=formatMoney(totalValue);
   checkout.disabled=!cart.length;
-  items.innerHTML=cart.length?cart.map(item=>'<div class="cart-item"><img src="'+item.image+'" alt="'+item.name+'"><div><div class="cart-item-name">'+item.name+'</div><div class="cart-item-price">'+item.quantity+' x '+item.price+'</div></div><button class="cart-remove" type="button" onclick="removeFromCart(\\''+item.name.replace(/'/g,"\\\\'")+ '\\')">Remover</button></div>').join(''):'<div class="cart-empty"><strong>Seu carrinho está vazio.</strong><br>Adicione produtos para começar.</div>';
+  items.innerHTML=cart.length?cart.map(item=>`<div class="cart-item"><img src="${item.image}" alt="${item.name}"><div><div class="cart-item-name">${item.name}</div><div class="cart-item-price">${item.quantity} x ${item.price}</div></div><button class="cart-remove" type="button" onclick='removeFromCart(${JSON.stringify(item.name)})'>Remover</button></div>`).join(''):'<div class="cart-empty"><strong>Seu carrinho está vazio.</strong><br>Adicione produtos para começar.</div>';
 }
 function openCart(){
   document.getElementById('cartDrawer')?.classList.add('open');
