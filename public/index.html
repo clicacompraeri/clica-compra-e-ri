@@ -159,6 +159,29 @@ header{
   object-fit:contain;
 }
 
+/* ================= CART ================= */
+.cart{position:relative;}
+.cart-count{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:var(--yellow);color:#111;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;}
+.cart-overlay{position:fixed;inset:0;background:rgba(17,19,21,.45);z-index:190;opacity:0;visibility:hidden;transition:.25s;}
+.cart-overlay.open{opacity:1;visibility:visible;}
+.cart-drawer{position:fixed;top:0;right:0;width:min(420px,92vw);height:100vh;background:#fff;z-index:200;transform:translateX(100%);transition:transform .28s ease;box-shadow:-20px 0 50px rgba(0,0,0,.15);display:flex;flex-direction:column;}
+.cart-drawer.open{transform:translateX(0);}
+.cart-head{display:flex;align-items:center;justify-content:space-between;padding:22px;border-bottom:1px solid #eceef0;}
+.cart-head h2{font-size:20px;}
+.cart-close{width:36px;height:36px;border:1px solid #e5e7e9;border-radius:10px;background:#fff;cursor:pointer;font-size:20px;}
+.cart-items{flex:1;overflow:auto;padding:18px;}
+.cart-item{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #eef0f2;}
+.cart-item img{width:64px;height:64px;object-fit:contain;border-radius:10px;background:#f4f5f6;}
+.cart-item-name{font-size:13px;font-weight:800;margin-bottom:4px;}
+.cart-item-price{font-size:12px;color:var(--muted);}
+.cart-remove{border:0;background:transparent;color:#777;cursor:pointer;font-size:12px;}
+.cart-empty{text-align:center;color:var(--muted);padding:50px 20px;}
+.cart-footer{border-top:1px solid #eceef0;padding:18px 20px;background:#fff;}
+.cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-weight:800;}
+.cart-total strong{font-size:20px;}
+.cart-checkout{width:100%;height:48px;border:0;border-radius:12px;background:var(--yellow);color:#111;font-weight:900;cursor:pointer;}
+.cart-checkout:disabled{opacity:.5;cursor:not-allowed;}
+
 /* ================= HERO VALUE PROPOSITION ================= */
 
 .hero-proposition{
@@ -1307,6 +1330,13 @@ footer{
 </header>
 
 
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer" aria-label="Carrinho de compras">
+  <div class="cart-head"><h2>Seu carrinho</h2><button class="cart-close" type="button" onclick="closeCart()" aria-label="Fechar carrinho">×</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer"><div class="cart-total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div><button class="cart-checkout" id="cartCheckout" type="button" disabled>Continuar compra</button></div>
+</div>
+
 <main>
 
 <section class="wrap" id="inicio">
@@ -1735,10 +1765,66 @@ function renderProducts(containerId, items = products) {
           <strong>${product.price}</strong>
           <span class="old-price">${product.oldPrice}</span>
         </div>
-        <button class="product-btn" onclick="event.preventDefault();">Comprar agora</button>
+        <button class="product-btn" onclick="addToCart(event, product.name)">Comprar agora</button>
       </div>
     </a>
   `).join('');
+}
+
+function getCart(){
+  return JSON.parse(localStorage.getItem('clicaCarrinho') || '[]');
+}
+function saveCart(cart){
+  localStorage.setItem('clicaCarrinho', JSON.stringify(cart));
+}
+function addToCart(event, productName){
+  event.preventDefault();
+  event.stopPropagation();
+  const product = products.find(item => item.name === productName);
+  if (!product) return;
+  const cart = getCart();
+  const existing = cart.find(item => item.name === productName);
+  if (existing) existing.quantity += 1;
+  else cart.push({name:product.name, price:product.price, image:product.image, quantity:1});
+  saveCart(cart);
+  renderCart();
+  openCart();
+}
+function removeFromCart(productName){
+  saveCart(getCart().filter(item => item.name !== productName));
+  renderCart();
+}
+function formatMoney(value){
+  return value.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+}
+function renderCart(){
+  const cart=getCart();
+  const items=document.getElementById('cartItems');
+  const count=document.getElementById('cartCount');
+  const total=document.getElementById('cartTotal');
+  const checkout=document.getElementById('cartCheckout');
+  if(!items||!count||!total||!checkout)return;
+  const quantity=cart.reduce((sum,item)=>sum+item.quantity,0);
+  count.textContent=quantity;
+  count.style.display=quantity?'flex':'none';
+  const totalValue=cart.reduce((sum,item)=>sum+priceToNumber(item.price)*item.quantity,0);
+  total.textContent=formatMoney(totalValue);
+  checkout.disabled=!cart.length;
+  items.innerHTML=cart.length?cart.map(item=>'<div class="cart-item"><img src="'+item.image+'" alt="'+item.name+'"><div><div class="cart-item-name">'+item.name+'</div><div class="cart-item-price">'+item.quantity+' x '+item.price+'</div></div><button class="cart-remove" type="button" onclick="removeFromCart(\\''+item.name.replace(/'/g,"\\\\'")+ '\\')">Remover</button></div>').join(''):'<div class="cart-empty"><strong>Seu carrinho está vazio.</strong><br>Adicione produtos para começar.</div>';
+}
+function openCart(){
+  document.getElementById('cartDrawer')?.classList.add('open');
+  document.getElementById('cartOverlay')?.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeCart(){
+  document.getElementById('cartDrawer')?.classList.remove('open');
+  document.getElementById('cartOverlay')?.classList.remove('open');
+  document.body.style.overflow='';
+}
+function toggleCart(){
+  const drawer=document.getElementById('cartDrawer');
+  if(drawer?.classList.contains('open')) closeCart(); else openCart();
 }
 
 function toggleFavorite(event, button) {
@@ -1868,6 +1954,7 @@ renderProducts('popularGrid');
 restoreFavorites();
 renderFavorites();
 updateFavoritesCount();
+renderCart();
 
 </script>
 
