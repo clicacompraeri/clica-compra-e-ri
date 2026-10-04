@@ -1268,6 +1268,7 @@ footer{
       <a href="#destaques">Mais vendidos</a>
       <a href="#categorias">Categorias</a>
       <a href="#novidades">Novidades</a>
+      <a href="#favoritos">Favoritos</a>
     </nav>
 
     <form class="search" id="searchForm">
@@ -1428,6 +1429,20 @@ footer{
 
   <div class="search-status" id="searchStatus" aria-live="polite"></div>
   <div class="products" id="productsGrid"></div>
+
+</section>
+
+
+<section class="wrap" id="favoritos">
+
+  <div class="section-head">
+    <div>
+      <h2>Meus favoritos</h2>
+      <p>Os produtos que você marcou para rever depois.</p>
+    </div>
+  </div>
+
+  <div class="products" id="favoritesGrid"></div>
 
 </section>
 
@@ -1730,6 +1745,7 @@ function toggleFavorite(event, button) {
     button.setAttribute('aria-pressed', 'true');
   }
   localStorage.setItem('clicaFavoritos', JSON.stringify(favorites));
+  renderFavorites();
 }
 
 function restoreFavorites() {
@@ -1742,6 +1758,13 @@ function restoreFavorites() {
       button.setAttribute('aria-pressed', 'true');
     }
   });
+}
+
+function renderFavorites() {
+  const favorites = JSON.parse(localStorage.getItem('clicaFavoritos') || '[]');
+  const favoriteProducts = products.filter(product => favorites.includes(product.name));
+  renderProducts('favoritesGrid', favoriteProducts);
+  restoreFavorites();
 }
 
 function applyProductView(){
@@ -1820,6 +1843,7 @@ document.getElementById('sortProducts')?.addEventListener('change', e => {
 
 renderProducts('popularGrid');
 restoreFavorites();
+renderFavorites();
 
 </script>
 
