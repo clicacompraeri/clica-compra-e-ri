@@ -1523,6 +1523,8 @@ footer{
 
   </div>
 
+  <div class="products" id="offersGrid" style="margin-top:24px;"></div>
+
 </section>
 
 
@@ -1949,6 +1951,9 @@ document.getElementById('sortProducts')?.addEventListener('change', e => {
   applyProductView();
 });
 
+
+const offerProducts = [...products].sort((a,b) => discountPercent(b) - discountPercent(a)).slice(0,4);
+renderProducts('offersGrid', offerProducts);
 
 renderProducts('popularGrid');
 restoreFavorites();
