@@ -690,6 +690,7 @@ section{
   font-weight:500;
 }
 
+.saving-value{display:block;margin-top:5px;font-size:10px;font-weight:700;color:#198754;}
 .product-btn{
   width:100%;
   border:0;
@@ -1810,6 +1811,7 @@ function renderProducts(containerId, items = products) {
         <div class="price-section">
           <strong>${product.price}</strong>
           <span class="old-price">${product.oldPrice}</span>
+          <small class="saving-value">Economize ${formatMoney(priceToNumber(product.oldPrice)-priceToNumber(product.price))}</small>
         </div>
         <button class="product-btn" type="button" onclick='addToCart(event, ${JSON.stringify(product.name)})'>Comprar agora</button>
       </div>
