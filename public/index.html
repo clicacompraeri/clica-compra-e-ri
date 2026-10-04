@@ -954,6 +954,15 @@ footer{
   margin-bottom:12px;
 }
 
+
+.newsletter-message{
+  margin:10px 0 0;
+  min-height:18px;
+  color:#81868c;
+  font-size:11px;
+  line-height:1.4;
+}
+
 .newsletter-form{
   display:flex;
   height:42px;
@@ -1588,7 +1597,7 @@ footer{
           Ofertas e novos achados direto no seu e-mail.
         </p>
 
-        <form class="newsletter-form" onsubmit="return false;">
+        <form class="newsletter-form" id="newsletterForm" onsubmit="handleNewsletterSubmit(event)">
           <input
             type="email"
             placeholder="Seu e-mail"
@@ -1599,6 +1608,7 @@ footer{
             →
           </button>
         </form>
+        <p id="newsletterMessage" class="newsletter-message" aria-live="polite"></p>
 
       </div>
 
@@ -1771,6 +1781,23 @@ function renderProducts(containerId, items = products) {
       </div>
     </a>
   `).join('');
+}
+
+function handleNewsletterSubmit(event){
+  event.preventDefault();
+  const form=event.currentTarget;
+  const input=form.querySelector('input[type="email"]');
+  const message=document.getElementById('newsletterMessage');
+  const email=input ? input.value.trim().toLowerCase() : '';
+  if(!email || !email.includes('@')){
+    if(message) message.textContent='Digite um e-mail válido.';
+    return;
+  }
+  const subscribers=JSON.parse(localStorage.getItem('clicaNewsletter') || '[]');
+  if(!subscribers.includes(email)) subscribers.push(email);
+  localStorage.setItem('clicaNewsletter',JSON.stringify(subscribers));
+  if(message) message.textContent='Cadastro realizado com sucesso. Você receberá nossas novidades.';
+  form.reset();
 }
 
 function getCart(){
