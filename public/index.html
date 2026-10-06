@@ -1733,8 +1733,7 @@ const products = [
     name:"Airfryer Philips Walita Série 1000 XL 6,2L",
     description:"RapidAir, 1700W e preparo para toda a família",
     price:"R$ 340,00",
-    oldPrice:"R$ 349,90",
-    category:"Casa",
+        category:"Casa",
     badge:"Mais vendido",
     image:"https://a-static.mlcdn.com.br/%7Bw%7Dx%7Bh%7D/fritadeira-airfryer-serie-1000-xl-na130-09-preto-philips-walita/grupoduascabecasmetavel/mlb52878677/22b57f4cb3773132ce55abfab87bfc3f.jpeg",
     source:"Amazon",
@@ -1745,8 +1744,7 @@ const products = [
     name:"Smartwatch Samsung Galaxy Fit3 Display 1.6 polegadas Rosé",
     description:"Tela AMOLED, monitoramento de saúde e mais de 100 exercícios",
     price:"R$ 254,44",
-    oldPrice:"R$ 220,90",
-    category:"Tecnologia",
+        category:"Tecnologia",
     badge:"Oferta",
     image:"https://carrefourbr.vtexassets.com/arquivos/ids/187428050/image-0.jpg?v=638790546268930000",
     source:"Amazon",
@@ -1757,8 +1755,7 @@ const products = [
     name:"Fone Soundcore Bluetooth com Cancelamento de Ruído",
     description:"Som potente, Bluetooth e cancelamento de ruído",
     price:"R$ 196,50",
-    oldPrice:"R$ 129,90",
-    category:"Tecnologia",
+        category:"Tecnologia",
     badge:"",
     image:"https://m.media-amazon.com/images/I/51TL2aLCIpL._AC_SL1500_.jpg",
     source:"Amazon",
@@ -1769,8 +1766,7 @@ const products = [
     name:"Liquidificador Mondial Turbo Power L-99 FB",
     description:"550W, 2,2L e filtro para sucos e molhos",
     price:"R$ 80,75",
-    oldPrice:"R$ 260,00",
-    category:"Casa",
+        category:"Casa",
     badge:"",
     image:"https://images-na.ssl-images-amazon.com/images/I/71KFAoTV%2BhL._AC_UL300_SR300,200_.jpg",
     source:"Amazon",
@@ -1882,8 +1878,8 @@ function renderProducts(containerId, items = products) {
         <div class="rating">5.0 ★ (127 avaliações)</div>
         <div class="price-section">
           <strong>${product.price}</strong>
-          <span class="old-price">${product.oldPrice}</span>
-          <small class="saving-value">Economize ${formatMoney(priceToNumber(product.oldPrice)-priceToNumber(product.price))}</small>
+          ${product.oldPrice ? `<span class="old-price">${product.oldPrice}</span>
+          <small class="saving-value">Economize ${formatMoney(priceToNumber(product.oldPrice)-priceToNumber(product.price))}</small>` : ''}
         </div>
         <button class="product-btn" type="button" onclick='addToCart(event, ${JSON.stringify(product.name)})'>Comprar agora</button>
       </div>
