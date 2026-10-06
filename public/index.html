@@ -592,17 +592,35 @@ section{
   right:10px;
   bottom:10px;
   z-index:5;
-  min-width:90px;
-  padding:5px 7px;
-  border-radius:5px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 6px;
+  border-radius:6px;
   background:#fff;
   color:#111;
+  box-shadow:0 2px 8px rgba(0,0,0,.14);
+  pointer-events:none;
+}
+.source-amazon-card{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-width:44px;
+  height:20px;
+  padding:0 6px;
+  border-radius:4px;
+  background:#111;
+  color:#fff;
+  font-size:10px;
+  line-height:1;
+  font-weight:800;
+}
+.source-amazon-text{
   font-size:8px;
   line-height:1.1;
   font-weight:700;
-  text-align:center;
-  box-shadow:0 2px 8px rgba(0,0,0,.14);
-  pointer-events:none;
+  white-space:nowrap;
 }
 
 .product-image img{
@@ -1855,7 +1873,7 @@ function renderProducts(containerId, items = products) {
       <div class="product-image">
         <button class="favorite-btn" type="button" aria-label="Adicionar aos favoritos" aria-pressed="false" data-product="${product.name.replace(/"/g,'&quot;')}" onclick="toggleFavorite(event, this)">♡</button>
         <img src="${product.image}" alt="${product.name}">
-        ${product.source === 'Amazon' ? '<span class="source-badge" aria-label="Available at Amazon">Available at Amazon</span>' : ''}
+        ${product.source === 'Amazon' ? '<span class="source-badge" aria-label="Amazon — Available at Amazon"><span class="source-amazon-card">Amazon</span><span class="source-amazon-text">Available at Amazon</span></span>' : ''}
         ${product.badge ? `<span class="badge">${product.badge}</span>` : ''}
       </div>
       <div class="product-info">
