@@ -587,6 +587,24 @@ section{
   flex-shrink:0;
 }
 
+.amazon-badge{
+  position:absolute;
+  right:12px;
+  bottom:12px;
+  z-index:3;
+  padding:4px 7px;
+  border-radius:6px;
+  background:rgba(255,255,255,.92);
+  color:#555;
+  font-size:8px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:.2px;
+  text-transform:uppercase;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  pointer-events:none;
+}
+
 .product-image img{
   position:relative;
   z-index:1;
@@ -1833,6 +1851,7 @@ function renderProducts(containerId, items = products) {
       <div class="product-image">
         <button class="favorite-btn" type="button" aria-label="Adicionar aos favoritos" aria-pressed="false" data-product="${product.name.replace(/"/g,'&quot;')}" onclick="toggleFavorite(event, this)">♡</button>
         <img src="${product.image}" alt="${product.name}">
+        ${product.link.includes('amazon.com.br') ? '<span class="amazon-badge">Amazon</span>' : ''}
         ${product.badge ? `<span class="badge">${product.badge}</span>` : ''}
       </div>
       <div class="product-info">
