@@ -1870,7 +1870,7 @@ function renderProducts(containerId, items = products) {
       <div class="product-image">
         <button class="favorite-btn" type="button" aria-label="Adicionar aos favoritos" aria-pressed="false" data-product="${product.name.replace(/"/g,'&quot;')}" onclick="toggleFavorite(event, this)">♡</button>
         <img src="${product.image}" alt="${product.name}">
-        ${product.source === 'Amazon' ? '<span class="source-badge" aria-label="Amazon — Available at Amazon"><span class="source-amazon-card">Amazon</span><span class="source-amazon-text">Available at Amazon</span></span>' : ''}
+        ${product.source === 'Amazon' ? '<span class="source-badge" aria-label="Amazon — Available at Amazon"><span class="source-amazon-card" aria-hidden="true"><svg viewBox="0 0 32 20" role="img"><text x="9" y="13" font-size="11" font-weight="900" font-family="Arial, sans-serif">a</text><path d="M7 15 Q16 20 25 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="source-amazon-text">Available at Amazon</span></span>' : ''}
         ${product.badge ? `<span class="badge">${product.badge}</span>` : ''}
       </div>
       <div class="product-info">
