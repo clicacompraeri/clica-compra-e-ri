@@ -587,21 +587,21 @@ section{
   flex-shrink:0;
 }
 
-.amazon-badge{
+.source-badge{
   position:absolute;
+  top:58px;
   right:12px;
-  bottom:12px;
-  z-index:3;
-  padding:4px 7px;
-  border-radius:6px;
-  background:rgba(255,255,255,.92);
-  color:#555;
-  font-size:8px;
+  z-index:5;
+  padding:5px 8px;
+  border-radius:7px;
+  background:#111315;
+  color:#ffd21c;
+  font-size:9px;
   line-height:1;
-  font-weight:800;
+  font-weight:900;
   letter-spacing:.2px;
   text-transform:uppercase;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  box-shadow:0 3px 10px rgba(0,0,0,.14);
   pointer-events:none;
 }
 
@@ -1719,6 +1719,7 @@ const products = [
     category:"Casa",
     badge:"Mais vendido",
     image:"https://a-static.mlcdn.com.br/%7Bw%7Dx%7Bh%7D/fritadeira-airfryer-serie-1000-xl-na130-09-preto-philips-walita/grupoduascabecasmetavel/mlb52878677/22b57f4cb3773132ce55abfab87bfc3f.jpeg",
+    source:"Amazon",
     link:"https://www.amazon.com.br/Fritadeira-Airfryer-Walita-Tecnologia-RapidAir/dp/B0D98VXWXB?tag=lucas.mcosta2-20"
   },
 
@@ -1730,6 +1731,7 @@ const products = [
     category:"Tecnologia",
     badge:"Oferta",
     image:"https://carrefourbr.vtexassets.com/arquivos/ids/187428050/image-0.jpg?v=638790546268930000",
+    source:"Amazon",
     link:"https://www.amazon.com.br/Smartwatch-Samsung-Galaxy-Fit3-Display/dp/B0CVCF2J9Q?tag=lucas.mcosta2-20"
   },
 
@@ -1741,6 +1743,7 @@ const products = [
     category:"Tecnologia",
     badge:"",
     image:"/assets/produto-fone.png",
+    source:"Amazon",
     link:"https://www.amazon.com.br/soundcore-Cancelamento-Poderosos-Reprodu%C3%A7%C3%A3o-Bluetooth/dp/B0CRTR3PMF?tag=lucas.mcosta2-20"
   },
 
@@ -1752,6 +1755,7 @@ const products = [
     category:"Casa",
     badge:"",
     image:"https://images-na.ssl-images-amazon.com/images/I/71KFAoTV%2BhL._AC_UL300_SR300,200_.jpg",
+    source:"Amazon",
     link:"https://www.amazon.com.br/MONDIAL-Liquidificador-Turbo-Power-Preto/dp/B07QK91PTZ?tag=lucas.mcosta2-20"
   },
 
@@ -1851,7 +1855,7 @@ function renderProducts(containerId, items = products) {
       <div class="product-image">
         <button class="favorite-btn" type="button" aria-label="Adicionar aos favoritos" aria-pressed="false" data-product="${product.name.replace(/"/g,'&quot;')}" onclick="toggleFavorite(event, this)">♡</button>
         <img src="${product.image}" alt="${product.name}">
-        ${product.link.includes('amazon.com.br') ? '<span class="amazon-badge">Amazon</span>' : ''}
+        ${product.source ? `<span class="source-badge">${product.source}</span>` : ''}
         ${product.badge ? `<span class="badge">${product.badge}</span>` : ''}
       </div>
       <div class="product-info">
