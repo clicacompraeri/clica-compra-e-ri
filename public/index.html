@@ -592,12 +592,15 @@ section{
   right:10px;
   bottom:10px;
   z-index:5;
-  width:38px;
-  height:28px;
-  object-fit:contain;
+  min-width:90px;
+  padding:5px 7px;
+  border-radius:5px;
   background:#fff;
-  border-radius:6px;
-  padding:4px 5px;
+  color:#111;
+  font-size:8px;
+  line-height:1.1;
+  font-weight:700;
+  text-align:center;
   box-shadow:0 2px 8px rgba(0,0,0,.14);
   pointer-events:none;
 }
@@ -1852,7 +1855,7 @@ function renderProducts(containerId, items = products) {
       <div class="product-image">
         <button class="favorite-btn" type="button" aria-label="Adicionar aos favoritos" aria-pressed="false" data-product="${product.name.replace(/"/g,'&quot;')}" onclick="toggleFavorite(event, this)">♡</button>
         <img src="${product.image}" alt="${product.name}">
-        ${product.source === 'Amazon' ? '<span class="source-badge" aria-label="Disponível na Amazon"><span style="font-weight:900;font-size:9px;color:#111;">a</span><span style="font-size:7px;color:#111;">mazon</span></span>' : ''}
+        ${product.source === 'Amazon' ? '<span class="source-badge" aria-label="Available at Amazon">Available at Amazon</span>' : ''}
         ${product.badge ? `<span class="badge">${product.badge}</span>` : ''}
       </div>
       <div class="product-info">
