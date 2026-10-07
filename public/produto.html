@@ -23,8 +23,9 @@ main{padding:44px 0 70px}
 .visual img{width:100%;height:490px;object-fit:contain;mix-blend-mode:multiply}
 .gallery{width:100%;display:grid;grid-template-columns:76px minmax(0,1fr);gap:14px;align-items:stretch}
 .main-photo{min-width:0}
-.main-photo{position:relative;overflow:hidden;border-radius:20px}
-.main-photo img{cursor:zoom-in}
+.main-photo{position:relative;overflow:hidden;border-radius:20px;touch-action:none}
+.main-photo img{display:block;width:100%;height:auto;max-height:490px;object-fit:contain;cursor:crosshair}
+.zoom-lens{will-change:transform}
 .mobile-photo-viewer{position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:100;display:none;align-items:center;justify-content:center;touch-action:none}
 .mobile-photo-viewer.open{display:flex}
 .mobile-photo-viewer img{max-width:94vw;max-height:88vh;object-fit:contain;user-select:none;transform-origin:center center}
@@ -283,39 +284,25 @@ function renderProduct(){
   mainPhotoBox.appendChild(lens);
 
   const updateZoom=(event)=>{
-    const imageRect=mainPhoto.getBoundingClientRect();
-    const boxRect=mainPhotoBox.getBoundingClientRect();
-    const boxX=event.clientX-boxRect.left;
-    const boxY=event.clientY-boxRect.top;
+    const rect=mainPhoto.getBoundingClientRect();
     const lensSize=180;
-    const zoom=2.5;
+    const zoom=3;
 
-    // Calcula onde a imagem realmente está dentro do espaço do <img>,
-    // inclusive quando object-fit: contain deixa áreas vazias.
-    const naturalRatio=mainPhoto.naturalWidth/mainPhoto.naturalHeight;
-    const elementRatio=imageRect.width/imageRect.height;
-    let renderedW=imageRect.width, renderedH=imageRect.height, offsetX=0, offsetY=0;
-    if(naturalRatio>elementRatio){
-      renderedH=imageRect.width/naturalRatio;
-      offsetY=(imageRect.height-renderedH)/2;
-    }else{
-      renderedW=imageRect.height*naturalRatio;
-      offsetX=(imageRect.width-renderedW)/2;
-    }
+    // A lente fica centrada exatamente no ponteiro.
+    const lensLeft=event.clientX-rect.left-lensSize/2;
+    const lensTop=event.clientY-rect.top-lensSize/2;
+    lens.style.left=Math.max(0,Math.min(lensLeft,rect.width-lensSize))+'px';
+    lens.style.top=Math.max(0,Math.min(lensTop,rect.height-lensSize))+'px';
 
-    const localX=Math.max(0,Math.min(event.clientX-imageRect.left-offsetX,renderedW));
-    const localY=Math.max(0,Math.min(event.clientY-imageRect.top-offsetY,renderedH));
-    const percentX=localX/renderedW;
-    const percentY=localY/renderedH;
-
-    lens.style.left=Math.max(0,Math.min(boxX-lensSize/2,boxRect.width-lensSize))+'px';
-    lens.style.top=Math.max(0,Math.min(boxY-lensSize/2,boxRect.height-lensSize))+'px';
-
+    // A imagem ampliada ocupa exatamente a mesma área da imagem original.
+    // O deslocamento é calculado a partir do ponto real do cursor.
+    const px=event.clientX-rect.left;
+    const py=event.clientY-rect.top;
     zoomImage.src=mainPhoto.src;
-    zoomImage.style.width=renderedW+'px';
-    zoomImage.style.height=renderedH+'px';
-    zoomImage.style.left=-(percentX*renderedW*(zoom-1))+'px';
-    zoomImage.style.top=-(percentY*renderedH*(zoom-1))+'px';
+    zoomImage.style.width=rect.width+'px';
+    zoomImage.style.height=rect.height+'px';
+    zoomImage.style.left=(lensSize/2-px*zoom)+'px';
+    zoomImage.style.top=(lensSize/2-py*zoom)+'px';
     zoomImage.style.transform='scale('+zoom+')';
     zoomImage.style.transformOrigin='0 0';
     lens.style.display='block';
