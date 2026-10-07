@@ -1938,7 +1938,6 @@ function renderProducts(containerId, items = products) {
         <div class="product-name">${product.name}</div>
         <div class="product-desc">${product.description}</div>
       ${product.rating ? `<div class="rating-line" aria-label="Avaliação ${product.rating} de 5 estrelas"><span class="rating-stars" aria-hidden="true">★★★★★</span><span class="rating-value">${product.rating}</span><span class="rating-count">(${product.reviews})</span></div>` : ""}
-        <div class="rating">5.0 ★ (127 avaliações)</div>
         <div class="price-section">
           <strong>${product.price}</strong>
           ${product.oldPrice ? `<span class="old-price">${product.oldPrice}</span>
