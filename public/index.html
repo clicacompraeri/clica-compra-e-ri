@@ -2188,10 +2188,10 @@ const offerProducts = [...products].sort((a,b) => discountPercent(b) - discountP
 renderProducts('offersGrid', offerProducts);
 
 const popularProducts = [
-  products.find(product => product.name === 'Air Fryer 4L'),
-  products.find(product => product.name === 'Smartwatch'),
-  products.find(product => product.name === 'Fone Bluetooth'),
-  products.find(product => product.name === 'Projetor Portátil')
+  products.find(product => product.name === 'Airfryer Philips Walita Série 1000 XL 6,2L'),
+  products.find(product => product.name === 'Smartwatch Samsung Galaxy Fit3 Display 1.6 polegadas Rosé'),
+  products.find(product => product.name === 'Fone Soundcore Bluetooth com Cancelamento de Ruído'),
+  products.find(product => product.name === 'Mini Projetor Portátil HY300 WiFi 5G Bluetooth')
 ].filter(Boolean);
 renderProducts('popularGrid', popularProducts);
 restoreFavorites();
