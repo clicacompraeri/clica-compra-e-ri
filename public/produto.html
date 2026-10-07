@@ -23,7 +23,12 @@ main{padding:44px 0 70px}
 .visual img{width:100%;height:490px;object-fit:contain;mix-blend-mode:multiply}
 .gallery{width:100%;display:grid;grid-template-columns:76px minmax(0,1fr);gap:14px;align-items:stretch}
 .main-photo{min-width:0}
-.main-photo img{cursor:zoom-in}
+.main-photo{position:relative;overflow:hidden;border-radius:20px}
+.main-photo img{cursor:zoom-in;transition:transform .08s ease-out;transform-origin:center center}
+.zoom-lens{position:absolute;width:170px;height:170px;border-radius:50%;border:2px solid #111315;background-repeat:no-repeat;background-color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.22);pointer-events:none;display:none;z-index:5}
+@media (hover:hover) and (pointer:fine){
+  .main-photo:hover .zoom-lens{display:block}
+}
 .thumbs{display:flex;flex-direction:column;gap:10px}
 .thumb{width:76px;height:76px;border:1px solid #dfe3e7;border-radius:14px;background:#fff;overflow:hidden;padding:4px;cursor:pointer}
 .thumb.active{border:2px solid #111315}
@@ -262,7 +267,27 @@ function renderProduct(){
       thumbs.querySelectorAll('.thumb').forEach((b,j)=>b.classList.toggle('active',j===i));
     });
   });
-  mainPhoto.addEventListener('click',()=>window.open(mainPhoto.src,'_blank','noopener'));
+  const mainPhotoBox=mainPhoto.parentElement;
+const lens=document.createElement('div');
+lens.className='zoom-lens';
+mainPhotoBox.appendChild(lens);
+const updateLens=(event)=>{
+  const rect=mainPhoto.getBoundingClientRect();
+  const x=Math.max(0,Math.min(event.clientX-rect.left,rect.width));
+  const y=Math.max(0,Math.min(event.clientY-rect.top,rect.height));
+  const zoom=2.7;
+  const bgX=-(x*zoom-85);
+  const bgY=-(y*zoom-85);
+  lens.style.left=Math.max(0,Math.min(x-85,rect.width-170))+'px';
+  lens.style.top=Math.max(0,Math.min(y-85,rect.height-170))+'px';
+  lens.style.backgroundImage='url("'+mainPhoto.src+'")';
+  lens.style.backgroundSize=(rect.width*zoom)+'px '+(rect.height*zoom)+'px';
+  lens.style.backgroundPosition=bgX+'px '+bgY+'px';
+};
+mainPhotoBox.addEventListener('mousemove',updateLens);
+mainPhotoBox.addEventListener('mouseleave',()=>{lens.style.display='none'});
+mainPhotoBox.addEventListener('mouseenter',()=>{lens.style.display='block'});
+mainPhoto.addEventListener('click',()=>window.open(mainPhoto.src,'_blank','noopener'));
 
   const why=document.getElementById('whyText');
   why.textContent='Este achado foi selecionado para apresentar, em uma única página, as informações disponíveis do produto e facilitar sua decisão de compra. '+product.description+'.';
