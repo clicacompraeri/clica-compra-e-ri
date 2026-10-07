@@ -25,6 +25,12 @@ main{padding:44px 0 70px}
 .main-photo{min-width:0}
 .main-photo{position:relative;overflow:hidden;border-radius:20px}
 .main-photo img{cursor:zoom-in}
+.mobile-photo-viewer{position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:100;display:none;align-items:center;justify-content:center;touch-action:none}
+.mobile-photo-viewer.open{display:flex}
+.mobile-photo-viewer img{max-width:94vw;max-height:88vh;object-fit:contain;user-select:none;transform-origin:center center}
+.mobile-photo-close{position:absolute;top:16px;right:16px;width:46px;height:46px;border-radius:50%;border:2px solid #fff;background:#111;color:#fff;font-size:28px;line-height:1;z-index:2}
+.mobile-photo-hint{position:absolute;bottom:22px;left:20px;right:20px;text-align:center;color:#fff;font-size:14px}
+
 .zoom-lens{position:absolute;width:180px;height:180px;border-radius:50%;border:3px solid #111315;background:#fff;box-shadow:0 14px 35px rgba(0,0,0,.28);pointer-events:none;display:none;overflow:hidden;z-index:10}
 .zoom-lens img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;transform-origin:0 0;pointer-events:none}
 @media (hover:hover) and (pointer:fine){
@@ -295,7 +301,48 @@ function renderProduct(){
   mainPhotoBox.addEventListener('pointermove',updateZoom);
   mainPhotoBox.addEventListener('pointerenter',updateZoom);
   mainPhotoBox.addEventListener('pointerleave',()=>{lens.style.display='none'});
-  mainPhoto.addEventListener('click',()=>window.open(mainPhoto.src,'_blank','noopener'));
+  const mobileViewer=document.createElement('div');
+  mobileViewer.className='mobile-photo-viewer';
+  mobileViewer.innerHTML='<button class="mobile-photo-close" type="button" aria-label="Fechar">×</button><img alt=""><div class="mobile-photo-hint">Arraste para ampliar ou use dois dedos para dar zoom</div>';
+  document.body.appendChild(mobileViewer);
+  const viewerImage=mobileViewer.querySelector('img');
+  let scale=1, startDistance=0, startScale=1;
+  let startX=0,startY=0,moveX=0,moveY=0;
+  const applyViewerTransform=()=>{viewerImage.style.transform='translate('+moveX+'px,'+moveY+'px) scale('+scale+')';};
+  const resetViewer=()=>{scale=1;moveX=0;moveY=0;applyViewerTransform();};
+  const openViewer=()=>{viewerImage.src=mainPhoto.src;resetViewer();mobileViewer.classList.add('open');};
+  const closeViewer=()=>{mobileViewer.classList.remove('open');resetViewer();};
+  mainPhoto.addEventListener('click',(event)=>{
+    if(window.matchMedia('(max-width: 800px)').matches){event.preventDefault();openViewer();}
+    else{window.open(mainPhoto.src,'_blank','noopener');}
+  });
+  mobileViewer.querySelector('.mobile-photo-close').addEventListener('click',closeViewer);
+  mobileViewer.addEventListener('click',(event)=>{if(event.target===mobileViewer)closeViewer();});
+  viewerImage.addEventListener('wheel',(event)=>{
+    event.preventDefault();
+    scale=Math.max(1,Math.min(4,scale+(event.deltaY<0?.25:-.25)));
+    applyViewerTransform();
+  },{passive:false});
+  viewerImage.addEventListener('touchstart',(event)=>{
+    if(event.touches.length===2){
+      startDistance=Math.hypot(event.touches[0].clientX-event.touches[1].clientX,event.touches[0].clientY-event.touches[1].clientY);
+      startScale=scale;
+    }else if(event.touches.length===1){
+      startX=event.touches[0].clientX-moveX;startY=event.touches[0].clientY-moveY;
+    }
+  },{passive:false});
+  viewerImage.addEventListener('touchmove',(event)=>{
+    event.preventDefault();
+    if(event.touches.length===2){
+      const distance=Math.hypot(event.touches[0].clientX-event.touches[1].clientX,event.touches[0].clientY-event.touches[1].clientY);
+      scale=Math.max(1,Math.min(4,startScale*(distance/startDistance)));
+    }else if(event.touches.length===1 && scale>1){
+      moveX=event.touches[0].clientX-startX;moveY=event.touches[0].clientY-startY;
+    }
+    applyViewerTransform();
+  },{passive:false});
+  viewerImage.addEventListener('touchend',()=>{if(scale<=1){moveX=0;moveY=0;applyViewerTransform();}});
+
 
   const why=document.getElementById('whyText');
   why.textContent='Este achado foi selecionado para apresentar, em uma única página, as informações disponíveis do produto e facilitar sua decisão de compra. '+product.description+'.';
