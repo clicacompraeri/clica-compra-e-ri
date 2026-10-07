@@ -1469,6 +1469,7 @@ footer{
 .category-card:hover > :last-child::after {
   width: 26px;
 }
+.rating-line{display:flex;align-items:center;gap:7px;margin:7px 0 2px;font-size:13px;line-height:1.2}.rating-stars{letter-spacing:1px;color:#f5b301;font-size:15px;font-weight:900}.rating-value{font-weight:800;color:#25272a}.rating-count{color:#6f747a}
 </style>
 </head>
 
@@ -1804,6 +1805,7 @@ const products = [
     badge:"Oferta",
     image:"https://carrefourbr.vtexassets.com/arquivos/ids/187428050/image-0.jpg?v=638790546268930000",
     source:"Amazon",
+    rating:"4,8", reviews:"12.882",
     link:"https://www.amazon.com.br/Smartwatch-Samsung-Galaxy-Fit3-Display/dp/B0CVCF2J9Q?tag=lucas.mcosta2-20"
   },
 
@@ -1815,6 +1817,7 @@ const products = [
     badge:"",
     image:"https://m.media-amazon.com/images/I/51TL2aLCIpL._AC_SL1500_.jpg",
     source:"Amazon",
+    rating:"4,7", reviews:"10.301",
     link:"https://www.amazon.com.br/soundcore-Cancelamento-Poderosos-Reprodu%C3%A7%C3%A3o-Bluetooth/dp/B0CRTR3PMF?tag=lucas.mcosta2-20"
   },
 
@@ -1859,6 +1862,7 @@ const products = [
     badge:"Mais vendido",
     image:"https://rcdeletrica.com.br/image/cache/catalog/imagens_adicionais_70/110158-1-500x500.jpg",
     source:"Amazon",
+    rating:"4,7", reviews:"6.495",
     link:"https://www.amazon.com.br/dp/B07FTKKBM3?tag=lucas.mcosta2-20"
   },
 
@@ -1893,6 +1897,7 @@ const products = [
     badge:"Oferta",
     image:"https://img.br.my-best.com/product_images/321d09d8ba9a1c1126c83de0e51f2593.jpg?fit=clip&h=800&ixlib=rails-4.3.1&lossless=0&q=70&s=bd7d70c6ffdff63a0bbce3fbed466772&w=800",
     source:"Amazon",
+    rating:"4,8", reviews:"2.074",
     link:"https://www.amazon.com.br/dp/B0F2N7L7HQ?tag=lucas.mcosta2-20"
   }
 
@@ -1932,6 +1937,7 @@ function renderProducts(containerId, items = products) {
       <div class="product-info">
         <div class="product-name">${product.name}</div>
         <div class="product-desc">${product.description}</div>
+      ${product.rating ? `<div class="rating-line" aria-label="Avaliação ${product.rating} de 5 estrelas"><span class="rating-stars" aria-hidden="true">★★★★★</span><span class="rating-value">${product.rating}</span><span class="rating-count">(${product.reviews})</span></div>` : ""}
         <div class="rating">5.0 ★ (127 avaliações)</div>
         <div class="price-section">
           <strong>${product.price}</strong>
