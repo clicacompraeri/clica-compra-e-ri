@@ -32,7 +32,7 @@ main{padding:44px 0 70px}
 .mobile-photo-hint{position:absolute;bottom:22px;left:20px;right:20px;text-align:center;color:#fff;font-size:14px}
 
 .zoom-lens{position:absolute;width:180px;height:180px;border-radius:50%;border:3px solid #111315;background:#fff;box-shadow:0 14px 35px rgba(0,0,0,.28);pointer-events:none;display:none;overflow:hidden;z-index:10}
-.zoom-lens img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;transform-origin:0 0;pointer-events:none}
+.zoom-lens img{position:absolute;max-width:none;max-height:none;object-fit:fill;pointer-events:none}
 @media (hover:hover) and (pointer:fine){
   .main-photo:hover .zoom-lens{display:block}
 }
@@ -283,66 +283,51 @@ function renderProduct(){
   mainPhotoBox.appendChild(lens);
 
   const updateZoom=(event)=>{
-    const rect=mainPhoto.getBoundingClientRect();
-    const x=Math.max(0,Math.min(event.clientX-rect.left,rect.width));
-    const y=Math.max(0,Math.min(event.clientY-rect.top,rect.height));
+    const imageRect=mainPhoto.getBoundingClientRect();
+    const boxRect=mainPhotoBox.getBoundingClientRect();
+    const boxX=event.clientX-boxRect.left;
+    const boxY=event.clientY-boxRect.top;
     const lensSize=180;
     const zoom=2.5;
-    lens.style.left=Math.max(0,Math.min(x-lensSize/2,rect.width-lensSize))+'px';
-    lens.style.top=Math.max(0,Math.min(y-lensSize/2,rect.height-lensSize))+'px';
+
+    // Calcula onde a imagem realmente está dentro do espaço do <img>,
+    // inclusive quando object-fit: contain deixa áreas vazias.
+    const naturalRatio=mainPhoto.naturalWidth/mainPhoto.naturalHeight;
+    const elementRatio=imageRect.width/imageRect.height;
+    let renderedW=imageRect.width, renderedH=imageRect.height, offsetX=0, offsetY=0;
+    if(naturalRatio>elementRatio){
+      renderedH=imageRect.width/naturalRatio;
+      offsetY=(imageRect.height-renderedH)/2;
+    }else{
+      renderedW=imageRect.height*naturalRatio;
+      offsetX=(imageRect.width-renderedW)/2;
+    }
+
+    const localX=Math.max(0,Math.min(event.clientX-imageRect.left-offsetX,renderedW));
+    const localY=Math.max(0,Math.min(event.clientY-imageRect.top-offsetY,renderedH));
+    const percentX=localX/renderedW;
+    const percentY=localY/renderedH;
+
+    lens.style.left=Math.max(0,Math.min(boxX-lensSize/2,boxRect.width-lensSize))+'px';
+    lens.style.top=Math.max(0,Math.min(boxY-lensSize/2,boxRect.height-lensSize))+'px';
+
     zoomImage.src=mainPhoto.src;
-    zoomImage.style.width=rect.width+'px';
-    zoomImage.style.height=rect.height+'px';
-    zoomImage.style.transformOrigin=x+'px '+y+'px';
+    zoomImage.style.width=renderedW+'px';
+    zoomImage.style.height=renderedH+'px';
+    zoomImage.style.left=-(percentX*renderedW*(zoom-1))+'px';
+    zoomImage.style.top=-(percentY*renderedH*(zoom-1))+'px';
     zoomImage.style.transform='scale('+zoom+')';
+    zoomImage.style.transformOrigin='0 0';
     lens.style.display='block';
   };
 
   mainPhotoBox.addEventListener('pointermove',updateZoom);
   mainPhotoBox.addEventListener('pointerenter',updateZoom);
   mainPhotoBox.addEventListener('pointerleave',()=>{lens.style.display='none'});
-  const mobileViewer=document.createElement('div');
-  mobileViewer.className='mobile-photo-viewer';
-  mobileViewer.innerHTML='<button class="mobile-photo-close" type="button" aria-label="Fechar">×</button><img alt=""><div class="mobile-photo-hint">Arraste para ampliar ou use dois dedos para dar zoom</div>';
-  document.body.appendChild(mobileViewer);
-  const viewerImage=mobileViewer.querySelector('img');
-  let scale=1, startDistance=0, startScale=1;
-  let startX=0,startY=0,moveX=0,moveY=0;
-  const applyViewerTransform=()=>{viewerImage.style.transform='translate('+moveX+'px,'+moveY+'px) scale('+scale+')';};
-  const resetViewer=()=>{scale=1;moveX=0;moveY=0;applyViewerTransform();};
-  const openViewer=()=>{viewerImage.src=mainPhoto.src;resetViewer();mobileViewer.classList.add('open');};
-  const closeViewer=()=>{mobileViewer.classList.remove('open');resetViewer();};
   mainPhoto.addEventListener('click',(event)=>{
     if(window.matchMedia('(max-width: 800px)').matches){event.preventDefault();openViewer();}
     else{window.open(mainPhoto.src,'_blank','noopener');}
   });
-  mobileViewer.querySelector('.mobile-photo-close').addEventListener('click',closeViewer);
-  mobileViewer.addEventListener('click',(event)=>{if(event.target===mobileViewer)closeViewer();});
-  viewerImage.addEventListener('wheel',(event)=>{
-    event.preventDefault();
-    scale=Math.max(1,Math.min(4,scale+(event.deltaY<0?.25:-.25)));
-    applyViewerTransform();
-  },{passive:false});
-  viewerImage.addEventListener('touchstart',(event)=>{
-    if(event.touches.length===2){
-      startDistance=Math.hypot(event.touches[0].clientX-event.touches[1].clientX,event.touches[0].clientY-event.touches[1].clientY);
-      startScale=scale;
-    }else if(event.touches.length===1){
-      startX=event.touches[0].clientX-moveX;startY=event.touches[0].clientY-moveY;
-    }
-  },{passive:false});
-  viewerImage.addEventListener('touchmove',(event)=>{
-    event.preventDefault();
-    if(event.touches.length===2){
-      const distance=Math.hypot(event.touches[0].clientX-event.touches[1].clientX,event.touches[0].clientY-event.touches[1].clientY);
-      scale=Math.max(1,Math.min(4,startScale*(distance/startDistance)));
-    }else if(event.touches.length===1 && scale>1){
-      moveX=event.touches[0].clientX-startX;moveY=event.touches[0].clientY-startY;
-    }
-    applyViewerTransform();
-  },{passive:false});
-  viewerImage.addEventListener('touchend',()=>{if(scale<=1){moveX=0;moveY=0;applyViewerTransform();}});
-
 
   const why=document.getElementById('whyText');
   why.textContent='Este achado foi selecionado para apresentar, em uma única página, as informações disponíveis do produto e facilitar sua decisão de compra. '+product.description+'.';
