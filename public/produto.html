@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Detalhes de produto — Clica, Compra e Ri.">
+<title>Produto | Clica, Compra e Ri</title>
+<style>
+:root{--yellow:#ffd21c;--black:#111315;--gray:#f4f5f6;--gray2:#e7e9ec;--text:#15171a;--muted:#73777d;--white:#fff;--radius:22px;--shadow:0 12px 40px rgba(0,0,0,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,Arial,Helvetica,sans-serif;background:#fff;color:var(--text);line-height:1.45}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+.wrap{width:min(1180px,calc(100% - 40px));margin:auto}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid #eceef0}
+.header-inner{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center}
+.logo img{width:190px;height:auto}
+.back{font-weight:800;font-size:14px}
+main{padding:44px 0 70px}
+.product-page{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:52px;align-items:center}
+.visual{min-height:560px;background:linear-gradient(135deg,#f8fafb 0%,#eef1f4 100%);border:1px solid #e9ecef;border-radius:28px;display:flex;align-items:center;justify-content:center;padding:34px;position:relative;overflow:hidden}
+.visual img{width:100%;height:490px;object-fit:contain;mix-blend-mode:multiply}
+.badge{position:absolute;left:24px;top:24px;background:var(--yellow);color:#111315;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:900;text-transform:uppercase}
+.content .category{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px}
+.content h1{font-size:clamp(30px,4vw,50px);line-height:1.04;letter-spacing:-.04em;margin-bottom:18px}
+.description{font-size:17px;color:#555b61;max-width:620px;margin-bottom:26px}
+.price-box{display:flex;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+.price{font-size:36px;font-weight:950;letter-spacing:-.04em}
+.old{color:#8a8f95;text-decoration:line-through;font-size:16px}
+.note{font-size:12px;color:var(--muted);margin-bottom:22px}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 24px;border-radius:14px;background:var(--yellow);color:#111315;font-weight:900;border:2px solid #111315;transition:.2s}
+.cta:hover{transform:translateY(-2px)}
+.disclosure{margin-top:22px;padding:14px 16px;background:#f7f7f7;border:1px solid #e5e5e5;border-radius:14px;font-size:12px;color:#555b61}
+.actions{margin-top:20px}
+.actions a{font-size:14px;font-weight:800;color:#333}
+@media(max-width:800px){.wrap{width:min(100% - 24px,1180px)}.header-inner{min-height:68px}.logo img{width:160px}.product-page{grid-template-columns:1fr;gap:28px}.visual{min-height:390px;padding:22px}.visual img{height:340px}main{padding:26px 0 50px}.content h1{font-size:34px}.price{font-size:30px}}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap header-inner">
+<a class="logo" href="index.html" aria-label="Clica, Compra e Ri">
+<img src="/logo.png" alt="Clica, Compra e Ri">
+</a>
+<a class="back" href="index.html">Voltar para os produtos</a>
+</div>
+</header>
+
+<main>
+<div class="wrap">
+<section id="productPage" class="product-page" aria-live="polite"></section>
+</div>
+</main>
+
+<script>
+const products = [
+
+  {
+    name:"Airfryer Philips Walita Série 1000 XL 6,2L",
+    description:"RapidAir, 1700W e preparo para toda a família",
+    price:"R$ 344,00",
+        category:"Casa",
+    badge:"Mais vendido",
+    image:"https://a-static.mlcdn.com.br/%7Bw%7Dx%7Bh%7D/fritadeira-airfryer-serie-1000-xl-na130-09-preto-philips-walita/grupoduascabecasmetavel/mlb52878677/22b57f4cb3773132ce55abfab87bfc3f.jpeg",
+    source:"Amazon",
+    link:"https://www.amazon.com.br/Fritadeira-Airfryer-Walita-Tecnologia-RapidAir/dp/B0D98VXWXB?tag=lucas.mcosta2-20"
+  },
+
+  {
+    name:"Smartwatch Samsung Galaxy Fit3 Display 1.6 polegadas Rosé",
+    description:"Tela AMOLED, monitoramento de saúde e mais de 100 exercícios",
+    price:"R$ 254,44",
+        category:"Tecnologia",
+    badge:"Oferta",
+    image:"https://carrefourbr.vtexassets.com/arquivos/ids/187428050/image-0.jpg?v=638790546268930000",
+    source:"Amazon",
+    link:"https://www.amazon.com.br/Smartwatch-Samsung-Galaxy-Fit3-Display/dp/B0CVCF2J9Q?tag=lucas.mcosta2-20"
+  },
+
+  {
+    name:"Fone Soundcore Bluetooth com Cancelamento de Ruído",
+    description:"Som potente, Bluetooth e cancelamento de ruído",
+    price:"R$ 196,50",
+        category:"Tecnologia",
+    badge:"",
+    image:"https://m.media-amazon.com/images/I/51TL2aLCIpL._AC_SL1500_.jpg",
+    source:"Amazon",
+    link:"https://www.amazon.com.br/soundcore-Cancelamento-Poderosos-Reprodu%C3%A7%C3%A3o-Bluetooth/dp/B0CRTR3PMF?tag=lucas.mcosta2-20"
+  },
+
+  {
+    name:"Liquidificador Mondial Turbo Power L-99 FB",
+    description:"550W, 2,2L e filtro para sucos e molhos",
+    price:"R$ 80,75",
+        category:"Casa",
+    badge:"",
+    image:"https://images-na.ssl-images-amazon.com/images/I/71KFAoTV%2BhL._AC_UL300_SR300,200_.jpg",
+    source:"Amazon",
+    link:"https://www.amazon.com.br/MONDIAL-Liquidificador-Turbo-Power-Preto/dp/B07QK91PTZ?tag=lucas.mcosta2-20"
+  },
+
+  {
+    name:"Tênis Fila Progress Lite Masculino",
+    description:"Tênis esportivo leve para treinos diários, caminhadas e rotina",
+    price:"R$ 270,00",
+    category:"Moda",
+    badge:"Oferta",
+    image:"https://imgcentauro-a.akamaihd.net/1300x1300/M15S9Y02A6.jpg",
+    source:"Amazon",
+    link:"https://www.amazon.com.br/dp/B0DG9Q1GZL?tag=lucas.mcosta2-20"
+  },
+
+  {
+    name:"Macrilan Kit com 7 Pincéis para Maquiagem ED009",
+    description:"7 pincéis profissionais para pó, base, blush, contorno e olhos",
+    price:"R$ 78,99",
+    category:"Beleza",
+    badge:"Mais vendido",
+    image:"https://cdn.iset.io/assets/54712/produtos/7722/ed009-macrilan.jpg",
+    source:"Amazon",
+    link:"https://www.amazon.com.br/dp/B09LJVHR13?tag=lucas.mcosta2-20"
+  },
+
+  {
+    name:"Organizador de Gaveta Acrimet Modular Transparente Kit 7 Peças",
+    description:"7 peças modulares para organizar gavetas, escritório, cozinha e acessórios",
+    price:"R$ 34,18",
+    category:"Casa",
+    badge:"Mais vendido",
+    image:"https://rcdeletrica.com.br/image/cache/catalog/imagens_adicionais_70/110158-1-500x500.jpg",
+    source:"Amazon",
+    link:"https://www.amazon.com.br/dp/B07FTKKBM3?tag=lucas.mcosta2-20"
+  },
+
+  {
+    name:"Mini Projetor Portátil HY300 WiFi 5G Bluetooth",
+    description:"Android 11, Full HD 1080P, suporte a 4K e Bluetooth",
+    price:"R$ 258,90",
+    category:"Tecnologia",
+    badge:"Oferta",
+    image:"https://a-static.mlcdn.com.br/800x800/mini-projetor-hy300-smart-wi-fi-bluetooth-ideal-para-quarto/clicksmart/mipr059/ed08676388be8e13d60e04bae13669e5.jpeg",
+    source:"Amazon",
+    link:"https://www.amazon.com.br/Projetor-Portatil-Bluetooth-Android-HY300/dp/B0D78H4TKD?tag=lucas.mcosta2-20"
+  },
+
+  {
+    name:"Travesseiro Cervical NASA Coluna Relax",
+    description:"Suporte ergonômico com espuma viscoelástica e elevação lateral",
+    price:"R$ 227,00",
+    category:"Casa",
+    badge:"Mais vendido",
+    image:"https://m.media-amazon.com/images/I/61M%2B2-MGZFL._AC_SL1080_.jpg",
+    source:"Amazon",
+    link:"https://www.amazon.com.br/dp/B085BWB19X?tag=lucas.mcosta2-20"
+  },
+
+  {
+    name:"Romantic Crown Mochila Masculina de Viagem para Notebook",
+    description:"Mochila expansível para notebook, trabalho, escola e viagens",
+    price:"R$ 110,19",
+    oldPrice:"R$ 119,99",
+    category:"Moda",
+    badge:"Oferta",
+    image:"https://img.br.my-best.com/product_images/321d09d8ba9a1c1126c83de0e51f2593.jpg?fit=clip&h=800&ixlib=rails-4.3.1&lossless=0&q=70&s=bd7d70c6ffdff63a0bbce3fbed466772&w=800",
+    source:"Amazon",
+    link:"https://www.amazon.com.br/dp/B0F2N7L7HQ?tag=lucas.mcosta2-20"
+  }
+
+];
+
+function getProduct(){
+  const params=new URLSearchParams(window.location.search);
+  const name=params.get('produto');
+  return products.find(product=>product.name===name);
+}
+
+function renderProduct(){
+  const product=getProduct();
+  const container=document.getElementById('productPage');
+  if(!product){
+    container.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:80px 20px"><h1>Produto não encontrado</h1><p style="margin:14px 0 24px;color:#73777d">Volte para a vitrine e escolha um produto.</p><a class="cta" href="index.html">Voltar para a loja</a></div>';
+    return;
+  }
+  document.title=product.name+' | Clica, Compra e Ri';
+  container.innerHTML=
+    '<div class="visual">'+
+      (product.badge?'<span class="badge">'+product.badge+'</span>':'')+
+      '<img src="'+product.image+'" alt="'+product.name.replace(/"/g,'&quot;')+'">'+
+    '</div>'+
+    '<div class="content">'+
+      '<div class="category">'+product.category+'</div>'+
+      '<h1>'+product.name+'</h1>'+
+      '<p class="description">'+product.description+'</p>'+
+      '<div class="price-box"><strong class="price">'+product.price+'</strong>'+(product.oldPrice?'<span class="old">'+product.oldPrice+'</span>':'')+'</div>'+
+      '<div class="note">Preço de referência registrado na última atualização. O valor e a disponibilidade podem mudar na Amazon.</div>'+
+      '<a class="cta" href="'+product.link+'" target="_blank" rel="sponsored noopener">Ver produto na Amazon</a>'+
+      '<div class="disclosure">Publicidade: este é um link de associado. Como associado da Amazon, eu ganho com compras qualificadas.</div>'+
+      '<div class="actions"><a href="index.html">← Continuar vendo outros produtos</a></div>'+
+    '</div>';
+}
+renderProduct();
+</script>
+</body>
+</html>
