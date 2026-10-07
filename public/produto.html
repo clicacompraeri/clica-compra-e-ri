@@ -34,7 +34,22 @@ main{padding:44px 0 70px}
 .disclosure{margin-top:22px;padding:14px 16px;background:#f7f7f7;border:1px solid #e5e5e5;border-radius:14px;font-size:12px;color:#555b61}
 .actions{margin-top:20px}
 .actions a{font-size:14px;font-weight:800;color:#333}
-@media(max-width:800px){.wrap{width:min(100% - 24px,1180px)}.header-inner{min-height:68px}.logo img{width:160px}.product-page{grid-template-columns:1fr;gap:28px}.visual{min-height:390px;padding:22px}.visual img{height:340px}main{padding:26px 0 50px}.content h1{font-size:34px}.price{font-size:30px}}
+.extra{margin-top:56px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:22px}
+.extra-card{background:#fff;border:1px solid #e8eaed;border-radius:22px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.05)}
+.extra-card h2{font-size:22px;letter-spacing:-.02em;margin-bottom:14px}
+.extra-card p{color:#5e646b;font-size:15px}
+.highlights{display:grid;gap:12px;margin-top:18px}
+.highlight{padding:14px 16px;background:#f7f8f9;border-radius:14px;border:1px solid #eceef0}
+.highlight strong{display:block;font-size:14px;margin-bottom:3px}
+.highlight span{font-size:13px;color:#73777d}
+.specs{width:100%;border-collapse:collapse;margin-top:8px}
+.specs tr+tr{border-top:1px solid #eceef0}
+.specs th,.specs td{text-align:left;padding:12px 0;font-size:14px;vertical-align:top}
+.specs th{color:#73777d;font-weight:700;width:42%}
+.specs td{font-weight:800}
+.price-update{font-size:11px;color:#8a8f95;margin-top:6px}
+.mobile-cta{display:none}
+@media(max-width:800px){.wrap{width:min(100% - 24px,1180px)}.header-inner{min-height:68px}.logo img{width:160px}.product-page{grid-template-columns:1fr;gap:28px}.visual{min-height:390px;padding:22px}.visual img{height:340px}main{padding:26px 0 50px}.content h1{font-size:34px}.price{font-size:30px}.extra{grid-template-columns:1fr;margin-top:34px}.extra-card{padding:22px}.mobile-cta{display:block;position:fixed;left:12px;right:12px;bottom:12px;z-index:30}.mobile-cta a{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:14px;background:var(--yellow);border:2px solid #111315;font-weight:900;box-shadow:0 12px 30px rgba(0,0,0,.18)}}
 </style>
 </head>
 <body>
@@ -52,6 +67,24 @@ main{padding:44px 0 70px}
 <section id="productPage" class="product-page" aria-live="polite"></section>
 </div>
 </main>
+
+<div class="wrap">
+<section class="extra" id="informacoes">
+  <article class="extra-card">
+    <h2>Por que este produto entrou nos achados?</h2>
+    <p id="whyText">Selecionamos este produto para facilitar a comparação e levar você direto à página de compra.</p>
+    <div class="highlights" id="highlights"></div>
+  </article>
+  <article class="extra-card">
+    <h2>Informações rápidas</h2>
+    <table class="specs">
+      <tbody id="specs"></tbody>
+    </table>
+  </article>
+</section>
+</div>
+
+<div class="mobile-cta" id="mobileCta"></div>
 
 <script>
 const products = [
@@ -194,9 +227,51 @@ function renderProduct(){
       '<p class="description">'+product.description+'</p>'+
       '<div class="price-box"><strong class="price">'+product.price+'</strong>'+(product.oldPrice?'<span class="old">'+product.oldPrice+'</span>':'')+'</div>'+
       '<div class="note">Preço de referência registrado na última atualização. O valor e a disponibilidade podem mudar na Amazon.</div>'+
+      '<div class="price-update">Última atualização desta página: 06/10/2026</div>'+
       '<a class="cta" href="'+product.link+'" target="_blank" rel="sponsored noopener">Ver produto na Amazon</a>'+
       '<div class="actions"><a href="index.html">← Continuar vendo outros produtos</a></div>'+
     '</div>';
+
+  const why=document.getElementById('whyText');
+  why.textContent='Este achado foi selecionado para apresentar, em uma única página, as informações disponíveis do produto e facilitar sua decisão de compra. '+product.description+'.';
+
+  document.getElementById('highlights').innerHTML=
+    '<div class="highlight"><strong>Categoria</strong><span>'+product.category+'</span></div>'+
+    '<div class="highlight"><strong>Origem do link</strong><span>'+product.source+'</span></div>'+
+    '<div class="highlight"><strong>Compra</strong><span>Você será direcionado à página do produto para conferir preço e disponibilidade atuais.</span></div>';
+
+  document.getElementById('specs').innerHTML=
+    '<tr><th>Produto</th><td>'+product.name+'</td></tr>'+
+    '<tr><th>Categoria</th><td>'+product.category+'</td></tr>'+
+    '<tr><th>Preço exibido</th><td>'+product.price+(product.oldPrice?' (de '+product.oldPrice+')':'')+'</td></tr>'+
+    '<tr><th>Loja de destino</th><td>'+product.source+'</td></tr>';
+
+  document.getElementById('mobileCta').innerHTML=
+    '<a href="'+product.link+'" target="_blank" rel="sponsored noopener">Ver produto na Amazon</a>';
+
+  let schema=document.getElementById('productSchema');
+  if(!schema){
+    schema=document.createElement('script');
+    schema.type='application/ld+json';
+    schema.id='productSchema';
+    document.head.appendChild(schema);
+  }
+  const numericPrice=(product.price||'').replace(/[^0-9,]/g,'').replace('.','').replace(',','.');
+  schema.textContent=JSON.stringify({
+    "@context":"https://schema.org",
+    "@type":"Product",
+    "name":product.name,
+    "description":product.description,
+    "image":[product.image],
+    "category":product.category,
+    "offers":{
+      "@type":"Offer",
+      "priceCurrency":"BRL",
+      "price":numericPrice,
+      "availability":"https://schema.org/InStock",
+      "url":window.location.href
+    }
+  });
 }
 renderProduct();
 </script>
