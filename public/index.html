@@ -842,6 +842,7 @@ section{
 }
 
 .saving-value{display:block;margin-top:0;font-size:10px;font-weight:700;color:#198754;}
+.price-current-note{color:#6b7280;font-weight:600;}
 .product-btn{
   width:100%;
   border:0;
@@ -1819,11 +1820,12 @@ const products = [
   {
     name:"Airfryer Philips Walita Série 1000 XL 6,2L",
     description:"RapidAir, 1700W e preparo para toda a família",
-    price:"R$ 344,00",
+    price:"R$ 367,37",
         category:"Casa",
     badge:"Mais vendido",
     image:"https://a-static.mlcdn.com.br/%7Bw%7Dx%7Bh%7D/fritadeira-airfryer-serie-1000-xl-na130-09-preto-philips-walita/grupoduascabecasmetavel/mlb52878677/22b57f4cb3773132ce55abfab87bfc3f.jpeg",
     source:"Amazon",
+    rating:"4,8", reviews:"2.165",
     link:"https://www.amazon.com.br/Fritadeira-Airfryer-Walita-Tecnologia-RapidAir/dp/B0D98VXWXB?tag=lucas.mcosta2-20"
   },
 
@@ -1835,7 +1837,7 @@ const products = [
     badge:"Oferta",
     image:"https://carrefourbr.vtexassets.com/arquivos/ids/187428050/image-0.jpg?v=638790546268930000",
     source:"Amazon",
-    rating:"4,8", reviews:"12.882",
+    rating:"4,8", reviews:"12.906",
     link:"https://www.amazon.com.br/Smartwatch-Samsung-Galaxy-Fit3-Display/dp/B0CVCF2J9Q?tag=lucas.mcosta2-20"
   },
 
@@ -1859,17 +1861,19 @@ const products = [
     badge:"",
     image:"https://images-na.ssl-images-amazon.com/images/I/71KFAoTV%2BhL._AC_UL300_SR300,200_.jpg",
     source:"Amazon",
+    rating:"4,7", reviews:"20.134",
     link:"https://www.amazon.com.br/MONDIAL-Liquidificador-Turbo-Power-Preto/dp/B07QK91PTZ?tag=lucas.mcosta2-20"
   },
 
   {
     name:"Tênis Fila Progress Lite Masculino",
     description:"Tênis esportivo leve para treinos diários, caminhadas e rotina",
-    price:"R$ 270,00",
+    price:"R$ 269,99",
     category:"Moda",
     badge:"Oferta",
     image:"https://imgcentauro-a.akamaihd.net/1300x1300/M15S9Y02A6.jpg",
     source:"Amazon",
+    rating:"4,4", reviews:"13",
     link:"https://www.amazon.com.br/dp/B0DG9Q1GZL?tag=lucas.mcosta2-20"
   },
 
@@ -1881,6 +1885,7 @@ const products = [
     badge:"Mais vendido",
     image:"https://cdn.iset.io/assets/54712/produtos/7722/ed009-macrilan.jpg",
     source:"Amazon",
+    rating:"4,8", reviews:"446",
     link:"https://www.amazon.com.br/dp/B09LJVHR13?tag=lucas.mcosta2-20"
   },
 
@@ -1892,7 +1897,7 @@ const products = [
     badge:"Mais vendido",
     image:"https://rcdeletrica.com.br/image/cache/catalog/imagens_adicionais_70/110158-1-500x500.jpg",
     source:"Amazon",
-    rating:"4,7", reviews:"6.495",
+    rating:"4,7", reviews:"9.203",
     link:"https://www.amazon.com.br/dp/B07FTKKBM3?tag=lucas.mcosta2-20"
   },
 
@@ -1904,6 +1909,7 @@ const products = [
     badge:"Oferta",
     image:"https://a-static.mlcdn.com.br/800x800/mini-projetor-hy300-smart-wi-fi-bluetooth-ideal-para-quarto/clicksmart/mipr059/ed08676388be8e13d60e04bae13669e5.jpeg",
     source:"Amazon",
+    rating:"4,0", reviews:"354",
     link:"https://www.amazon.com.br/Projetor-Portatil-Bluetooth-Android-HY300/dp/B0D78H4TKD?tag=lucas.mcosta2-20"
   },
 
@@ -1915,14 +1921,15 @@ const products = [
     badge:"Mais vendido",
     image:"https://m.media-amazon.com/images/I/61M%2B2-MGZFL._AC_SL1080_.jpg",
     source:"Amazon",
+    rating:"4,6", reviews:"1.470",
     link:"https://www.amazon.com.br/dp/B085BWB19X?tag=lucas.mcosta2-20"
   },
 
   {
     name:"Romantic Crown Mochila Masculina de Viagem para Notebook",
     description:"Mochila expansível para notebook, trabalho, escola e viagens",
-    price:"R$ 110,19",
-    oldPrice:"R$ 119,99",
+    price:"R$ 97,71",
+    oldPrice:"R$ 113,99",
     category:"Moda",
     badge:"Oferta",
     image:"https://img.br.my-best.com/product_images/321d09d8ba9a1c1126c83de0e51f2593.jpg?fit=clip&h=800&ixlib=rails-4.3.1&lossless=0&q=70&s=bd7d70c6ffdff63a0bbce3fbed466772&w=800",
@@ -1971,7 +1978,7 @@ function renderProducts(containerId, items = products) {
         <div class="price-section">
           <strong>${product.price}</strong>
           ${product.oldPrice ? `<span class="old-price">${product.oldPrice}</span>
-          <small class="saving-value">Economize ${formatMoney(priceToNumber(product.oldPrice)-priceToNumber(product.price))}</small>` : ''}
+          <small class="saving-value">Economize ${formatMoney(priceToNumber(product.oldPrice)-priceToNumber(product.price))}</small>` : '<small class="saving-value price-current-note">Preço atual informado</small>'}
         </div>
         <button class="product-btn" type="button" onclick='addToCart(event, ${JSON.stringify(product.name)})'>Comprar agora</button>
       </div>
