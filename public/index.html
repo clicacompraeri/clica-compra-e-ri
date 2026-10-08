@@ -1831,6 +1831,16 @@ footer{
 
 const products = [
   {
+    name:"Câmera de Segurança Wi-Fi 360° Tipo Lâmpada",
+    description:"Câmera Wi-Fi com visão 360°, visão noturna e monitoramento pelo celular. Imagem de referência; confira a variação disponível na Shopee.",
+    price:"R$ 58,99 a R$ 235,96",
+    category:"Tecnologia",
+    badge:"Mais vendido",
+    image:"https://down-br.img.susercontent.com/file/br-11134207-820lf-mn393u2hk93632",
+    source:"Shopee",
+    link:"https://s.shopee.com.br/905nqmqaNE"
+  },
+  {
     name:"Percarbonato de Sódio Calisul 100% Puro",
     description:"Tira-manchas sem cloro para roupas brancas e coloridas, com opções de 1 kg, 2 kg e 3 kg.",
     price:"R$ 18,99 a R$ 75,89",
@@ -2029,7 +2039,7 @@ function renderProducts(containerId, items = products) {
   }
 
   container.innerHTML = items.map(product => `
-    <a href="produto.html?produto=${encodeURIComponent(product.name)}&v=20261007-shopee5" class="product product-card ${product.source === 'Shopee' ? 'shopee-product' : ''}" style="display:flex; flex-direction:column;">
+    <a href="produto.html?produto=${encodeURIComponent(product.name)}&v=20261007-shopee6" class="product product-card ${product.source === 'Shopee' ? 'shopee-product' : ''}" style="display:flex; flex-direction:column;">
       <div class="product-image">
         <button class="favorite-btn" type="button" aria-label="Adicionar aos favoritos" aria-pressed="false" data-product="${product.name.replace(/"/g,'&quot;')}" onclick="toggleFavorite(event, this)">♡</button>
         <img src="${product.image}" alt="${product.name}">
