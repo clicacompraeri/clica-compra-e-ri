@@ -1822,6 +1822,17 @@ footer{
 <script>
 
 const products = [
+  {
+    name:"Mini Seladora Portátil 2 em 1 USB",
+    description:"Seladora recarregável USB para embalagens plásticas. Imagem ilustrativa de modelo semelhante; confira a variação na Shopee.",
+    price:"R$ 13,99 a R$ 28,99",
+    category:"Casa",
+    badge:"Novo",
+    image:"https://down-ph.img.susercontent.com/file/ph-11134208-7rasa-m2q5ux3ttwcf1f",
+    source:"Shopee",
+    link:"https://s.shopee.com.br/4fwobC7L1V"
+  }
+,
 
   {
     name:"Airfryer Philips Walita Série 1000 XL 6,2L",
@@ -1984,7 +1995,7 @@ function renderProducts(containerId, items = products) {
         <div class="price-section">
           <strong>${product.price}</strong>
           ${product.oldPrice ? `<span class="old-price">${product.oldPrice}</span>
-          <small class="saving-value">Economize ${formatMoney(priceToNumber(product.oldPrice)-priceToNumber(product.price))}</small>` : '<small class="saving-value price-current-note">Preço atual informado</small>'}
+          <small class="saving-value">Economize ${formatMoney(priceToNumber(product.oldPrice)-priceToNumber(product.price))}</small>` : '<small class="saving-value price-current-note">Consulte variações na loja</small>'}
         </div>
         <button class="product-btn" type="button" onclick='addToCart(event, ${JSON.stringify(product.name)})'>Comprar agora</button>
       </div>
