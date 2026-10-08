@@ -2007,7 +2007,7 @@ function renderProducts(containerId, items = products) {
           ${product.oldPrice ? `<span class="old-price">${product.oldPrice}</span>
           <small class="saving-value">Economize ${formatMoney(priceToNumber(product.oldPrice)-priceToNumber(product.price))}</small>` : '<small class="saving-value price-current-note">Consulte variações na loja</small>'}
         </div>
-        ${product.source === 'Shopee' ? `<button class="product-btn" type="button" onclick='event.preventDefault();event.stopPropagation();window.open(${JSON.stringify(product.link)}, "_blank", "noopener")'>Ver na Shopee</button>` : `<button class="product-btn" type="button" onclick='addToCart(event, ${JSON.stringify(product.name)})'>Comprar agora</button>`}
+        ${product.source === 'Shopee' ? `<button class="product-btn" type="button" onclick='event.preventDefault();event.stopPropagation();window.open(${JSON.stringify(product.link)}, "_blank", "noopener")'>Comprar agora</button>` : `<button class="product-btn" type="button" onclick='addToCart(event, ${JSON.stringify(product.name)})'>Comprar agora</button>`}
       </div>
     </a>
   `).join('');
