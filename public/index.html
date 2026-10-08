@@ -1831,6 +1831,16 @@ footer{
 
 const products = [
   {
+    name:"Suporte Veicular para Celular 360° com Ventosa",
+    description:"Suporte veicular ajustável com ventosa e rotação 360° para manter o celular firme e visível durante o uso no carro.",
+    price:"R$ 16,68",
+    category:"Automotivo",
+    badge:"Mais vendido",
+    image:"https://down-br.img.susercontent.com/file/br-11134201-22120-sijrdhogb8kv09",
+    source:"Shopee",
+    link:"https://s.shopee.com.br/LnpYTwBXc"
+  },
+  {
     name:"Aspirador e Soprador Portátil 5 em 1",
     description:"Aspirador e soprador portátil recarregável, indicado para limpeza de carro, casa, teclado e pequenos espaços.",
     price:"R$ 24,87 a R$ 39,87",
@@ -2049,7 +2059,7 @@ function renderProducts(containerId, items = products) {
   }
 
   container.innerHTML = items.map(product => `
-    <a href="produto.html?produto=${encodeURIComponent(product.name)}&v=20261007-shopee7" class="product product-card ${product.source === 'Shopee' ? 'shopee-product' : ''}" style="display:flex; flex-direction:column;">
+    <a href="produto.html?produto=${encodeURIComponent(product.name)}&v=20261007-shopee8" class="product product-card ${product.source === 'Shopee' ? 'shopee-product' : ''}" style="display:flex; flex-direction:column;">
       <div class="product-image">
         <button class="favorite-btn" type="button" aria-label="Adicionar aos favoritos" aria-pressed="false" data-product="${product.name.replace(/"/g,'&quot;')}" onclick="toggleFavorite(event, this)">♡</button>
         <img src="${product.image}" alt="${product.name}">
