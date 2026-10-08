@@ -1831,6 +1831,16 @@ footer{
 
 const products = [
   {
+    name:"Mini Ventilador Portátil USB Recarregável 3 Velocidades",
+    description:"Mini ventilador portátil recarregável por USB com 3 velocidades e suporte para celular, ideal para mesa, trabalho e viagens.",
+    price:"R$ 17,99 a R$ 19,99",
+    category:"Tecnologia",
+    badge:"Novo",
+    image:"https://down-br.img.susercontent.com/file/sg-11134201-81ztj-mmjjy1c70hl182",
+    source:"Shopee",
+    link:"https://s.shopee.com.br/8V9XHuyS6O"
+  },
+  {
     name:"Cabo Carregador Multi USB 3 em 1 120W",
     description:"Cabo USB 3 em 1 com conectores Tipo-C, Lightning e Micro USB, indicado para carregar diferentes dispositivos com um único cabo.",
     price:"R$ 13,40",
@@ -2070,7 +2080,7 @@ function renderProducts(containerId, items = products) {
   }
 
   container.innerHTML = items.map(product => `
-    <a href="produto.html?produto=${encodeURIComponent(product.name)}&v=20261007-shopee9" class="product product-card ${product.source === 'Shopee' ? 'shopee-product' : ''}" style="display:flex; flex-direction:column;">
+    <a href="produto.html?produto=${encodeURIComponent(product.name)}&v=20261007-shopee10" class="product product-card ${product.source === 'Shopee' ? 'shopee-product' : ''}" style="display:flex; flex-direction:column;">
       <div class="product-image">
         <button class="favorite-btn" type="button" aria-label="Adicionar aos favoritos" aria-pressed="false" data-product="${product.name.replace(/"/g,'&quot;')}" onclick="toggleFavorite(event, this)">♡</button>
         <img src="${product.image}" alt="${product.name}">
