@@ -1831,6 +1831,16 @@ footer{
 
 const products = [
   {
+    name:"Aspirador e Soprador Portátil 5 em 1",
+    description:"Aspirador e soprador portátil recarregável, indicado para limpeza de carro, casa, teclado e pequenos espaços.",
+    price:"R$ 24,87 a R$ 39,87",
+    category:"Casa",
+    badge:"Mais vendido",
+    image:"https://down-br.img.susercontent.com/file/br-11134207-7r98o-m7og8p82042cf1",
+    source:"Shopee",
+    link:"https://s.shopee.com.br/2VsK88MolG"
+  },
+  {
     name:"Câmera de Segurança Wi-Fi 360° Tipo Lâmpada",
     description:"Câmera Wi-Fi com visão 360°, visão noturna e monitoramento pelo celular. Imagem de referência; confira a variação disponível na Shopee.",
     price:"R$ 58,99 a R$ 235,96",
@@ -2039,7 +2049,7 @@ function renderProducts(containerId, items = products) {
   }
 
   container.innerHTML = items.map(product => `
-    <a href="produto.html?produto=${encodeURIComponent(product.name)}&v=20261007-mini5" class="product product-card ${product.source === 'Shopee' ? 'shopee-product' : ''}" style="display:flex; flex-direction:column;">
+    <a href="produto.html?produto=${encodeURIComponent(product.name)}&v=20261007-shopee7" class="product product-card ${product.source === 'Shopee' ? 'shopee-product' : ''}" style="display:flex; flex-direction:column;">
       <div class="product-image">
         <button class="favorite-btn" type="button" aria-label="Adicionar aos favoritos" aria-pressed="false" data-product="${product.name.replace(/"/g,'&quot;')}" onclick="toggleFavorite(event, this)">♡</button>
         <img src="${product.image}" alt="${product.name}">
