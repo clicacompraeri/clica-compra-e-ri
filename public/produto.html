@@ -168,7 +168,8 @@ const products = [
     price:"R$ 13,99 a R$ 28,99",
     category:"Casa",
     badge:"Novo",
-    image:"https://down-ph.img.susercontent.com/file/ph-11134208-7rasa-m2q5ux3ttwcf1f",
+    image:"https://down-br.img.susercontent.com/file/br-11134207-820le-mnhm1duqadc078",
+    gallery:["https://down-br.img.susercontent.com/file/br-11134207-820m3-mnhm1duq3chs5e","https://down-br.img.susercontent.com/file/br-11134207-820lr-mnhm1duqd6gw51","https://down-br.img.susercontent.com/file/br-11134207-820m6-mnhm1duq4r280d","https://down-br.img.susercontent.com/file/br-11134207-820lf-mnhm1duqel1c76","https://down-br.img.susercontent.com/file/br-11134207-820mf-mnhm1duq65mo96","https://down-br.img.susercontent.com/file/br-11134207-820m7-mnhm1duq8yrk34","https://down-br.img.susercontent.com/file/br-11134207-820li-mnhm1duq7k7452","https://down-br.img.susercontent.com/file/br-11134207-820mf-mnhm1duqbrwgbf"],
     source:"Shopee",
     link:"https://s.shopee.com.br/4fwobC7L1V"
   }
@@ -330,7 +331,7 @@ function renderProduct(){
       '<div class="actions"><a href="index.html">← Continuar vendo outros produtos</a></div>'+
     '</div>';
 
-  const galleryImages=[product.image].concat(product.gallery||[]).filter((v,i,a)=>v && a.indexOf(v)===i).slice(0,6);
+  const galleryImages=[product.image].concat(product.gallery||[]).filter((v,i,a)=>v && a.indexOf(v)===i).slice(0, product.source==='Shopee' ? 9 : 6);
   const thumbs=document.getElementById('thumbs');
   const mainPhoto=document.getElementById('mainPhoto');
   thumbs.innerHTML=galleryImages.map((src,i)=>'<button class="thumb '+(i===0?'active':'')+'" type="button" aria-label="Ver foto '+(i+1)+'"><img src="'+src+'" alt=""></button>').join('');
