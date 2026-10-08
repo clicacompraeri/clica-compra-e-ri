@@ -2039,7 +2039,7 @@ function renderProducts(containerId, items = products) {
   }
 
   container.innerHTML = items.map(product => `
-    <a href="produto.html?produto=${encodeURIComponent(product.name)}&v=20261007-shopee-gallery1" class="product product-card ${product.source === 'Shopee' ? 'shopee-product' : ''}" style="display:flex; flex-direction:column;">
+    <a href="produto.html?produto=${encodeURIComponent(product.name)}&v=20261007-shopee-gallery2" class="product product-card ${product.source === 'Shopee' ? 'shopee-product' : ''}" style="display:flex; flex-direction:column;">
       <div class="product-image">
         <button class="favorite-btn" type="button" aria-label="Adicionar aos favoritos" aria-pressed="false" data-product="${product.name.replace(/"/g,'&quot;')}" onclick="toggleFavorite(event, this)">♡</button>
         <img src="${product.image}" alt="${product.name}">
