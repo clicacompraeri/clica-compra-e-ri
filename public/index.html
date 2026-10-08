@@ -1503,6 +1503,13 @@ footer{
   width: 26px;
 }
 .rating-line{display:flex;align-items:center;gap:7px;margin:7px 0 2px;font-size:13px;line-height:1.2}.rating-stars{letter-spacing:1px;color:#f5b301;font-size:15px;font-weight:900}.rating-value{font-weight:800;color:#25272a}.rating-count{color:#6f747a}
+
+/* Selo e apresentação exclusivos para os produtos da Shopee */
+.shopee-product .product-image{position:relative;background:#fff}
+.shopee-product .product-image > img{object-fit:contain;object-position:center;padding:12px;box-sizing:border-box}
+.shopee-product .shopee-corner-mark{position:absolute;bottom:10px;right:10px;width:35px;height:35px;border-radius:9px;background:#ee4d2d;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.14);z-index:2;pointer-events:none}
+.shopee-product .shopee-corner-mark svg{width:26px;height:26px;display:block}
+.shopee-product .price-section strong{font-size:clamp(16px,1.8vw,21px);line-height:1.3}
 </style>
 </head>
 
@@ -1824,7 +1831,7 @@ footer{
 const products = [
   {
     name:"Mini Seladora Portátil 2 em 1 USB",
-    description:"Seladora recarregável USB para embalagens plásticas. Imagem ilustrativa de modelo semelhante; confira a variação na Shopee.",
+    description:"Seladora portátil recarregável por USB para fechar embalagens plásticas com praticidade. Confira as opções disponíveis na Shopee.",
     price:"R$ 13,99 a R$ 28,99",
     category:"Casa",
     badge:"Novo",
@@ -1981,10 +1988,11 @@ function renderProducts(containerId, items = products) {
   }
 
   container.innerHTML = items.map(product => `
-    <a href="produto.html?produto=${encodeURIComponent(product.name)}" class="product product-card" style="display:flex; flex-direction:column;">
+    <a href="produto.html?produto=${encodeURIComponent(product.name)}" class="product product-card ${product.source === 'Shopee' ? 'shopee-product' : ''}" style="display:flex; flex-direction:column;">
       <div class="product-image">
         <button class="favorite-btn" type="button" aria-label="Adicionar aos favoritos" aria-pressed="false" data-product="${product.name.replace(/"/g,'&quot;')}" onclick="toggleFavorite(event, this)">♡</button>
         <img src="${product.image}" alt="${product.name}">
+        ${product.source === 'Shopee' ? `<span class="shopee-corner-mark" title="Produto anunciado na Shopee" aria-label="Shopee"><svg viewBox="0 0 32 32" role="img" aria-hidden="true"><path d="M8 11h16l1.6 16H6.4L8 11Z" fill="white"/><path d="M12 12V9a4 4 0 0 1 8 0v3" stroke="white" stroke-width="2.2" fill="none" stroke-linecap="round"/><text x="16" y="24" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#ee4d2d">S</text></svg></span>` : ''}
         ${product.source === 'Amazon' ? '<span class="source-badge" aria-label="Amazon — Available at Amazon"><span class="source-amazon-card" aria-hidden="true"><svg viewBox="0 0 32 20" role="img"><text x="9" y="13" font-size="11" font-weight="900" font-family="Arial, sans-serif">a</text><path d="M7 15 Q16 20 25 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="source-amazon-text">Available at Amazon</span></span>' : ''}
         ${containerId === 'offersGrid' ? '<span class="badge">OFERTA</span>' : (product.badge ? `<span class="badge">${product.badge}</span>` : '')}
       </div>
