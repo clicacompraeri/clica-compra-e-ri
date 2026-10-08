@@ -108,6 +108,17 @@ main{padding:44px 0 70px}
 
 <script>
 const products = [
+  {
+    name:"Mini Seladora Portátil 2 em 1 USB",
+    description:"Seladora recarregável USB para embalagens plásticas. Imagem ilustrativa de modelo semelhante; confira a variação na Shopee.",
+    price:"R$ 13,99 a R$ 28,99",
+    category:"Casa",
+    badge:"Novo",
+    image:"https://down-ph.img.susercontent.com/file/ph-11134208-7rasa-m2q5ux3ttwcf1f",
+    source:"Shopee",
+    link:"https://s.shopee.com.br/4fwobC7L1V"
+  }
+,
 
   {
     name:"Airfryer Philips Walita Série 1000 XL 6,2L",
@@ -259,9 +270,9 @@ function renderProduct(){
       '<h1>'+product.name+'</h1>'+
       '<p class="description">'+product.description+'</p>'+
       '<div class="price-box"><strong class="price">'+product.price+'</strong>'+(product.oldPrice?'<span class="old">'+product.oldPrice+'</span>':'')+'</div>'+
-      '<div class="note">Preço de referência registrado na última atualização. O valor e a disponibilidade podem mudar na Amazon.</div>'+
-      '<div class="price-update">Última atualização desta página: 06/10/2026</div>'+
-      '<a class="cta" href="'+product.link+'" target="_blank" rel="sponsored noopener">Ver produto na Amazon</a>'+
+      '<div class="note">Preço de referência registrado na última atualização. O valor e a disponibilidade podem mudar na '+product.source+'.</div>'+
+      '<div class="price-update">Última atualização desta página: '+(product.source==='Shopee'?'07/10/2026':'06/10/2026')+'</div>'+
+      '<a class="cta" href="'+product.link+'" target="_blank" rel="sponsored noopener">Ver produto na '+product.source+'</a>'+
       '<div class="actions"><a href="index.html">← Continuar vendo outros produtos</a></div>'+
     '</div>';
 
@@ -331,7 +342,7 @@ function renderProduct(){
     '<tr><th>Loja de destino</th><td>'+product.source+'</td></tr>';
 
   document.getElementById('mobileCta').innerHTML=
-    '<a href="'+product.link+'" target="_blank" rel="sponsored noopener">Ver produto na Amazon</a>';
+    '<a href="'+product.link+'" target="_blank" rel="sponsored noopener">Ver produto na '+product.source+'</a>';
 
   let schema=document.getElementById('productSchema');
   if(!schema){
