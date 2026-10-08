@@ -1618,6 +1618,136 @@ footer{
   .digital-products{grid-template-columns:1fr}
   .digital-card h3{font-size:20px}
 }
+
+/* ================= LIVROS E KINDLE ================= */
+.book-products{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:22px;
+}
+.book-card{
+  width:100%;
+  max-width:390px;
+  border:1px solid #e8eaed;
+  border-radius:22px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 10px 28px rgba(0,0,0,.06);
+  display:flex;
+  flex-direction:column;
+}
+.book-card-image{
+  position:relative;
+  min-height:340px;
+  background:#f7f8fa;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.book-card-image img{
+  width:auto;
+  height:300px;
+  max-width:100%;
+  object-fit:contain;
+  display:block;
+}
+.kindle-corner-mark{
+  position:absolute;
+  right:12px;
+  bottom:12px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:#111315;
+  color:#fff;
+  font-size:11px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.2px;
+  box-shadow:0 4px 14px rgba(0,0,0,.16);
+}
+.book-card-body{
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  flex:1;
+}
+.book-card-kicker{
+  font-size:12px;
+  font-weight:900;
+  color:#008f80;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.book-card h3{
+  font-size:22px;
+  line-height:1.15;
+  margin:0;
+}
+.book-author{
+  font-size:13px;
+  color:#6d7278;
+  font-weight:700;
+}
+.book-card p{
+  color:#656a70;
+  font-size:14px;
+  line-height:1.5;
+}
+.book-rating{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:13px;
+  font-weight:800;
+}
+.book-rating .stars{
+  color:#f3a600;
+  letter-spacing:1px;
+}
+.book-price{
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  margin-top:2px;
+}
+.book-price strong{
+  font-size:23px;
+  line-height:1;
+}
+.book-price span{
+  font-size:12px;
+  color:#747980;
+  font-weight:700;
+}
+.book-card .book-cta{
+  margin-top:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  border-radius:13px;
+  background:var(--yellow);
+  color:var(--black);
+  font-weight:900;
+  text-transform:uppercase;
+  font-size:13px;
+  letter-spacing:.2px;
+}
+.book-note{
+  font-size:11px;
+  color:#8a8f95;
+  text-align:center;
+  margin-top:2px;
+}
+@media(max-width:900px){
+  .book-products{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  .book-products{grid-template-columns:1fr}
+  .book-card{max-width:none}
+}
 </style>
 </head>
 
@@ -1826,6 +1956,42 @@ footer{
         </div>
         <a class="digital-cta" href="https://go.hotmart.com/R107949195P?ap=f792" target="_blank" rel="sponsored noopener">Conhecer oferta</a>
         <div class="digital-note">Você será direcionado à página oficial do produto.</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+
+<section class="wrap" id="livros-kindle">
+  <div class="section-head">
+    <div>
+      <h2>Livros & Kindle</h2>
+      <p>Leituras selecionadas para aprender, evoluir e descobrir novas ideias.</p>
+    </div>
+  </div>
+
+  <div class="book-products">
+    <article class="book-card">
+      <div class="book-card-image">
+        <img src="https://m.media-amazon.com/images/I/A1kWxKRuqBL.png" alt="Capa do livro A Psicologia Financeira, de Morgan Housel" loading="lazy">
+        <span class="kindle-corner-mark" aria-label="Edição Kindle">Kindle</span>
+      </div>
+      <div class="book-card-body">
+        <div class="book-card-kicker">Finanças e comportamento</div>
+        <h3>A Psicologia Financeira</h3>
+        <div class="book-author">Morgan Housel</div>
+        <p>Lições sobre comportamento, dinheiro, fortuna, ganância e felicidade apresentadas de forma acessível e prática.</p>
+        <div class="book-rating" aria-label="Avaliação 4,8 de 5 estrelas">
+          <span class="stars" aria-hidden="true">★★★★★</span>
+          <span>4,8</span>
+          <span>(29.385)</span>
+        </div>
+        <div class="book-price">
+          <strong>R$ 13,26</strong>
+          <span>Kindle</span>
+        </div>
+        <a class="book-cta" href="https://www.amazon.com.br/psicologia-financeira-atemporais-gan%C3%A2ncia-felicidade-ebook/dp/B08WBXHFBL?&linkCode=ll2&tag=lucas.mcosta2-20&linkId=e04cdb72f90d0bc3f9426bb9aeaf55a2&ref_=as_li_ss_tl" target="_blank" rel="sponsored noopener">Comprar Kindle</a>
+        <div class="book-note">Preço e disponibilidade podem mudar na Amazon.</div>
       </div>
     </article>
   </div>
