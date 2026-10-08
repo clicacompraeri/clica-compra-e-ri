@@ -1509,7 +1509,8 @@ footer{
 .shopee-product .product-image > img{object-fit:contain;object-position:center;padding:12px;box-sizing:border-box}
 .shopee-product .shopee-corner-mark{position:absolute;bottom:10px;right:10px;width:35px;height:35px;border-radius:9px;background:#ee4d2d;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.14);z-index:2;pointer-events:none}
 .shopee-product .shopee-corner-mark svg{width:26px;height:26px;display:block}
-.shopee-product .price-section strong{font-size:clamp(16px,1.8vw,21px);line-height:1.3}
+.shopee-product .price-section strong{font-size:18px;line-height:1.25;letter-spacing:-.3px}
+.shopee-product .price-section .shopee-price-range{font-size:13px;font-weight:600;line-height:1.25;color:#62676b;display:block;margin-top:3px}
 </style>
 </head>
 
@@ -2001,7 +2002,8 @@ function renderProducts(containerId, items = products) {
         <div class="product-desc">${product.description}</div>
       ${product.rating ? `<div class="rating-line" aria-label="Avaliação ${product.rating} de 5 estrelas"><span class="rating-stars" aria-hidden="true">★★★★★</span><span class="rating-value">${product.rating}</span><span class="rating-count">(${product.reviews})</span></div>` : ""}
         <div class="price-section">
-          <strong>${product.price}</strong>
+          <strong>${product.source === 'Shopee' && product.price.includes(' a ') ? product.price.split(' a ')[0] : product.price}</strong>
+          ${product.source === 'Shopee' && product.price.includes(' a ') ? `<span class="shopee-price-range">até ${product.price.split(' a ')[1]}</span>` : ''}
           ${product.oldPrice ? `<span class="old-price">${product.oldPrice}</span>
           <small class="saving-value">Economize ${formatMoney(priceToNumber(product.oldPrice)-priceToNumber(product.price))}</small>` : '<small class="saving-value price-current-note">Consulte variações na loja</small>'}
         </div>
