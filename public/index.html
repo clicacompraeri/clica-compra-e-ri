@@ -1511,6 +1511,113 @@ footer{
 .shopee-product .shopee-corner-mark svg{width:26px;height:26px;display:block}
 .shopee-product .price-section strong{font-size:18px;line-height:1.25;letter-spacing:-.3px}
 .shopee-product .price-section .shopee-price-range{font-size:13px;font-weight:600;line-height:1.25;color:#62676b;display:block;margin-top:3px}
+
+/* ================= HOTMART DIGITAL ================= */
+.digital-products{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:22px;
+}
+.digital-card{
+  border:1px solid #e8eaed;
+  border-radius:22px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 10px 28px rgba(0,0,0,.06);
+  display:flex;
+  flex-direction:column;
+}
+.digital-card-image{
+  position:relative;
+  aspect-ratio:16/10;
+  background:#f7f8fa;
+  overflow:hidden;
+}
+.digital-card-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.hotmart-corner-mark{
+  position:absolute;
+  right:12px;
+  bottom:12px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:#f04e23;
+  color:#fff;
+  font-size:11px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.2px;
+  box-shadow:0 4px 14px rgba(0,0,0,.16);
+}
+.digital-card-body{
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  flex:1;
+}
+.digital-card-kicker{
+  font-size:12px;
+  font-weight:900;
+  color:#f04e23;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.digital-card h3{
+  font-size:22px;
+  line-height:1.15;
+  margin:0;
+}
+.digital-card p{
+  color:#656a70;
+  font-size:14px;
+  line-height:1.5;
+}
+.digital-benefits{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:2px;
+}
+.digital-benefits span{
+  font-size:12px;
+  font-weight:800;
+  background:#f4f5f7;
+  color:#363a3f;
+  border-radius:999px;
+  padding:7px 9px;
+}
+.digital-card .digital-cta{
+  margin-top:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  border-radius:13px;
+  background:var(--yellow);
+  color:var(--black);
+  font-weight:900;
+  text-transform:uppercase;
+  font-size:13px;
+  letter-spacing:.2px;
+}
+.digital-card .digital-note{
+  font-size:11px;
+  color:#8a8f95;
+  text-align:center;
+  margin-top:2px;
+}
+@media(max-width:900px){
+  .digital-products{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  .digital-products{grid-template-columns:1fr}
+  .digital-card h3{font-size:20px}
+}
 </style>
 </head>
 
@@ -1691,6 +1798,38 @@ footer{
 
 </section>
 
+
+
+<section class="wrap" id="digitais">
+  <div class="section-head">
+    <div>
+      <h2>Cursos e Produtos Digitais</h2>
+      <p>Ferramentas e soluções digitais selecionadas para aprender, trabalhar e vender melhor.</p>
+    </div>
+  </div>
+
+  <div class="digital-products">
+    <article class="digital-card">
+      <div class="digital-card-image">
+        <img src="https://hotmart.s3.amazonaws.com/product_pictures/d2f25638-1e7a-4f0c-b480-fe3bb3d4218f/imgprodutohotmart6.png" alt="LeadLovers - plataforma de automação de marketing e vendas" loading="lazy">
+        <span class="hotmart-corner-mark" aria-label="Produto Hotmart">Hotmart</span>
+      </div>
+      <div class="digital-card-body">
+        <div class="digital-card-kicker">Marketing e automação</div>
+        <h3>LeadLovers | Mais vendas, menos esforço</h3>
+        <p>Plataforma para criação de páginas, automações de marketing, e-mail, WhatsApp, Instagram e gestão de leads em um só lugar.</p>
+        <div class="digital-benefits" aria-label="Principais recursos">
+          <span>Páginas</span>
+          <span>E-mail</span>
+          <span>WhatsApp</span>
+          <span>Automação</span>
+        </div>
+        <a class="digital-cta" href="https://go.hotmart.com/R107949195P?ap=f792" target="_blank" rel="sponsored noopener">Conhecer oferta</a>
+        <div class="digital-note">Você será direcionado à página oficial do produto.</div>
+      </div>
+    </article>
+  </div>
+</section>
 
 <section class="wrap" id="favoritos">
 
