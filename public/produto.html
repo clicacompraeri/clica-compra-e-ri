@@ -3,8 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Detalhes de produto — Clica, Compra e Ri.">
+<meta id="metaDescription" name="description" content="Detalhes, preço de referência e acesso à oferta do produto selecionado no Clica, Compra e Ri.">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="theme-color" content="#ffd21c">
+<link id="canonicalUrl" rel="canonical" href="https://clica-compra-e-ri-production.up.railway.app/produto.html">
+
+<meta property="og:locale" content="pt_BR">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="Clica, Compra e Ri">
+<meta id="ogTitle" property="og:title" content="Produto | Clica, Compra e Ri">
+<meta id="ogDescription" property="og:description" content="Confira detalhes e preço de referência deste produto.">
+<meta id="ogUrl" property="og:url" content="https://clica-compra-e-ri-production.up.railway.app/produto.html">
+<meta id="ogImage" property="og:image" content="https://clica-compra-e-ri-production.up.railway.app/logo.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta id="twitterTitle" name="twitter:title" content="Produto | Clica, Compra e Ri">
+<meta id="twitterDescription" name="twitter:description" content="Confira detalhes e preço de referência deste produto.">
+<meta id="twitterImage" name="twitter:image" content="https://clica-compra-e-ri-production.up.railway.app/logo.png">
+
 <title>Produto | Clica, Compra e Ri</title>
+<script type="application/ld+json" id="productStructuredData"></script>
 <style>
 :root{--yellow:#ffd21c;--black:#111315;--gray:#f4f5f6;--gray2:#e7e9ec;--text:#15171a;--muted:#73777d;--white:#fff;--radius:22px;--shadow:0 12px 40px rgba(0,0,0,.08)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -367,6 +385,78 @@ function trackAffiliateClick(store, productName, destinationUrl){
       page_type: 'produto'
     });
   }
+}
+
+function updateProductSEO(product){
+  const baseUrl='https://clica-compra-e-ri-production.up.railway.app';
+  const canonical=baseUrl+'/produto.html?produto='+encodeURIComponent(product.name);
+  const description=(product.description ? product.name+': '+product.description : product.name)+'. Confira preço de referência, fotos e acesso à oferta no Clica, Compra e Ri.';
+  const image=product.image || baseUrl+'/logo.png';
+
+  updateProductSEO(product);
+  const setContent=(id,value)=>{
+    const el=document.getElementById(id);
+    if(el) el.setAttribute('content',value);
+  };
+  const canonicalEl=document.getElementById('canonicalUrl');
+  if(canonicalEl) canonicalEl.href=canonical;
+  setContent('metaDescription',description);
+  setContent('ogTitle',product.name+' | Clica, Compra e Ri');
+  setContent('ogDescription',description);
+  setContent('ogUrl',canonical);
+  setContent('ogImage',image);
+  setContent('twitterTitle',product.name+' | Clica, Compra e Ri');
+  setContent('twitterDescription',description);
+  setContent('twitterImage',image);
+
+  const images=[product.image].concat(product.gallery||[]).filter((v,i,a)=>v && a.indexOf(v)===i);
+  const schema={
+    '@context':'https://schema.org',
+    '@type':'Product',
+    name:product.name,
+    description:product.description,
+    image:images,
+    category:product.category,
+    url:canonical
+  };
+
+  if(product.rating && product.reviews){
+    const reviewCount=String(product.reviews).replace(/\D/g,'');
+    if(reviewCount){
+      schema.aggregateRating={
+        '@type':'AggregateRating',
+        ratingValue:String(product.rating).replace(',','.'),
+        reviewCount:reviewCount,
+        bestRating:'5',
+        worstRating:'1'
+      };
+    }
+  }
+
+  const prices=(String(product.price).match(/R\$\s*[\d.]+,\d{2}/g)||[]).map(value=>
+    Number(value.replace(/R\$\s*/,'').replace(/\./g,'').replace(',','.'))
+  ).filter(Number.isFinite);
+
+  if(prices.length===1){
+    schema.offers={
+      '@type':'Offer',
+      priceCurrency:'BRL',
+      price:prices[0].toFixed(2),
+      availability:'https://schema.org/InStock',
+      url:product.link,
+      seller:{'@type':'Organization',name:product.source}
+    };
+  }else if(prices.length>1){
+    schema.offers={
+      '@type':'AggregateOffer',
+      priceCurrency:'BRL',
+      lowPrice:Math.min(...prices).toFixed(2),
+      highPrice:Math.max(...prices).toFixed(2)
+    };
+  }
+
+  const structured=document.getElementById('productStructuredData');
+  if(structured) structured.textContent=JSON.stringify(schema);
 }
 
 function renderProduct(){
