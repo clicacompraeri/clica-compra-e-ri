@@ -136,10 +136,27 @@ header{
 
 .nav a{
   transition:.2s;
+  white-space:nowrap;
+  flex-shrink:0;
 }
 
 .nav a:hover{
   color:#d39e00;
+}
+
+@media(max-width:1200px) and (min-width:901px){
+  .header-inner{
+    gap:14px;
+  }
+
+  .nav{
+    gap:14px;
+    font-size:13px;
+  }
+
+  .search{
+    width:min(240px,22vw);
+  }
 }
 
 .search{
