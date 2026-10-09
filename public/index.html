@@ -2874,6 +2874,45 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+
+<script>
+function trackAffiliateClick(store, productName, destinationUrl){
+  if(typeof window.fbq === 'function'){
+    window.fbq('trackCustom','AffiliateClick',{
+      store: store || 'Desconhecida',
+      product_name: productName || 'Produto',
+      destination_url: destinationUrl || '',
+      page_type: 'home'
+    });
+  }
+}
+
+document.addEventListener('click', function(event){
+  const bookButton=event.target.closest('.book-cta');
+  if(bookButton){
+    const card=bookButton.closest('.book-card');
+    const name=card?.querySelector('h3')?.textContent?.trim() || 'Livro Kindle';
+    trackAffiliateClick('Amazon', name, bookButton.href);
+    return;
+  }
+
+  const digitalButton=event.target.closest('.digital-cta');
+  if(digitalButton){
+    const card=digitalButton.closest('.digital-card');
+    const name=card?.querySelector('h3')?.textContent?.trim() || 'Produto digital';
+    trackAffiliateClick('Hotmart', name, digitalButton.href);
+    return;
+  }
+
+  const shopeeButton=event.target.closest('.shopee-product .product-btn');
+  if(shopeeButton){
+    const card=shopeeButton.closest('.product-card');
+    const name=card?.querySelector('.product-name')?.textContent?.trim() || 'Produto Shopee';
+    const product=products.find(item=>item.name===name);
+    trackAffiliateClick('Shopee', name, product?.link || '');
+  }
+});
+</script>
 </body>
 </html>
 
