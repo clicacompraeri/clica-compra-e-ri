@@ -358,6 +358,17 @@ function getProduct(){
   return products.find(product=>product.name===name);
 }
 
+function trackAffiliateClick(store, productName, destinationUrl){
+  if(typeof window.fbq === 'function'){
+    window.fbq('trackCustom','AffiliateClick',{
+      store: store || 'Desconhecida',
+      product_name: productName || 'Produto',
+      destination_url: destinationUrl || '',
+      page_type: 'produto'
+    });
+  }
+}
+
 function renderProduct(){
   const product=getProduct();
   const container=document.getElementById('productPage');
@@ -384,6 +395,13 @@ function renderProduct(){
       '<a class="cta" href="'+product.link+'" target="_blank" rel="sponsored noopener">Ver produto na '+product.source+'</a>'+
       '<div class="actions"><a href="index.html">← Continuar vendo outros produtos</a></div>'+
     '</div>';
+
+  const affiliateCta=container.querySelector('a.cta[target="_blank"]');
+  if(affiliateCta){
+    affiliateCta.addEventListener('click',()=>{
+      trackAffiliateClick(product.source, product.name, product.link);
+    });
+  }
 
   const galleryImages=[product.image].concat(product.gallery||[]).filter((v,i,a)=>v && a.indexOf(v)===i).slice(0, product.source==='Shopee' ? 9 : 6);
   const thumbs=document.getElementById('thumbs');
