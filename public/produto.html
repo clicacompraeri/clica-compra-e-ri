@@ -86,8 +86,35 @@ main{padding:44px 0 70px}
 .specs th{color:#73777d;font-weight:700;width:42%}
 .specs td{font-weight:800}
 .price-update{font-size:11px;color:#8a8f95;margin-top:6px}
+.rating-proof{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:-8px 0 20px}
+.rating-proof .stars{color:#f59e0b;letter-spacing:1px;font-size:16px}
+.rating-proof strong{font-size:14px}
+.rating-proof span:last-child{font-size:12px;color:#73777d}
+.buy-trust{margin:12px 0 0;font-size:12px;font-weight:750;color:#4d5359}
+.sales-wrap{margin-top:24px}
+.sales-hero{border:1px solid #e6e8ea;border-radius:24px;background:linear-gradient(135deg,#fff 0%,#fafbfc 100%);padding:30px;box-shadow:0 12px 34px rgba(0,0,0,.05)}
+.sales-eyebrow{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#8b6b00;margin-bottom:9px}
+.sales-hero h2{font-size:clamp(25px,3vw,36px);line-height:1.08;letter-spacing:-.035em;margin-bottom:12px}
+.sales-hero>p{color:#5e646b;max-width:850px;font-size:15px}
+.sales-proof{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:9px 12px;border-radius:999px;background:#fff7d1;border:1px solid #ffe16b;font-size:12px;font-weight:850}
+.sales-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:20px}
+.sales-card{border:1px solid #e8eaed;border-radius:20px;padding:24px;background:#fff}
+.sales-card h3{font-size:19px;margin-bottom:12px}
+.sales-list{display:grid;gap:10px}
+.sales-item{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;color:#4d5359;font-size:14px}
+.sales-item b{width:24px;height:24px;border-radius:8px;background:#fff3bd;display:flex;align-items:center;justify-content:center;color:#111;font-size:12px}
+.use-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.use-box{padding:14px;border-radius:14px;background:#f7f8f9;border:1px solid #eceef0}
+.use-box strong{display:block;font-size:13px;margin-bottom:4px}
+.use-box span{font-size:12px;color:#697078}
+.size-list{display:grid;gap:8px;margin-top:8px}
+.size-list div{padding:10px 12px;border-radius:12px;background:#f7f8f9;font-size:13px;font-weight:750}
+.caution-box{margin-top:18px;padding:16px 18px;border-left:4px solid var(--yellow);background:#fffdf4;border-radius:12px;color:#555b61;font-size:13px}
+.sales-bottom{margin-top:20px;border-radius:20px;background:#111315;color:#fff;padding:26px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+.sales-bottom p{color:#d9dde1;font-size:14px;max-width:680px}
+.sales-bottom .cta{flex:0 0 auto}
 .mobile-cta{display:none}
-@media(max-width:800px){.wrap{width:min(100% - 24px,1180px)}.header-inner{min-height:68px}.logo img{width:160px}.product-page{grid-template-columns:1fr;gap:28px}.visual{min-height:390px;padding:22px}.visual img{height:340px}.gallery{grid-template-columns:1fr}.thumbs{order:2;flex-direction:row;overflow-x:auto;padding-bottom:2px}.thumb{flex:0 0 64px;width:64px;height:64px}.main-photo{order:1}main{padding:26px 0 50px}.content h1{font-size:34px}.price{font-size:30px}.extra{grid-template-columns:1fr;margin-top:34px}.extra-card{padding:22px}.mobile-cta{display:block;position:fixed;left:12px;right:12px;bottom:12px;z-index:30}.mobile-cta a{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:14px;background:var(--yellow);border:2px solid #111315;font-weight:900;box-shadow:0 12px 30px rgba(0,0,0,.18)}}
+@media(max-width:800px){.wrap{width:min(100% - 24px,1180px)}.header-inner{min-height:68px}.logo img{width:160px}.product-page{grid-template-columns:1fr;gap:28px}.visual{min-height:390px;padding:22px}.visual img{height:340px}.gallery{grid-template-columns:1fr}.thumbs{order:2;flex-direction:row;overflow-x:auto;padding-bottom:2px}.thumb{flex:0 0 64px;width:64px;height:64px}.main-photo{order:1}main{padding:26px 0 50px}.content h1{font-size:34px}.price{font-size:30px}.extra{grid-template-columns:1fr;margin-top:34px}.extra-card{padding:22px}.sales-hero{padding:22px}.sales-grid{grid-template-columns:1fr}.sales-card{padding:20px}.use-grid{grid-template-columns:1fr}.sales-bottom{align-items:stretch;flex-direction:column;margin-bottom:86px}.sales-bottom .cta{width:100%}.mobile-cta{display:block;position:fixed;left:12px;right:12px;bottom:12px;z-index:30}.mobile-cta a{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:14px;background:var(--yellow);border:2px solid #111315;font-weight:900;box-shadow:0 12px 30px rgba(0,0,0,.18)}}
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -129,6 +156,7 @@ fbq('track','PageView');
     </table>
   </article>
 </section>
+<div id="salesContent" class="sales-wrap" hidden></div>
 </div>
 
 <div class="mobile-cta" id="mobileCta"></div>
@@ -321,13 +349,43 @@ const products = [
 
   {
     name:"Organizador de Gaveta Acrimet Modular Transparente Kit 7 Peças",
-    description:"7 peças modulares para organizar gavetas, escritório, cozinha e acessórios",
+    description:"Kit modular transparente com 7 peças em 4 tamanhos para organizar gavetas, bancadas, armários e prateleiras sem perder tempo procurando objetos.",
     price:"R$ 34,18",
     category:"Casa",
     badge:"Mais vendido",
     image:"https://rcdeletrica.com.br/image/cache/catalog/imagens_adicionais_70/110158-1-500x500.jpg",
     gallery:["https://rcdeletrica.com.br/image/cache/catalog/imagens_adicionais_70/110158-1-500x500.jpg","https://www.acrimet.com.br/site/images/produtos/grandes/20211202_100713_a.jpg"],
     source:"Amazon",
+    rating:"4,7",
+    reviews:"9.203",
+    model:"975.0",
+    asin:"B07FTKKBM3",
+    salesContent:{
+      eyebrow:"Organização prática sem reforma e sem instalação",
+      promise:"Transforme a gaveta da bagunça em um espaço fácil de usar",
+      proof:"4,7 de 5 com mais de 9 mil avaliações registradas para este item",
+      summary:"As 7 peças são independentes e podem ser combinadas de várias formas. Isso permite adaptar o kit à sua gaveta em vez de obrigar você a adaptar a gaveta ao organizador.",
+      benefits:[
+        "7 peças em 4 tamanhos para montar a combinação que fizer sentido no seu espaço",
+        "Material transparente para enxergar rapidamente o que está guardado",
+        "Uso versátil em cozinha, banheiro, escritório, maquiagem, artesanato e oficina",
+        "Peças removíveis e fáceis de limpar"
+      ],
+      uses:[
+        ["Cozinha","Temperos, sachês, medidores e pequenos utensílios"],
+        ["Banheiro e beleza","Maquiagem, escovas, acessórios e itens de higiene"],
+        ["Escritório","Canetas, clips, cabos, cartões e pequenos materiais"],
+        ["Gaveta da bagunça","Chaves, pilhas, ferramentas pequenas e objetos do dia a dia"]
+      ],
+      sizes:[
+        "2 peças de 8 × 8 × 5,5 cm",
+        "2 peças de 16 × 8 × 5,5 cm",
+        "2 peças de 24 × 8 × 5,5 cm",
+        "1 peça de 16 × 16 × 5,5 cm"
+      ],
+      caution:"Antes de comprar, compare estas medidas com a parte interna da sua gaveta. Assim você sabe quantas peças cabem juntas e evita comprar no escuro.",
+      closing:"Se o que incomoda é abrir uma gaveta e ter de procurar tudo no meio da bagunça, este kit resolve o problema de um jeito simples: cada tipo de objeto ganha seu próprio espaço."
+    },
     link:"https://www.amazon.com.br/Acrimet-Organizador-Bancadas-Transparente-975-0/dp/B07FTKKBM3?&linkCode=ll2&tag=lucas.mcosta2-20&linkId=8a5573ac6f8875a29b7da56e54fe9d30&ref_=as_li_ss_tl"
   },
 
@@ -478,11 +536,13 @@ function renderProduct(){
     '<div class="content">'+
       '<div class="category">'+product.category+'</div>'+
       '<h1>'+product.name+'</h1>'+
+      (product.rating?'<div class="rating-proof"><span class="stars" aria-hidden="true">★★★★★</span><strong>'+product.rating+'/5</strong><span>('+product.reviews+' avaliações)</span></div>':'')+
       '<p class="description">'+product.description+'</p>'+
       '<div class="price-box"><strong class="price">'+product.price+'</strong>'+(product.oldPrice?'<span class="old">'+product.oldPrice+'</span>':'')+'</div>'+
       '<div class="note">Preço de referência registrado na última atualização. O valor e a disponibilidade podem mudar na '+product.source+'.</div>'+
       '<div class="price-update">Última atualização desta página: '+(product.source==='Shopee'?'07/10/2026':'06/10/2026')+'</div>'+
-      '<a class="cta" href="'+product.link+'" target="_blank" rel="sponsored noopener">Ver produto na '+product.source+'</a>'+
+      '<a class="cta" href="'+product.link+'" target="_blank" rel="sponsored noopener">Ver oferta na '+product.source+'</a>'+
+      '<div class="buy-trust">Você confere preço, frete e disponibilidade atuais antes de finalizar a compra na '+product.source+'.</div>'+
       '<div class="actions"><a href="index.html">← Continuar vendo outros produtos</a></div>'+
     '</div>';
 
@@ -555,8 +615,38 @@ function renderProduct(){
   document.getElementById('specs').innerHTML=
     '<tr><th>Produto</th><td>'+product.name+'</td></tr>'+
     '<tr><th>Categoria</th><td>'+product.category+'</td></tr>'+
+    (product.model?'<tr><th>Modelo</th><td>'+product.model+'</td></tr>':'')+
+    (product.asin?'<tr><th>ASIN</th><td>'+product.asin+'</td></tr>':'')+
     '<tr><th>Preço exibido</th><td>'+product.price+(product.oldPrice?' (de '+product.oldPrice+')':'')+'</td></tr>'+
     '<tr><th>Loja de destino</th><td>'+product.source+'</td></tr>';
+
+  const sales=document.getElementById('salesContent');
+  if(sales && product.salesContent){
+    const sc=product.salesContent;
+    sales.hidden=false;
+    sales.innerHTML=
+      '<section class="sales-hero">'+
+        '<div class="sales-eyebrow">'+sc.eyebrow+'</div>'+
+        '<h2>'+sc.promise+'</h2>'+
+        '<p>'+sc.summary+'</p>'+
+        '<div class="sales-proof"><span aria-hidden="true">★★★★★</span><span>'+sc.proof+'</span></div>'+
+      '</section>'+
+      '<div class="sales-grid">'+
+        '<article class="sales-card"><h3>Por que este kit facilita o dia a dia</h3><div class="sales-list">'+
+          sc.benefits.map((item,i)=>'<div class="sales-item"><b>'+(i+1)+'</b><span>'+item+'</span></div>').join('')+
+        '</div></article>'+
+        '<article class="sales-card"><h3>Onde você pode usar</h3><div class="use-grid">'+
+          sc.uses.map(item=>'<div class="use-box"><strong>'+item[0]+'</strong><span>'+item[1]+'</span></div>').join('')+
+        '</div></article>'+
+        '<article class="sales-card"><h3>O que vem no kit</h3><div class="size-list">'+
+          sc.sizes.map(item=>'<div>'+item+'</div>').join('')+
+        '</div><div class="caution-box"><strong>Confira antes de comprar.</strong><br>'+sc.caution+'</div></article>'+
+        '<article class="sales-card"><h3>Para quem faz mais sentido</h3><p>'+sc.closing+'</p><div class="caution-box">Melhor para objetos pequenos e médios. Para peças muito grandes ou talheres longos, confira as medidas antes.</div></article>'+
+      '</div>'+
+      '<div class="sales-bottom"><p><strong>Gostou da solução?</strong><br>Abra a oferta para conferir o preço e a disponibilidade atuais diretamente na Amazon.</p><a class="cta sales-cta" href="'+product.link+'" target="_blank" rel="sponsored noopener">Conferir oferta na Amazon</a></div>';
+    const salesCta=sales.querySelector('.sales-cta');
+    if(salesCta) salesCta.addEventListener('click',()=>trackAffiliateClick(product.source,product.name,product.link));
+  }
 
   document.getElementById('mobileCta').innerHTML=
     '<a href="'+product.link+'" target="_blank" rel="sponsored noopener">Ver produto na '+product.source+'</a>';
