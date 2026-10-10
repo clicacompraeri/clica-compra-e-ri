@@ -1806,6 +1806,419 @@ footer{
   .book-products{grid-template-columns:1fr}
   .book-card{max-width:none}
 }
+
+/* ================= OFFER BANNER 2026 ================= */
+.offer-banner-new{
+  min-height:330px;
+  padding:0;
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(430px,.95fr);
+  align-items:stretch;
+  border-radius:28px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 82% 18%,rgba(255,210,28,.20) 0,rgba(255,210,28,.06) 23%,transparent 44%),
+    linear-gradient(135deg,#111315 0%,#0b0d10 100%);
+  border:1px solid rgba(255,255,255,.07);
+  box-shadow:0 22px 55px rgba(0,0,0,.16);
+  isolation:isolate;
+}
+
+.offer-banner-new::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:34px 34px;
+  mask-image:linear-gradient(90deg,#000 0%,rgba(0,0,0,.45) 62%,transparent 100%);
+  pointer-events:none;
+}
+
+.offer-banner-new .offer-content{
+  padding:42px 44px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+}
+
+.offer-kicker{
+  display:inline-flex;
+  align-items:center;
+  min-height:30px;
+  padding:0 12px;
+  border-radius:999px;
+  background:rgba(255,210,28,.12);
+  border:1px solid rgba(255,210,28,.38);
+  color:#ffd21c;
+  font-size:10px;
+  line-height:1;
+  font-weight:950;
+  letter-spacing:.10em;
+  margin-bottom:14px;
+}
+
+.offer-banner-new h2{
+  max-width:570px;
+  margin:0;
+  color:#fff;
+  font-size:clamp(34px,4vw,52px);
+  line-height:.98;
+  letter-spacing:-.045em;
+}
+
+.offer-banner-new h2 span{
+  display:block;
+  color:#ffd21c;
+}
+
+.offer-banner-new p{
+  max-width:590px;
+  margin:16px 0 18px;
+  color:#b6bbc2;
+  font-size:14px;
+  line-height:1.55;
+}
+
+.offer-trust{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:22px;
+}
+
+.offer-trust span{
+  min-height:30px;
+  padding:0 11px;
+  display:inline-flex;
+  align-items:center;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:999px;
+  background:rgba(255,255,255,.055);
+  color:#eef0f2;
+  font-size:10px;
+  font-weight:800;
+}
+
+.offer-banner-new .primary-btn{
+  min-height:50px;
+  padding:0 22px;
+  gap:10px;
+  border-radius:13px;
+  box-shadow:0 12px 28px rgba(255,210,28,.18);
+  position:relative;
+  overflow:hidden;
+}
+
+.offer-banner-new .primary-btn::after{
+  content:"";
+  position:absolute;
+  top:-60%;
+  left:-40%;
+  width:34%;
+  height:220%;
+  transform:rotate(22deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);
+  animation:offerShine 3.8s ease-in-out infinite;
+}
+
+.offer-cta-arrow{
+  font-size:19px;
+  line-height:1;
+  transition:transform .2s ease;
+}
+
+.offer-banner-new .primary-btn:hover .offer-cta-arrow{
+  transform:translateX(4px);
+}
+
+.offer-showcase{
+  min-height:330px;
+  position:relative;
+  overflow:hidden;
+}
+
+.offer-glow{
+  position:absolute;
+  width:310px;
+  height:310px;
+  border-radius:50%;
+  background:#ffd21c;
+  opacity:.92;
+  right:78px;
+  top:12px;
+  box-shadow:0 0 90px rgba(255,210,28,.23);
+}
+
+.offer-mini-card{
+  position:absolute;
+  z-index:3;
+  width:172px;
+  padding:11px;
+  border-radius:18px;
+  background:rgba(255,255,255,.98);
+  border:1px solid rgba(17,19,21,.08);
+  box-shadow:0 20px 44px rgba(0,0,0,.24);
+  color:#15171a;
+  animation:offerFloat 5s ease-in-out infinite;
+}
+
+.offer-mini-card-a{
+  left:4px;
+  top:44px;
+  transform:rotate(-7deg);
+}
+
+.offer-mini-card-b{
+  right:18px;
+  top:28px;
+  transform:rotate(7deg);
+  animation-delay:-1.6s;
+}
+
+.offer-mini-card-c{
+  left:128px;
+  bottom:18px;
+  transform:rotate(2deg);
+  animation-delay:-3s;
+}
+
+.offer-mini-image{
+  height:112px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:7px 0 8px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#f8fafb,#eef1f4);
+  overflow:hidden;
+}
+
+.offer-mini-image img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  mix-blend-mode:multiply;
+}
+
+.offer-mini-label{
+  display:inline-flex;
+  min-height:22px;
+  align-items:center;
+  padding:0 8px;
+  border-radius:999px;
+  background:#ffd21c;
+  color:#111315;
+  font-size:8px;
+  line-height:1;
+  font-weight:950;
+  letter-spacing:.05em;
+}
+
+.offer-mini-card strong{
+  display:block;
+  font-size:12px;
+  line-height:1.22;
+}
+
+.offer-mini-card small{
+  display:block;
+  margin-top:3px;
+  color:#7b8187;
+  font-size:9px;
+  font-weight:700;
+}
+
+.offer-discover-badge{
+  position:absolute;
+  z-index:4;
+  right:102px;
+  bottom:24px;
+  width:118px;
+  height:118px;
+  border-radius:50%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:#111315;
+  color:#fff;
+  border:5px solid #ffd21c;
+  box-shadow:0 16px 36px rgba(0,0,0,.28);
+}
+
+.offer-discover-badge small{
+  color:#ffd21c;
+  font-size:8px;
+  font-weight:950;
+  letter-spacing:.12em;
+}
+
+.offer-discover-badge strong{
+  margin-top:3px;
+  font-size:14px;
+  line-height:1.05;
+}
+
+.offer-discover-badge span{
+  color:#ffd21c;
+  font-size:15px;
+  line-height:1.05;
+  font-weight:950;
+}
+
+@keyframes offerFloat{
+  0%,100%{margin-top:0}
+  50%{margin-top:-8px}
+}
+
+@keyframes offerShine{
+  0%,65%{left:-45%}
+  100%{left:135%}
+}
+
+@media(max-width:900px){
+  .offer-banner-new{
+    grid-template-columns:1fr;
+    min-height:auto;
+  }
+
+  .offer-banner-new .offer-content{
+    padding:30px 26px 18px;
+  }
+
+  .offer-banner-new h2{
+    max-width:none;
+    font-size:34px;
+  }
+
+  .offer-banner-new p{
+    max-width:none;
+    font-size:13px;
+  }
+
+  .offer-showcase{
+    min-height:285px;
+  }
+
+  .offer-glow{
+    width:250px;
+    height:250px;
+    right:calc(50% - 125px);
+    top:18px;
+  }
+
+  .offer-mini-card{
+    width:148px;
+  }
+
+  .offer-mini-card-a{left:16px;top:42px}
+  .offer-mini-card-b{right:16px;top:26px}
+  .offer-mini-card-c{left:calc(50% - 74px);bottom:12px}
+
+  .offer-mini-image{
+    height:88px;
+  }
+
+  .offer-discover-badge{
+    width:96px;
+    height:96px;
+    right:calc(50% - 48px);
+    bottom:86px;
+    border-width:4px;
+  }
+
+  .offer-discover-badge strong{font-size:12px}
+  .offer-discover-badge span{font-size:13px}
+}
+
+@media(max-width:430px){
+  .offer-banner-new{
+    padding:0;
+    min-height:auto;
+    border-radius:22px;
+  }
+
+  .offer-banner-new .offer-content{
+    padding:25px 20px 16px;
+  }
+
+  .offer-kicker{
+    font-size:8px;
+    margin-bottom:12px;
+  }
+
+  .offer-banner-new h2{
+    max-width:none;
+    font-size:28px;
+  }
+
+  .offer-banner-new p{
+    max-width:none;
+    margin:13px 0 15px;
+    font-size:12px;
+  }
+
+  .offer-trust{
+    gap:6px;
+    margin-bottom:17px;
+  }
+
+  .offer-trust span{
+    min-height:27px;
+    padding:0 9px;
+    font-size:9px;
+  }
+
+  .offer-banner-new .primary-btn{
+    width:100%;
+    min-height:48px;
+  }
+
+  .offer-showcase{
+    min-height:255px;
+  }
+
+  .offer-mini-card{
+    width:126px;
+    padding:9px;
+    border-radius:15px;
+  }
+
+  .offer-mini-card-a{left:8px;top:35px}
+  .offer-mini-card-b{right:8px;top:22px}
+  .offer-mini-card-c{left:calc(50% - 63px);bottom:8px}
+
+  .offer-mini-image{
+    height:72px;
+    margin:6px 0 7px;
+  }
+
+  .offer-mini-card strong{font-size:10px}
+  .offer-mini-card small{font-size:8px}
+  .offer-mini-label{font-size:7px}
+
+  .offer-discover-badge{
+    width:82px;
+    height:82px;
+    right:calc(50% - 41px);
+    bottom:79px;
+  }
+
+  .offer-discover-badge small{font-size:6px}
+  .offer-discover-badge strong{font-size:10px}
+  .offer-discover-badge span{font-size:11px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .offer-mini-card,
+  .offer-banner-new .primary-btn::after{
+    animation:none;
+  }
+}
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -2201,30 +2614,67 @@ fbq('track','PageView');
 
 <section class="wrap" id="ofertas">
 
-  <div class="offer-banner">
+  <div class="offer-banner offer-banner-new">
 
     <div class="offer-content">
+      <span class="offer-kicker">SELEÇÃO CLICA, COMPRA E RI</span>
 
       <h2>
-        Ofertas que fazem
-        <span>sentido.</span>
+        Achados que dão
+        <span>vontade de clicar.</span>
       </h2>
 
       <p>
-        Produtos selecionados pelo melhor custo-benefício da loja.
+        Produtos úteis, diferentes e com bom custo-benefício, reunidos para você descobrir sem perder tempo procurando.
       </p>
 
-      <a href="#ofertas" class="primary-btn">
-        Ver ofertas
-      </a>
+      <div class="offer-trust">
+        <span>Achados selecionados</span>
+        <span>Lojas conhecidas</span>
+        <span>Compare antes de comprar</span>
+      </div>
 
+      <a href="#offersGrid" class="primary-btn offer-cta">
+        Explorar ofertas
+        <span class="offer-cta-arrow" aria-hidden="true">→</span>
+      </a>
     </div>
 
-    <div class="offer-circle"></div>
+    <div class="offer-showcase" aria-label="Produtos em destaque">
+      <div class="offer-glow"></div>
 
-    <div class="offer-number">
-      <small>Até</small>
-      <strong>50%</strong>
+      <article class="offer-mini-card offer-mini-card-a">
+        <span class="offer-mini-label">MAIS VENDIDO</span>
+        <div class="offer-mini-image">
+          <img src="https://m.media-amazon.com/images/I/510Uj5C7LdL._AC_SL1334_.jpg" alt="Airfryer Philips Walita" loading="lazy">
+        </div>
+        <strong>Airfryer Philips Walita</strong>
+        <small>Casa</small>
+      </article>
+
+      <article class="offer-mini-card offer-mini-card-b">
+        <span class="offer-mini-label">DESTAQUE</span>
+        <div class="offer-mini-image">
+          <img src="https://m.media-amazon.com/images/I/61q0Aiz1nXL._AC_SL1500_.jpg" alt="Samsung Galaxy Fit3" loading="lazy">
+        </div>
+        <strong>Samsung Galaxy Fit3</strong>
+        <small>Tecnologia</small>
+      </article>
+
+      <article class="offer-mini-card offer-mini-card-c">
+        <span class="offer-mini-label">ACHADO</span>
+        <div class="offer-mini-image">
+          <img src="https://rcdeletrica.com.br/image/cache/catalog/imagens_adicionais_70/110158-1-500x500.jpg" alt="Organizador Acrimet" loading="lazy">
+        </div>
+        <strong>Organizador Acrimet</strong>
+        <small>Casa</small>
+      </article>
+
+      <div class="offer-discover-badge">
+        <small>DESCUBRA</small>
+        <strong>seu próximo</strong>
+        <span>achado</span>
+      </div>
     </div>
 
   </div>
