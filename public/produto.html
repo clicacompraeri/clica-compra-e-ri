@@ -451,7 +451,6 @@ function updateProductSEO(product){
   const description=(product.description ? product.name+': '+product.description : product.name)+'. Confira preço de referência, fotos e acesso à oferta no Clica, Compra e Ri.';
   const image=product.image || baseUrl+'/logo.png';
 
-  updateProductSEO(product);
   const setContent=(id,value)=>{
     const el=document.getElementById(id);
     if(el) el.setAttribute('content',value);
@@ -525,6 +524,7 @@ function renderProduct(){
     return;
   }
   document.title=product.name+' | Clica, Compra e Ri';
+  updateProductSEO(product);
   container.innerHTML=
     '<div class="visual">'+
       (product.badge?'<span class="badge">'+product.badge+'</span>':'')+
@@ -651,29 +651,7 @@ function renderProduct(){
   document.getElementById('mobileCta').innerHTML=
     '<a href="'+product.link+'" target="_blank" rel="sponsored noopener">Ver produto na '+product.source+'</a>';
 
-  let schema=document.getElementById('productSchema');
-  if(!schema){
-    schema=document.createElement('script');
-    schema.type='application/ld+json';
-    schema.id='productSchema';
-    document.head.appendChild(schema);
-  }
-  const numericPrice=(product.price||'').replace(/[^0-9,]/g,'').replace('.','').replace(',','.');
-  schema.textContent=JSON.stringify({
-    "@context":"https://schema.org",
-    "@type":"Product",
-    "name":product.name,
-    "description":product.description,
-    "image":galleryImages,
-    "category":product.category,
-    "offers":{
-      "@type":"Offer",
-      "priceCurrency":"BRL",
-      "price":numericPrice,
-      "availability":"https://schema.org/InStock",
-      "url":window.location.href
-    }
-  });
+
 }
 renderProduct();
 </script>
