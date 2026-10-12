@@ -59,6 +59,7 @@ main{padding:44px 0 70px}
 .thumb{width:76px;height:76px;border:1px solid #dfe3e7;border-radius:14px;background:#fff;overflow:hidden;padding:4px;cursor:pointer}
 .thumb.active{border:2px solid #111315}
 .thumb img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.product-video-link{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;min-height:48px;border-radius:14px;background:#111315;color:#fff;font-size:14px;font-weight:900;padding:0 16px}.product-video-link:hover{background:#26292d}.product-video-link .play{width:26px;height:26px;border-radius:50%;background:var(--yellow);color:#111315;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
 .badge{position:absolute;left:24px;top:24px;background:var(--yellow);color:#111315;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:900;text-transform:uppercase}
 .content .category{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px}
 .content h1{font-size:clamp(30px,4vw,50px);line-height:1.04;letter-spacing:-.04em;margin-bottom:18px}
@@ -163,6 +164,26 @@ fbq('track','PageView');
 
 <script>
 const products = [
+  {
+    name:"Porta Pão Cesto de Pão com Tampa Retrátil",
+    description:"Porta-pão compacto em MDF com tampa retrátil para organizar pães, bolachas e biscoitos na bancada da cozinha.",
+    price:"R$ 33,00",
+    oldPrice:"R$ 36,90",
+    category:"Casa",
+    badge:"Oferta",
+    image:"https://down-br.img.susercontent.com/file/br-11134207-820md-mrc77wgg1c7bea",
+    gallery:[
+      "https://down-br.img.susercontent.com/file/br-11134207-820ln-mrc77wgg2qrr25",
+      "https://down-br.img.susercontent.com/file/br-11134207-820ll-mrc77wgg6yh364",
+      "https://down-br.img.susercontent.com/file/br-11134207-820lm-mrc77wgg5jwn4f",
+      "https://down-br.img.susercontent.com/file/br-11134207-820l9-mrc77wgg9rlzee",
+      "https://down-br.img.susercontent.com/file/br-11134207-820lh-mrc77wgg8d1j0d",
+      "https://down-br.img.susercontent.com/file/br-11134207-820m1-mrc77wgg45c796"
+    ],
+    source:"Shopee",
+    videoLink:"https://s.shopee.com.br/60SK6YVOVu",
+    link:"https://s.shopee.com.br/60SK6YVOVu"
+  },
   {
     name:"Luminária LED com Sensor de Movimento Recarregável Magnética em Madeira",
     description:"Luminária recarregável com sensor de movimento, fixação magnética e acabamento visual em madeira para iluminar corredores, quartos, cabeceiras e outros ambientes sem depender de instalação elétrica fixa.",
@@ -548,6 +569,7 @@ function renderProduct(){
         '<div class="thumbs" id="thumbs"></div>'+
         '<div class="main-photo"><img id="mainPhoto" src="'+product.image+'" alt="'+product.name.replace(/"/g,'&quot;')+'" loading="eager"></div>'+
       '</div>'+
+      (product.videoLink?'<a class="product-video-link" href="'+product.videoLink+'" target="_blank" rel="sponsored noopener"><span class="play" aria-hidden="true">▶</span><span>Ver vídeo real do produto na Shopee</span></a>':'')+
     '</div>'+
     '<div class="content">'+
       '<div class="category">'+product.category+'</div>'+
