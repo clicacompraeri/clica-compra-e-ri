@@ -17,6 +17,28 @@ h2{font-size:30px;line-height:1.15;margin-top:42px}.box{background:#111315;color
 .prompt{white-space:pre-wrap;background:#f2f3f5;border-left:4px solid #ffd21c;padding:18px;border-radius:10px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px}
 .cta{display:inline-flex;min-height:52px;align-items:center;justify-content:center;padding:0 24px;border-radius:13px;background:#ffd21c;color:#111;text-decoration:none;font-weight:900;margin-top:18px}
 small{color:#777d84}@media(max-width:650px){.grid{grid-template-columns:1fr}}
+
+.extra-section{margin-top:46px;padding-top:6px}
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.flow-step{position:relative;border:1px solid #e5e7ea;border-radius:16px;padding:18px;background:#fff}
+.flow-step b{display:flex;width:32px;height:32px;align-items:center;justify-content:center;border-radius:50%;background:#ffd21c;color:#111;margin-bottom:10px}
+.flow-step strong{display:block;margin-bottom:5px}.muted{color:#676d74}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.compare-card{border-radius:18px;padding:20px;border:1px solid #e5e7ea}
+.compare-card.dark{background:#111315;color:#fff;border-color:#111315}
+.compare-card.dark p{color:#c8ccd1}
+.checklist{display:grid;gap:9px;margin-top:18px}
+.check{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;background:#f6f7f8;border-radius:12px}
+.check::before{content:"";width:15px;height:15px;border:2px solid #c28f00;border-radius:4px;flex:0 0 15px;margin-top:4px}
+.example{border:1px solid #e4e6e9;border-radius:20px;overflow:hidden;margin-top:20px}
+.example-head{background:#111315;color:#fff;padding:18px 20px;font-weight:900}
+.example-body{padding:20px}
+.example-body ol{margin:0;padding-left:22px}.example-body li{margin:8px 0}
+.mini-project{margin-top:20px;border:2px solid #ffd21c;border-radius:20px;padding:22px;background:#fffdf2}
+.preview-visual{margin:22px 0 0;border-radius:20px;overflow:hidden;border:1px solid #e5e7ea;background:#111315}
+.preview-visual img{width:100%;display:block}
+@media(max-width:650px){.flow,.compare{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -61,6 +83,75 @@ Antes de avançar, explique como validar se a etapa atual funcionou.</div>
 
     <a class="cta" href="/clica-do-zero/">Conhecer o Clica do Zero</a>
     <p><small>Material do Clica, Compra e Ri. Nenhuma compra é necessária para acessar esta prévia.</small></p>
+
+    <section class="extra-section">
+      <h2>Como uma tarefa vira algo publicável</h2>
+      <p class="muted">O objetivo não é pedir tudo de uma vez. O caminho mais seguro é transformar a ideia em etapas pequenas, verificáveis e fáceis de corrigir.</p>
+      <div class="flow">
+        <div class="flow-step"><b>1</b><strong>Defina o objetivo</strong><span class="muted">Diga o que precisa existir no final.</span></div>
+        <div class="flow-step"><b>2</b><strong>Dê contexto</strong><span class="muted">Explique público, produto, limitações e o que já funciona.</span></div>
+        <div class="flow-step"><b>3</b><strong>Peça a primeira versão</strong><span class="muted">Comece simples para enxergar a direção.</span></div>
+        <div class="flow-step"><b>4</b><strong>Revise</strong><span class="muted">Confira texto, links, estrutura, visual e lógica.</span></div>
+        <div class="flow-step"><b>5</b><strong>Teste</strong><span class="muted">Use computador e celular e simule a ação do usuário.</span></div>
+        <div class="flow-step"><b>6</b><strong>Publique e meça</strong><span class="muted">Depois de funcionar, acompanhe o que realmente acontece.</span></div>
+      </div>
+    </section>
+
+    <section class="extra-section">
+      <h2>Exemplo prático: criar uma página de captura</h2>
+      <div class="example">
+        <div class="example-head">Em vez de pedir “faça uma página boa”, quebre o trabalho.</div>
+        <div class="example-body">
+          <ol>
+            <li>Defina qual material será entregue e para quem.</li>
+            <li>Peça uma headline com uma promessa clara, sem exageros.</li>
+            <li>Crie o formulário com somente os campos necessários.</li>
+            <li>Prepare a página de confirmação e a entrega do material.</li>
+            <li>Teste o formulário com um e-mail real.</li>
+            <li>Só depois conecte tráfego, anúncios ou divulgação.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="extra-section">
+      <h2>Onde a IA ajuda e onde você continua no comando</h2>
+      <div class="compare">
+        <div class="compare-card">
+          <strong>A IA pode acelerar</strong>
+          <p>Estrutura de páginas, primeira versão de textos, código, ideias de conteúdo, organização, revisão, alternativas e diagnóstico de problemas.</p>
+        </div>
+        <div class="compare-card dark">
+          <strong>Você continua decidindo</strong>
+          <p>Qual problema vale resolver, o que representa sua marca, quanto pode gastar, o que publicar, o que vender e quando uma versão está pronta.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="extra-section">
+      <h2>Checklist antes de colocar qualquer projeto no ar</h2>
+      <div class="checklist">
+        <div class="check">Todos os botões levam para o destino correto.</div>
+        <div class="check">A página funciona bem no celular e no computador.</div>
+        <div class="check">Não existem textos provisórios, preços errados ou links de teste.</div>
+        <div class="check">Formulários foram testados com um contato real.</div>
+        <div class="check">Métricas e rastreamento estão configurados quando forem necessários.</div>
+        <div class="check">Nenhuma função paga foi ativada sem saber o custo e o limite do teste.</div>
+      </div>
+    </section>
+
+    <section class="extra-section">
+      <h2>Seu primeiro mini-projeto</h2>
+      <div class="mini-project">
+        <strong>Escolha uma ideia pequena que possa ser publicada.</strong>
+        <p>Exemplo: uma página simples apresentando um produto, serviço, material gratuito ou projeto pessoal. Use o Método PAV, faça uma etapa por vez e só avance depois de testar a etapa atual.</p>
+        <p><strong>Meta:</strong> sair da conversa com a IA com algo que possa ser aberto, clicado, lido e validado por outra pessoa.</p>
+      </div>
+      <div class="preview-visual">
+        <img src="/assets/clica-do-zero-card.svg" alt="Visão do Clica do Zero e criação de projetos digitais com IA">
+      </div>
+    </section>
+
   </article>
 </div>
 </body>
