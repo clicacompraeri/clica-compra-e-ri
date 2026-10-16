@@ -84,7 +84,7 @@ footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
       <span>Pagamento único</span>
       <span>Atualizações desta versão incluídas</span>
     </div>
-    <a class="cta" href="https://pay.hotmart.com/D108063505L" target="_blank" rel="noopener">Comprar agora</a>
+    <a class="cta hotmart-fb hotmart__button-checkout" onclick="return false;" href="https://pay.hotmart.com/D108063505L?checkoutMode=2">Comprar agora</a>
     <p class="offer-note" style="margin-top:12px;"><a href="/clica-do-zero/previa.html" style="color:#555b62;font-weight:800;">Ainda não decidiu? Acessar prévia gratuita</a></p>
   </div>
 </div></section>
@@ -98,5 +98,18 @@ footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
 </div></section>
 </main>
 <footer>Clica do Zero é um produto do Clica, Compra e Ri.</footer>
+<script type="text/javascript">
+function importHotmart(){
+  var imported = document.createElement('script');
+  imported.src = 'https://static.hotmart.com/checkout/widget.min.js';
+  document.head.appendChild(imported);
+  var link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = 'https://static.hotmart.com/css/hotmart-fb.min.css';
+  document.head.appendChild(link);
+}
+importHotmart();
+</script>
 </body>
 </html>
