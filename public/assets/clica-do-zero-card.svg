@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" role="img" aria-labelledby="t d">
+  <title id="t">Clica do Zero</title>
+  <desc id="d">Crie projetos digitais com inteligência artificial como copiloto.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090b0e"/>
+      <stop offset=".62" stop-color="#12151a"/>
+      <stop offset="1" stop-color="#3b2a00"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffd21c"/>
+      <stop offset="1" stop-color="#ffb800"/>
+    </linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="18" stdDeviation="20" flood-opacity=".35"/></filter>
+  </defs>
+  <rect width="1200" height="750" rx="42" fill="url(#bg)"/>
+  <circle cx="1020" cy="180" r="250" fill="#ffd21c" opacity=".07"/>
+  <circle cx="180" cy="650" r="250" fill="#ffd21c" opacity=".05"/>
+  <g font-family="Arial,Helvetica,sans-serif">
+    <text x="72" y="118" fill="#fff" font-size="72" font-weight="900">CLICA DO <tspan fill="url(#gold)">ZERO</tspan></text>
+    <text x="75" y="174" fill="#fff" font-size="31" font-weight="700">Crie projetos reais com IA</text>
+    <text x="75" y="217" fill="#c9cdd3" font-size="23">Com a IA como copiloto da sua jornada.</text>
+  </g>
+  <g transform="translate(76 276)" filter="url(#shadow)">
+    <rect width="655" height="368" rx="24" fill="#161a20" stroke="#3b414b" stroke-width="3"/>
+    <rect x="22" y="22" width="611" height="308" rx="14" fill="#0b0d10"/>
+    <rect x="44" y="49" width="150" height="22" rx="9" fill="#ffd21c"/>
+    <rect x="44" y="96" width="255" height="18" rx="8" fill="#f0f2f5" opacity=".92"/>
+    <rect x="44" y="129" width="325" height="13" rx="6" fill="#8f97a3" opacity=".65"/>
+    <rect x="44" y="171" width="162" height="105" rx="13" fill="#15191f" stroke="#2c333d"/>
+    <rect x="224" y="171" width="162" height="105" rx="13" fill="#15191f" stroke="#2c333d"/>
+    <rect x="404" y="171" width="186" height="105" rx="13" fill="#15191f" stroke="#2c333d"/>
+    <circle cx="125" cy="222" r="29" fill="#ffd21c"/>
+    <path d="M115 222h20M125 212v20" stroke="#111315" stroke-width="7" stroke-linecap="round"/>
+    <path d="M258 237h94M258 211h63" stroke="#ffd21c" stroke-width="12" stroke-linecap="round"/>
+    <path d="M443 247l33-39 27 23 50-58" fill="none" stroke="#ffd21c" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M543 173h28v28" fill="none" stroke="#ffd21c" stroke-width="10" stroke-linecap="round"/>
+    <rect x="0" y="340" width="655" height="27" rx="12" fill="#282e37"/>
+  </g>
+  <g transform="translate(775 265)">
+    <rect width="330" height="380" rx="35" fill="#15191f" stroke="#3c434d" stroke-width="3"/>
+    <circle cx="165" cy="132" r="92" fill="#f4f6f8"/>
+    <rect x="100" y="77" width="130" height="103" rx="48" fill="#111315"/>
+    <circle cx="142" cy="127" r="10" fill="#ffd21c"/>
+    <circle cx="188" cy="127" r="10" fill="#ffd21c"/>
+    <path d="M141 154q24 22 48 0" fill="none" stroke="#ffd21c" stroke-width="7" stroke-linecap="round"/>
+    <rect x="112" y="218" width="106" height="85" rx="34" fill="#f4f6f8"/>
+    <path d="M111 245l-62 35M219 245l62 35" stroke="#f4f6f8" stroke-width="26" stroke-linecap="round"/>
+    <circle cx="49" cy="280" r="16" fill="#ffd21c"/>
+    <circle cx="281" cy="280" r="16" fill="#ffd21c"/>
+    <text x="165" y="343" fill="#ffd21c" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="900" text-anchor="middle">IA COMO COPILOTO</text>
+  </g>
+  <g transform="translate(76 675)" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="800">
+    <text fill="#ffd21c">PASSO A PASSO</text>
+    <text x="190" fill="#fff">•</text>
+    <text x="220" fill="#fff">TEMPLATES</text>
+    <text x="345" fill="#fff">•</text>
+    <text x="375" fill="#fff">CHECKLISTS</text>
+    <text x="510" fill="#fff">•</text>
+    <text x="540" fill="#fff">PROJETOS REAIS</text>
+  </g>
+</svg>
