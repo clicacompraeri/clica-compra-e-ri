@@ -533,6 +533,16 @@ a{color:inherit;text-decoration:none}
 .quick-start-main .quick-start-actions button{background:#ffd21c;color:#111}
 .quick-start-side .quick-start-actions button{background:#111315;color:#fff}
 @media(max-width:760px){.quick-start-kit{grid-template-columns:1fr}.quick-start-actions{display:grid}.quick-start-actions button{width:100%;min-height:40px}}
+
+.lesson-natural{margin:12px 0;border:1px solid var(--line);border-radius:15px;padding:14px;background:#fbfcfd}
+.lesson-natural-title{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}
+.lesson-natural-title h3{margin:0;font-size:13px}.lesson-natural-title span{font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.5px;color:#8a6800;background:#fff8d5;border-radius:999px;padding:5px 8px;white-space:nowrap}
+.lesson-natural p{margin:0 0 10px;font-size:10.5px;line-height:1.55;color:#5c6369}
+.lesson-natural-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.lesson-natural-step{border-radius:11px;padding:10px;background:#fff;border:1px solid var(--line)}
+.lesson-natural-step b{display:block;font-size:10.5px;margin-bottom:4px}.lesson-natural-step span{display:block;font-size:9.8px;line-height:1.45;color:#666d73}
+.lesson-natural-note{margin-top:10px;padding:9px 10px;border-left:3px solid #ffd21c;background:#fffdf3;border-radius:0 10px 10px 0;font-size:10px;line-height:1.5;color:#555b62}
+@media(max-width:620px){.lesson-natural-steps{grid-template-columns:1fr}.lesson-natural-title{flex-direction:column}}
 </style>
 </head>
 <body>
@@ -2132,6 +2142,19 @@ function openLesson(n,i){
       <div class="lesson-cover" aria-hidden="true"><small>Módulo ${m.n} • Aula ${m.n}.${i+1}</small><strong>${lesson.t}</strong></div>
       <button class="lesson-back" onclick="renderLessonList(modules.find(x=>x.n===${n}));document.getElementById('drawerTitle').textContent=modules.find(x=>x.n===${n}).title;document.getElementById('drawerModule').textContent='Módulo '+${n};">← Voltar às aulas</button>
       <div class="lesson-meta-row"><span class="lesson-pill">${lesson.d}</span><span class="lesson-pill">Aplicação prática</span><span class="lesson-pill">Método PAV</span></div>
+      <div class="lesson-natural">
+        <div class="lesson-natural-title">
+          <h3>Aprenda do jeito mais natural possível</h3>
+          <span>Sem decorar</span>
+        </div>
+        <p>Você não precisa entender tudo de uma vez. Use esta aula como uma conversa: primeiro entenda a ideia, depois faça uma coisa pequena e por fim confira o resultado.</p>
+        <div class="lesson-natural-steps">
+          <div class="lesson-natural-step"><b>1. Entenda</b><span>Leia procurando a ideia principal, não palavras difíceis.</span></div>
+          <div class="lesson-natural-step"><b>2. Faça</b><span>Aplique uma ação pequena no seu próprio projeto.</span></div>
+          <div class="lesson-natural-step"><b>3. Confira</b><span>Veja se existe um resultado real antes de seguir.</span></div>
+        </div>
+        <div class="lesson-natural-note">Se algo parecer complicado, volte só um passo. O curso não exige conhecimento prévio: ele foi feito para levar qualquer pessoa do zero à prática, sem pressa e sem pular etapas.</div>
+      </div>
       <div class="lesson-audio" id="lessonAudioBox">
         <div class="lesson-audio-head"><strong>Ouvir esta aula</strong><span>Versão narrada</span></div>
         <audio id="lessonAudio" controls preload="metadata"></audio>
