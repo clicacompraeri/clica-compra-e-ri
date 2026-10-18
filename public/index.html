@@ -3169,9 +3169,9 @@ function renderProducts(containerId, items = products) {
         ${containerId === 'offersGrid' ? '<span class="badge">OFERTA</span>' : (product.badge ? `<span class="badge">${product.badge}</span>` : '')}
       </div>
       <div class="product-info">
-        <div class="item-category-chips">${getProductTags(product).map(tag => `<span class="item-category-chip">${tag}</span>`).join('')}</div>
         <div class="product-name">${product.name}</div>
         <div class="product-desc">${product.description}</div>
+        <div class="item-category-chips">${getProductTags(product).map(tag => `<span class="item-category-chip">${tag}</span>`).join('')}</div>
       ${product.rating ? `<div class="rating-line" aria-label="Avaliação ${product.rating} de 5 estrelas"><span class="rating-stars" aria-hidden="true">★★★★★</span><span class="rating-value">${product.rating}</span><span class="rating-count">(${product.reviews})</span></div>` : ""}
         <div class="price-section">
           <strong>${product.source === 'Shopee' && product.price.includes(' a ') ? product.price.split(' a ')[0] : product.price}</strong>
