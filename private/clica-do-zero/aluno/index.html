@@ -474,6 +474,19 @@ a{color:inherit;text-decoration:none}
 .quick-challenge-count{display:inline-flex;align-items:center;justify-content:center;min-width:58px;height:30px;border-radius:999px;background:#111315;color:#ffd21c;font-size:11px;font-weight:950}
 @media(max-width:980px){.quick-challenges{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.quick-challenges{grid-template-columns:1fr}.quick-challenge-actions{display:grid}.quick-challenge-actions button{width:100%;min-height:40px}.quick-challenge-headline{align-items:flex-start;flex-direction:column}}
+
+.before-after{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ba-card{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff}
+.ba-card h3{margin:0 0 10px;font-size:14px}
+.ba-columns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ba-side{border-radius:12px;padding:11px;min-height:110px}
+.ba-side.before{background:#f7f8fa;border:1px solid #e6e8eb}
+.ba-side.after{background:#fffbea;border:1px solid #ecd66e}
+.ba-label{display:block;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.ba-side.before .ba-label{color:#6c7278}.ba-side.after .ba-label{color:#8a6800}
+.ba-side p{margin:0;font-size:10.5px;line-height:1.5;color:#555b62}
+.ba-action{margin-top:10px;border:0;background:#111315;color:#fff;border-radius:9px;padding:8px 10px;font-size:10px;font-weight:900;cursor:pointer}
+@media(max-width:760px){.before-after{grid-template-columns:1fr}.ba-columns{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -571,6 +584,50 @@ a{color:inherit;text-decoration:none}
           </div>
         </div>
         <div class="modules-grid" id="modulesGrid"></div>
+      </section>
+
+      <section class="panel" id="antes-depois">
+        <div class="panel-head">
+          <div>
+            <div class="eyebrow">Antes e depois</div>
+            <h2>Veja como uma decisão melhor muda o projeto</h2>
+            <p>Exemplos rápidos para o aluno comparar uma versão fraca com uma versão mais clara, segura e útil antes de aplicar no próprio projeto.</p>
+          </div>
+        </div>
+        <div class="before-after">
+          <article class="ba-card">
+            <h3>Pedido para IA</h3>
+            <div class="ba-columns">
+              <div class="ba-side before"><span class="ba-label">Antes</span><p>“Melhore meu site.”</p></div>
+              <div class="ba-side after"><span class="ba-label">Depois</span><p>“Altere somente o card do produto X. Preserve layout, links e demais cards. Depois valide no mobile e desktop.”</p></div>
+            </div>
+            <button class="ba-action" onclick="openModule(3);setTimeout(()=>openLesson(3,4),40)">Ver PAV aplicado ao código</button>
+          </article>
+          <article class="ba-card">
+            <h3>CTA de uma página</h3>
+            <div class="ba-columns">
+              <div class="ba-side before"><span class="ba-label">Antes</span><p>“Clique aqui” sem contexto do que acontece depois.</p></div>
+              <div class="ba-side after"><span class="ba-label">Depois</span><p>“Ver prévia gratuita” ou “Comprar agora”, deixando claro o próximo passo.</p></div>
+            </div>
+            <button class="ba-action" onclick="openModule(5);setTimeout(()=>openLesson(5,2),40)">Abrir aula de cards e decisão</button>
+          </article>
+          <article class="ba-card">
+            <h3>Produto de afiliado</h3>
+            <div class="ba-columns">
+              <div class="ba-side before"><span class="ba-label">Antes</span><p>Imagem genérica, preço antigo e link que abre uma busca com vários produtos.</p></div>
+              <div class="ba-side after"><span class="ba-label">Depois</span><p>Produto específico, imagem correta, preço verificado, disponibilidade e link testado.</p></div>
+            </div>
+            <button class="ba-action" onclick="openModule(6);setTimeout(()=>openLesson(6,2),40)">Ver validação de produto</button>
+          </article>
+          <article class="ba-card">
+            <h3>Tráfego pago</h3>
+            <div class="ba-columns">
+              <div class="ba-side before"><span class="ba-label">Antes</span><p>Ativar anúncio e esperar que venda sem definir limite ou hipótese.</p></div>
+              <div class="ba-side after"><span class="ba-label">Depois</span><p>Entrar com orçamento de teste, limite de perda, hipótese, criativo e regra de pausa já definidos.</p></div>
+            </div>
+            <button class="ba-action" onclick="openModule(12);setTimeout(()=>openLesson(12,2),40)">Abrir aula de orçamento de teste</button>
+          </article>
+        </div>
       </section>
 
       <section class="panel" id="desafios-rapidos">
