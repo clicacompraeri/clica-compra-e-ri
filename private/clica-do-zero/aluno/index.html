@@ -119,6 +119,11 @@ a{color:inherit;text-decoration:none}
 .goal-steps{display:grid;gap:8px}.goal-step{display:grid;grid-template-columns:30px 1fr auto;gap:9px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff}.goal-step b{width:30px;height:30px;border-radius:9px;background:#111315;color:#ffd21c;display:grid;place-items:center;font-size:10px}.goal-step strong{display:block;font-size:11px}.goal-step span{display:block;font-size:9.5px;color:var(--muted);margin-top:2px}.goal-step button{border:0;background:#fff1a8;color:#5d4800;border-radius:999px;padding:7px 9px;font-size:9.5px;font-weight:900;cursor:pointer}
 .goal-summary{border:1px solid #ecd66e;border-radius:14px;padding:14px;background:#fffbea}.goal-summary small{display:block;color:#8a6800;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.5px}.goal-summary h4{margin:5px 0 6px;font-size:15px}.goal-summary p{margin:0;color:#555b62;font-size:11px;line-height:1.55}.goal-summary .primary{margin-top:12px;min-height:38px;padding:0 13px;font-size:10.5px}
 @media(max-width:760px){.goal-path.open{grid-template-columns:1fr}.goal-step{grid-template-columns:30px 1fr}.goal-step button{grid-column:2;width:max-content}}
+.diagnostic-learning{margin-top:18px;border:1px solid var(--line);border-radius:18px;padding:18px;background:#fbfcfd}
+.diagnostic-learning h3{margin:0 0 6px;font-size:18px}.diagnostic-learning>p{margin:0 0 12px;color:var(--muted);font-size:12px}
+.diagnostic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.diagnostic-choice{border:1px solid var(--line);background:#fff;border-radius:13px;padding:12px;text-align:left;cursor:pointer;transition:.16s;min-height:86px}.diagnostic-choice:hover,.diagnostic-choice.active{border-color:#d7ba35;background:#fffdf2;box-shadow:0 8px 20px rgba(0,0,0,.05)}.diagnostic-choice strong{display:block;font-size:11.5px}.diagnostic-choice span{display:block;font-size:10px;color:var(--muted);line-height:1.45;margin-top:4px}
+.diagnostic-result{display:none;margin-top:13px;border:1px solid #e7d36f;border-radius:15px;padding:15px;background:#fffbea}.diagnostic-result.open{display:block}.diagnostic-result h4{margin:0 0 5px;font-size:14px}.diagnostic-result>p{margin:0 0 10px;color:#555b62;font-size:11.5px;line-height:1.55}.diagnostic-result ul{margin:0;padding-left:18px}.diagnostic-result li{font-size:11px;color:#555b62;line-height:1.55;margin:3px 0}.diagnostic-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.diagnostic-actions button{border:0;border-radius:999px;padding:8px 10px;font-size:10px;font-weight:900;cursor:pointer}.diagnostic-actions .primary-diag{background:#111315;color:#fff}.diagnostic-actions .secondary-diag{background:#fff;border:1px solid #dbc75f;color:#5e4900}
+@media(max-width:760px){.diagnostic-grid{grid-template-columns:1fr}}
 .lesson-map .mini.interactive{cursor:pointer;transition:.16s}.lesson-map .mini.interactive:hover{transform:translateY(-2px);box-shadow:0 9px 20px rgba(0,0,0,.06);border-color:#d8dadd}.lesson-map .mini.interactive small{display:block;margin-top:8px;font-size:9.5px;font-weight:900;color:#8a6800}
 .path-access{margin-top:10px}.path-access button{border:1px solid #e5d06f;background:#fff8d5;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:900;cursor:pointer}.path-access-box{display:none;margin-top:8px;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fafbfc;font-size:10.5px;line-height:1.55;color:#555b62}.path-access-box.open{display:block}
 .field-note{margin-top:18px;padding:18px;border:1px dashed #d6a900;border-radius:16px;background:#fffdf3}
@@ -418,6 +423,23 @@ a{color:inherit;text-decoration:none}
               <button class="goal-tab" data-goal="produto">Criar produto próprio</button>
             </div>
             <div class="goal-path" id="goalPath"></div>
+          </div>
+
+          <div class="diagnostic-learning">
+            <h3>O que está dando errado?</h3>
+            <p>Escolha o problema que mais se parece com o seu momento. O curso aponta onde investigar primeiro e qual aprendizado abrir em seguida.</p>
+            <div class="diagnostic-grid" id="diagnosticGrid">
+              <button class="diagnostic-choice" data-diag="deploy"><strong>Meu projeto não publica</strong><span>Build, porta, serviço, deploy ou erro em produção.</span></button>
+              <button class="diagnostic-choice" data-diag="vendas"><strong>Tenho visitas, mas não vendo</strong><span>Página, confiança, CTA, oferta ou fluxo de compra.</span></button>
+              <button class="diagnostic-choice" data-diag="google"><strong>Meu site não aparece no Google</strong><span>Indexação, sitemap, robots, conteúdo ou estrutura.</span></button>
+              <button class="diagnostic-choice" data-diag="produto"><strong>Produto ou link está errado</strong><span>Preço, imagem, disponibilidade, link afiliado ou destino.</span></button>
+              <button class="diagnostic-choice" data-diag="anuncio"><strong>Meu anúncio não está funcionando</strong><span>Criativo, página, rastreamento, orçamento ou oferta.</span></button>
+              <button class="diagnostic-choice" data-diag="acesso"><strong>O aluno não consegue acessar</strong><span>Compra, webhook, banco, login ou status do acesso.</span></button>
+              <button class="diagnostic-choice" data-diag="conteudo"><strong>Não sei o que publicar</strong><span>Ideia, gancho, formato, CTA ou calendário.</span></button>
+              <button class="diagnostic-choice" data-diag="rumo"><strong>Tenho muitas ideias e nenhum rumo</strong><span>Prioridade, validação, escopo e próximo passo.</span></button>
+              <button class="diagnostic-choice" data-diag="mobile"><strong>No celular ficou ruim</strong><span>Layout, toque, legibilidade, carregamento ou navegação.</span></button>
+            </div>
+            <div class="diagnostic-result" id="diagnosticResult"></div>
           </div>
         </div>
         <div class="field-note">
@@ -1390,6 +1412,33 @@ function initInteractiveRouteNavigator(){
   });
 }
 
+const diagnosticPaths={
+  deploy:{title:'Comece pelo diagnóstico do deploy, não por mudanças aleatórias.',why:'Quando a publicação falha, o caminho mais curto costuma ser identificar a primeira mensagem útil de erro e testar uma hipótese por vez.',checks:['Abra o deployment mais recente','Veja se o erro cita porta, rota, arquivo ou dependência','Compare com o último deploy que funcionou','Corrija somente a causa mais provável','Publique novamente e valide'],n:4,i:2,secondary:{n:4,i:4,label:'Validar produção'}},
+  vendas:{title:'Descubra onde a decisão de compra está travando.',why:'Mais elementos na página nem sempre resolvem. Primeiro identifique se o problema é oferta, confiança, clareza, CTA ou destino.',checks:['Revise a primeira tela','Confira se o benefício está claro','Veja se existem provas e objeções respondidas','Teste o CTA e o destino','Meça cliques antes de redesenhar tudo'],n:7,i:0,secondary:{n:11,i:0,label:'Ver o funil mínimo'}},
+  google:{title:'Separe problema de indexação de problema de conteúdo.',why:'Antes de mudar o visual ou publicar mais páginas, confirme se o Google consegue encontrar e entender as páginas que já existem.',checks:['Conferir robots.txt e sitemap','Abrir Search Console','Ver status da URL','Checar title, H1, description e canonical','Criar links internos quando fizer sentido'],n:8,i:5,secondary:{n:8,i:0,label:'Entender como o Google encontra páginas'}},
+  produto:{title:'Valide o produto como um conjunto de dados.',why:'Imagem, preço, disponibilidade e link precisam apontar para a mesma realidade. Um único item errado já prejudica confiança.',checks:['Abrir o produto na loja de origem','Confirmar disponibilidade','Conferir preço atual','Validar imagem correta','Testar o link afiliado até o destino'],n:6,i:1,secondary:{n:6,i:2,label:'Revisar link afiliado'}},
+  anuncio:{title:'Antes de mexer no orçamento, descubra o que o teste realmente mostrou.',why:'Campanha ruim pode ser criativo, oferta, página, rastreamento ou público. Escalar cedo só aumenta o custo da dúvida.',checks:['Conferir destino do anúncio','Validar rastreamento e UTM','Comparar criativos','Revisar oferta/página','Só então decidir pausar, iterar ou escalar'],n:12,i:5,secondary:{n:11,i:2,label:'Revisar UTM e origem'}},
+  acesso:{title:'Siga o caminho completo da compra até o login.',why:'Problemas de acesso normalmente estão em uma das passagens entre sistemas. Ver o fluxo inteiro evita tentar corrigir no lugar errado.',checks:['Confirmar compra/status','Ver se o evento foi enviado','Checar processamento no servidor','Confirmar registro no banco','Testar login e status do aluno'],n:13,i:6,secondary:{n:4,i:4,label:'Validar produção'}},
+  conteudo:{title:'Comece pela ideia que merece existir, não pelo formato.',why:'Quando o objetivo e a curiosidade vêm primeiro, escolher Reels, post, vídeo ou texto fica muito mais fácil.',checks:['Definir público','Escolher dor, curiosidade ou transformação','Criar um gancho coerente','Entregar uma ideia útil','Definir o próximo passo/CTA'],n:9,i:0,secondary:{n:9,i:2,label:'Trabalhar o gancho'}},
+  rumo:{title:'Reduza opções até conseguir testar uma direção.',why:'Muitas ideias parecem avanço, mas podem impedir decisão. Um pequeno teste real produz mais clareza do que comparar possibilidades para sempre.',checks:['Escrever a ideia principal em uma frase','Definir para quem ela existe','Escolher o maior risco da ideia','Criar um MVP pequeno','Testar e decidir com base no resultado'],n:0,i:0,secondary:{n:13,i:3,label:'Definir escopo da primeira versão'}},
+  mobile:{title:'Resolva o problema no contexto em que ele acontece.',why:'Desktop funcionando não garante celular funcionando. O diagnóstico precisa ser feito no tamanho e interação reais.',checks:['Abrir no celular real ou viewport pequeno','Ver se algo estoura largura','Testar botões por toque','Checar tamanho de texto e espaçamento','Corrigir somente o componente problemático'],n:5,i:4,secondary:{n:5,i:5,label:'QA da vitrine'}},
+};
+
+function renderDiagnostic(key){
+  const data=diagnosticPaths[key],box=document.getElementById('diagnosticResult');
+  if(!data||!box)return;
+  document.querySelectorAll('.diagnostic-choice').forEach(b=>b.classList.toggle('active',b.dataset.diag===key));
+  box.innerHTML='<h4>'+data.title+'</h4><p>'+data.why+'</p><ul>'+data.checks.map(x=>'<li>'+x+'</li>').join('')+'</ul><div class="diagnostic-actions"><button class="primary-diag" type="button" id="diagPrimary">Abrir aprendizado principal</button><button class="secondary-diag" type="button" id="diagSecondary">'+data.secondary.label+'</button></div>';
+  box.classList.add('open');
+  document.getElementById('diagPrimary').onclick=()=>{openModule(data.n);setTimeout(()=>openLesson(data.n,data.i),40);};
+  document.getElementById('diagSecondary').onclick=()=>{openModule(data.secondary.n);setTimeout(()=>openLesson(data.secondary.n,data.secondary.i),40);};
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function initDiagnosticLearning(){
+  document.querySelectorAll('.diagnostic-choice').forEach(btn=>btn.onclick=()=>renderDiagnostic(btn.dataset.diag));
+}
+
 const goalLearningPaths={
   tirar:{
     title:'Da ideia à primeira versão testável',
@@ -1877,6 +1926,7 @@ renderReviewCenter();
 addPathAccessGuides();
 initInteractiveRouteNavigator();
 initGoalLearningPaths();
+initDiagnosticLearning();
 connectLearningPaths();
 </script>
 </body>
