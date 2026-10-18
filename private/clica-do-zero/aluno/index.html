@@ -74,6 +74,26 @@ a{color:inherit;text-decoration:none}
 .resource{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fafbfc}
 .resource strong{font-size:13px;display:block}
 .resource span{font-size:11px;color:var(--muted)}
+.field-note{margin-top:18px;padding:18px;border:1px dashed #d6a900;border-radius:16px;background:#fffdf3}
+.field-note strong{display:block;margin-bottom:5px}
+.field-note p{margin:0;color:var(--muted);font-size:13px}
+.knowledge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.knowledge{border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden}
+.knowledge[open]{box-shadow:0 12px 30px rgba(0,0,0,.06)}
+.knowledge summary{list-style:none;cursor:pointer;padding:17px 18px;font-weight:900;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.knowledge summary::-webkit-details-marker{display:none}
+.knowledge summary::after{content:"+";font-size:20px;color:#9b7400}
+.knowledge[open] summary::after{content:"−"}
+.knowledge-body{padding:0 18px 18px;border-top:1px solid #f0f1f2}
+.knowledge-body h4{font-size:14px;margin:16px 0 7px}
+.knowledge-body p,.knowledge-body li{font-size:12.5px;color:#555b62;line-height:1.6}
+.knowledge-body ul{margin:8px 0 0;padding-left:18px}
+.prompt-box,.code-box{margin-top:10px;background:#111315;color:#f6f7f8;border-radius:12px;padding:13px 14px;font:12px/1.55 Consolas,Monaco,monospace;white-space:pre-wrap;overflow:auto}
+.prompt-label{display:inline-flex;margin-top:12px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#8a6800;background:#fff7d2;border-radius:999px;padding:5px 8px}
+.lesson-map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.lesson-map .mini{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fafbfc}
+.lesson-map .mini strong{display:block;font-size:12px}
+.lesson-map .mini span{font-size:11px;color:var(--muted)}
 .lesson-drawer{position:fixed;inset:0 0 0 auto;width:min(560px,100%);background:#fff;z-index:30;box-shadow:-20px 0 60px rgba(0,0,0,.18);transform:translateX(105%);transition:.25s;display:flex;flex-direction:column}
 .lesson-drawer.open{transform:translateX(0)}
 .drawer-head{padding:22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
@@ -96,12 +116,15 @@ a{color:inherit;text-decoration:none}
   .hero{grid-template-columns:1fr}
   .modules-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .resources{grid-template-columns:repeat(2,1fr)}
+  .knowledge-grid{grid-template-columns:1fr}
+  .lesson-map{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:620px){
   .main{padding:16px}
   .topbar{align-items:flex-start}.student{display:none}
   .modules-grid{grid-template-columns:1fr}
   .resources{grid-template-columns:1fr}
+  .lesson-map{grid-template-columns:1fr}
   .module-nav{grid-template-columns:repeat(5,minmax(0,1fr))}
 }
 </style>
@@ -170,6 +193,270 @@ a{color:inherit;text-decoration:none}
           <div class="resource"><strong>Workbooks</strong><span>Exercícios para transformar cada módulo em ação.</span></div>
           <div class="resource"><strong>Checklists</strong><span>Conferências rápidas antes de publicar ou avançar.</span></div>
           <div class="resource"><strong>Planilhas e templates</strong><span>Arquivos práticos para aplicar no projeto.</span></div>
+        </div>
+        <div class="field-note">
+          <strong>O diferencial desta área</strong>
+          <p>Os exemplos abaixo nasceram do desenvolvimento real do Clica, Compra e Ri e do próprio Clica do Zero: decisões que funcionaram, erros que exigiram correção, prompts usados para preservar o que já estava bom e integrações que só ficaram confiáveis depois de testar ponta a ponta.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Biblioteca prática do projeto real</h2>
+            <p>Comandos, prompts, decisões, erros e aprendizados acumulados desde o início do projeto.</p>
+          </div>
+        </div>
+
+        <div class="knowledge-grid">
+          <details class="knowledge" open>
+            <summary>Método PAV: a regra que evitou quebrar o que já funcionava</summary>
+            <div class="knowledge-body">
+              <h4>P — Pedir exatamente</h4>
+              <p>Antes de qualquer alteração, descreva o resultado desejado e também o que não pode ser mexido. Em projetos reais, dizer apenas “melhore” abre espaço para mudanças desnecessárias.</p>
+              <h4>A — Alterar só o necessário</h4>
+              <p>Uma correção pequena deve continuar pequena. Se o problema está na imagem do carrinho, não é motivo para reconstruir o cabeçalho inteiro.</p>
+              <h4>V — Validar antes de continuar</h4>
+              <p>Não confie apenas no código. Depois da alteração, valide a versão publicada, navegue pelo fluxo e confirme que o que estava funcionando continua funcionando.</p>
+              <span class="prompt-label">Prompt pronto</span>
+              <div class="prompt-box">Altere somente [ELEMENTO]. Preserve todo o restante exatamente como está. Não remova funcionalidades existentes. Depois da alteração, valide a versão publicada e me informe apenas o que foi alterado e o resultado da validação.</div>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Prompt de diagnóstico antes de mexer</summary>
+            <div class="knowledge-body">
+              <p>Um dos padrões mais úteis foi separar diagnóstico de execução. Primeiro entender, depois alterar. Isso reduz correções em cascata.</p>
+              <span class="prompt-label">Prompt pronto</span>
+              <div class="prompt-box">Analise o problema sem alterar nada primeiro. Identifique a causa provável, o arquivo ou componente envolvido e o menor ajuste necessário. Só depois aplique a correção, sem mexer em outras partes.</div>
+              <h4>Quando usar</h4>
+              <ul>
+                <li>Imagem fora do enquadramento.</li>
+                <li>Botão que parou de responder.</li>
+                <li>Carrossel que mostra só um banner.</li>
+                <li>Link que abre página errada.</li>
+                <li>Deploy que conclui mas a versão publicada parece antiga.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>GitHub + Railway: publicar sem fingir que deu certo</summary>
+            <div class="knowledge-body">
+              <p>O fluxo confiável foi: editar no repositório, gerar commit, aguardar o deploy e só então validar a URL pública. “Código enviado” não é igual a “site publicado”.</p>
+              <div class="code-box">GitHub → commit na main
+Railway → build/deploy
+Status esperado → SUCCESS
+Depois → abrir URL pública e validar a mudança</div>
+              <h4>Lição que vale para qualquer projeto</h4>
+              <p>Nunca declarar uma correção concluída antes do ambiente publicado confirmar. Várias falhas apareceram somente depois do deploy.</p>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Erros reais que viraram ensinamento</summary>
+            <div class="knowledge-body">
+              <ul>
+                <li>Arquivo com nome duplicado, como <strong>logo.png.png</strong>, pode parecer correto visualmente no computador e falhar no site.</li>
+                <li>Um produto disponível ontem pode ficar indisponível hoje; preço, link e disponibilidade precisam ser conferidos.</li>
+                <li>Links de busca não devem substituir links de produto quando a intenção é vender um item específico.</li>
+                <li>Carrossel com quatro arquivos não significa carrossel funcionando; precisa existir lógica de navegação e todos os slides precisam ser carregados.</li>
+                <li>Em Express moderno, rotas genéricas mal configuradas podem gerar erro de <strong>path-to-regexp</strong>.</li>
+                <li>Um zoom bonito pode continuar ruim se não ampliar exatamente a região sob o mouse.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Vitrine que vende: o que aprendemos nos cards</summary>
+            <div class="knowledge-body">
+              <p>Um card não é só imagem + preço. O comprador precisa reconhecer produto, loja, confiança e próximo passo rapidamente.</p>
+              <ul>
+                <li>Imagem real e bem enquadrada.</li>
+                <li>Nome legível e específico.</li>
+                <li>Preço real quando disponível.</li>
+                <li>Avaliação e quantidade de avaliações quando a origem fornece esses dados.</li>
+                <li>Categoria curta e intuitiva.</li>
+                <li>Loja de origem identificável sem poluir o visual.</li>
+                <li>CTA claro, como “Comprar agora”.</li>
+              </ul>
+              <span class="prompt-label">Prompt pronto</span>
+              <div class="prompt-box">Padronize este card sem alterar os demais. Mantenha imagem, nome, preço e link reais. Corrija somente hierarquia visual, enquadramento e consistência com os cards existentes.</div>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Produtos de afiliado: disciplina antes de publicar</summary>
+            <div class="knowledge-body">
+              <p>O erro mais caro em afiliados é publicar informação bonita porém errada. Antes de adicionar um item, valide quatro coisas: disponibilidade, foto, preço e destino do link.</p>
+              <div class="code-box">Checklist do produto
+[ ] Produto específico
+[ ] Disponível
+[ ] Foto corresponde ao item
+[ ] Preço atual
+[ ] Link afiliado correto
+[ ] Loja identificada
+[ ] Página de destino abre o item esperado</div>
+              <p>Quando um produto deixa de existir, a solução não é improvisar um substituto visualmente parecido; é procurar outro item real e refazer os dados.</p>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Página de produto: confiança antes do clique</summary>
+            <div class="knowledge-body">
+              <p>A página precisa responder rapidamente: o que é, para quem serve, por que vale a pena e onde comprar. Fotos adicionais ajudam, mas precisam representar o mesmo produto.</p>
+              <h4>Aprendizado do zoom</h4>
+              <p>O zoom só ficou realmente útil quando passou a acompanhar a posição precisa do cursor. “Aumentar a imagem” e “ampliar exatamente onde o usuário aponta” são problemas diferentes.</p>
+              <span class="prompt-label">Prompt pronto</span>
+              <div class="prompt-box">Melhore somente o zoom da imagem principal. A ampliação deve acompanhar com precisão a posição do mouse, sem alterar layout, fotos, botões, preço ou conteúdo da página.</div>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>SEO do zero: publicar não basta</summary>
+            <div class="knowledge-body">
+              <p>O projeto só começou a ficar preparado para tráfego orgânico quando página, metadados, sitemap, robots e Search Console passaram a fazer parte do processo.</p>
+              <ul>
+                <li>Título e descrição precisam representar a página de verdade.</li>
+                <li>URLs devem ser estáveis e fáceis de entender.</li>
+                <li>Indexação precisa ser conferida, não presumida.</li>
+                <li>Conteúdo útil deve apontar para páginas que realmente ajudam o usuário.</li>
+              </ul>
+              <div class="code-box">Publicar → conferir URL → sitemap/robots → Search Console → aguardar indexação → medir impressões e cliques → melhorar</div>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Métricas: clique é uma pergunta respondida pelo usuário</summary>
+            <div class="knowledge-body">
+              <p>O objetivo não é colecionar números. É descobrir quais produtos, seções e chamadas despertam interesse suficiente para levar a pessoa ao próximo passo.</p>
+              <h4>Perguntas práticas</h4>
+              <ul>
+                <li>Qual produto recebe mais cliques?</li>
+                <li>Qual seção gera mais saída para Amazon, Shopee ou outra loja?</li>
+                <li>Qual criativo traz visitas que realmente navegam?</li>
+                <li>O usuário chega ao botão de compra?</li>
+              </ul>
+              <span class="prompt-label">Prompt pronto</span>
+              <div class="prompt-box">Não me mostre apenas visitas. Separe o comportamento por produto, seção e origem do clique. Quero descobrir onde existe intenção real e qual próximo teste faz sentido.</div>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Conteúdo, Reels e anúncios: atenção precisa ter destino</summary>
+            <div class="knowledge-body">
+              <p>Memes, vídeos curtos e criativos podem gerar atenção, mas precisam levar a uma oferta ou produto claro. O conteúdo não pode terminar no próprio conteúdo.</p>
+              <ul>
+                <li>Mostrar o produto cedo.</li>
+                <li>Vídeos curtos, objetivos e reutilizáveis.</li>
+                <li>Alternar conteúdo divertido e conteúdo de produto.</li>
+                <li>Usar CTA coerente com a página de destino.</li>
+                <li>Começar com orçamento controlado e aprender antes de escalar.</li>
+              </ul>
+              <span class="prompt-label">Exemplo de comando</span>
+              <div class="prompt-box">Crie um criativo vertical de 15 segundos. Mostre o problema nos primeiros segundos, apresente o produto em uso, destaque um benefício real e termine com um CTA simples. Sem promessas exageradas.</div>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Funil do Clica do Zero: menos etapas, mais clareza</summary>
+            <div class="knowledge-body">
+              <p>O fluxo foi organizado para não misturar captura, prévia e venda em uma única página.</p>
+              <div class="code-box">Página do curso
+→ Prévia gratuita
+→ Captura de nome + e-mail
+→ Prévia liberada
+→ Oferta completa
+→ Checkout Hotmart</div>
+              <p>Klaviyo ficou responsável por captura e comunicação. Hotmart ficou responsável pelo pagamento. O site ficou responsável pela experiência, conteúdo e ligação entre as etapas.</p>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Webhook e área do aluno: segurança de verdade</summary>
+            <div class="knowledge-body">
+              <p>Esconder uma URL não protege um curso. A área só passou a fazer sentido quando o acesso foi validado no servidor.</p>
+              <div class="code-box">Compra aprovada
+→ Hotmart envia Webhook V2
+→ Railway valida autenticação
+→ Supabase registra aluno ativo
+→ login consulta status
+→ conteúdo é entregue somente se o acesso estiver ativo</div>
+              <p>Também validamos o caminho inverso: um acesso revogado deixou de entrar mesmo após já ter funcionado antes.</p>
+              <h4>Regra de segurança</h4>
+              <p>Tokens, chaves e segredos nunca devem aparecer no HTML, em prompts para alunos ou no repositório público. Exemplos do curso usam sempre placeholders.</p>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Prompt para integrações sem destruir configurações existentes</summary>
+            <div class="knowledge-body">
+              <span class="prompt-label">Prompt pronto</span>
+              <div class="prompt-box">Na ferramenta já aberta, altere somente [CAMPO/INTEGRAÇÃO]. Preserve nome, produto, preço, checkout, conteúdo e todas as configurações existentes. Não regenere tokens. Não faça ações pagas. Antes de salvar algo sensível, pare e mostre exatamente o que será alterado.</div>
+              <p>Esse padrão foi especialmente importante em Hotmart, automações, anúncios e integrações externas.</p>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Prompt para corrigir sem reconstruir</summary>
+            <div class="knowledge-body">
+              <span class="prompt-label">Prompt pronto</span>
+              <div class="prompt-box">Corrija somente o problema descrito. Não refatore o projeto inteiro, não troque estilos que já funcionam e não remova elementos existentes. Se houver mais de uma solução, prefira a menor alteração possível e valide depois.</div>
+              <p>Essa orientação parece simples, mas virou uma das maiores economias de tempo do projeto.</p>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Prompt para transformar experiência em curso</summary>
+            <div class="knowledge-body">
+              <p>O Clica do Zero nasceu da prática: primeiro veio o projeto, depois a organização do método. Isso evita um curso feito apenas de teoria.</p>
+              <span class="prompt-label">Prompt pronto</span>
+              <div class="prompt-box">Transforme este aprendizado real em uma aula prática. Explique o problema, a tentativa inicial, o erro encontrado, a solução que funcionou, o princípio geral que o aluno pode reutilizar e um exercício para aplicar no próprio projeto.</div>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>Checklist mestre antes de publicar qualquer mudança</summary>
+            <div class="knowledge-body">
+              <div class="code-box">[ ] Mudança corresponde exatamente ao pedido
+[ ] Nada fora do escopo foi alterado
+[ ] Links continuam funcionando
+[ ] Imagens carregam corretamente
+[ ] Mobile continua utilizável
+[ ] Dados reais não foram substituídos por placeholders
+[ ] Build/deploy terminou
+[ ] Versão publicada foi conferida
+[ ] Próxima alteração só começa depois da validação</div>
+            </div>
+          </details>
+
+          <details class="knowledge">
+            <summary>O princípio central do projeto</summary>
+            <div class="knowledge-body">
+              <p><strong>IA não substitui direção.</strong> Ela acelera pesquisa, criação, código, conteúdo, análise e operação. Mas o resultado melhora quando existe uma pessoa definindo limites, verificando fatos e decidindo o que não deve ser alterado.</p>
+              <p>O objetivo do Clica do Zero não é ensinar a “pedir qualquer coisa para a IA”. É ensinar a transformar intenção em projeto real, com checkpoints, validação e aprendizado acumulado.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Mapa do que construímos na prática</h2>
+            <p>Uma visão rápida da jornada que deu origem aos ensinamentos do curso.</p>
+          </div>
+        </div>
+        <div class="lesson-map">
+          <div class="mini"><strong>Marca</strong><span>Nome, identidade, posicionamento e consistência.</span></div>
+          <div class="mini"><strong>Site</strong><span>Estrutura, navegação, vitrine, páginas e responsividade.</span></div>
+          <div class="mini"><strong>Produtos</strong><span>Dados reais, afiliados, preço, disponibilidade e links.</span></div>
+          <div class="mini"><strong>Conversão</strong><span>Cards, CTAs, confiança, prova e fluxo de compra.</span></div>
+          <div class="mini"><strong>Conteúdo</strong><span>Facebook, Reels, anúncios e criativos com IA.</span></div>
+          <div class="mini"><strong>SEO</strong><span>Metadados, sitemap, robots e Search Console.</span></div>
+          <div class="mini"><strong>Métricas</strong><span>Cliques, interesse, comportamento e próximos testes.</span></div>
+          <div class="mini"><strong>Curso próprio</strong><span>Oferta, prévia, materiais, checkout e área do aluno.</span></div>
+          <div class="mini"><strong>Integrações</strong><span>Klaviyo, Hotmart, Railway, GitHub e Supabase.</span></div>
         </div>
       </section>
     </div>
