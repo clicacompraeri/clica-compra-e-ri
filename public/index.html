@@ -1682,10 +1682,15 @@ footer{
 .digital-benefits span:hover{
   transform:scale(1.06);
 }
+.item-category-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:8px;
+}
 .item-category-chip{
   display:inline-flex;
   align-items:center;
-  align-self:flex-start;
   width:max-content;
   max-width:100%;
   font-size:11px;
@@ -1695,7 +1700,6 @@ footer{
   color:#363a3f;
   border-radius:999px;
   padding:7px 9px;
-  margin-bottom:8px;
   transition:transform .18s ease;
 }
 .item-category-chip:hover{
@@ -3108,6 +3112,27 @@ function discountPercent(product){
   return oldValue > 0 ? (oldValue - currentValue) / oldValue : 0;
 }
 
+function getProductTags(product){
+  const name = (product.name || '').toLowerCase();
+
+  if(name.includes('airfryer') || name.includes('liquidificador')) return [product.category, 'Cozinha', 'Praticidade'];
+  if(name.includes('organizador')) return [product.category, 'Organização', 'Utilidades'];
+  if(name.includes('travesseiro')) return [product.category, 'Conforto', 'Bem-estar'];
+  if(name.includes('luminária') || name.includes('luminaria')) return [product.category, 'Decoração', 'Iluminação'];
+  if(name.includes('smartwatch') || name.includes('fone') || name.includes('projetor')) return [product.category, 'Eletrônicos', 'Inovação'];
+  if(name.includes('mochila') || name.includes('tênis') || name.includes('tenis')) return [product.category, 'Estilo', 'Dia a dia'];
+  if(name.includes('pincel')) return [product.category, 'Maquiagem', 'Cuidados'];
+  if(name.includes('pet') || name.includes('cachorro') || name.includes('gato')) return [product.category, 'Cuidados', 'Pets'];
+  if(product.category === 'Automotivo') return [product.category, 'Acessórios', 'Praticidade'];
+  if(product.category === 'Tecnologia') return [product.category, 'Eletrônicos', 'Inovação'];
+  if(product.category === 'Casa') return [product.category, 'Utilidades', 'Praticidade'];
+  if(product.category === 'Moda') return [product.category, 'Estilo', 'Acessórios'];
+  if(product.category === 'Beleza') return [product.category, 'Cuidados', 'Beleza'];
+  if(product.category === 'Pet') return [product.category, 'Cuidados', 'Pets'];
+
+  return [product.category, 'Destaque', 'Selecionado'];
+}
+
 function renderProducts(containerId, items = products) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -3127,7 +3152,7 @@ function renderProducts(containerId, items = products) {
         ${containerId === 'offersGrid' ? '<span class="badge">OFERTA</span>' : (product.badge ? `<span class="badge">${product.badge}</span>` : '')}
       </div>
       <div class="product-info">
-        <div class="item-category-chip">${product.category}</div>
+        <div class="item-category-chips">${getProductTags(product).map(tag => `<span class="item-category-chip">${tag}</span>`).join('')}</div>
         <div class="product-name">${product.name}</div>
         <div class="product-desc">${product.description}</div>
       ${product.rating ? `<div class="rating-line" aria-label="Avaliação ${product.rating} de 5 estrelas"><span class="rating-stars" aria-hidden="true">★★★★★</span><span class="rating-value">${product.rating}</span><span class="rating-count">(${product.reviews})</span></div>` : ""}
