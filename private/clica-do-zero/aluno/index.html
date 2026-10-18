@@ -96,9 +96,14 @@ a{color:inherit;text-decoration:none}
 .card-detail-pop .mini-action{margin-top:8px;border:0;background:#111315;color:#fff;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:900;cursor:pointer}
 .open-module{margin-top:13px;border:0;background:transparent;padding:0;text-align:left;font-weight:900;font-size:12px;cursor:pointer}
 .resources{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.resource{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fafbfc}
+.resource{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fafbfc;cursor:pointer;transition:.18s;text-align:left}
+.resource:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.06);border-color:#d8dadd}
 .resource strong{font-size:13px;display:block}
 .resource span{font-size:11px;color:var(--muted)}
+.resource small{display:block;margin-top:9px;font-size:10px;font-weight:900;color:#8a6800}
+.resource-hub{margin-top:14px;border:1px solid var(--line);border-radius:16px;padding:16px;background:#fafbfc;display:none}
+.resource-hub.open{display:block}.resource-hub h3{margin:0 0 6px;font-size:16px}.resource-hub p{margin:0 0 12px;color:var(--muted);font-size:12px}
+.resource-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.resource-link{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px;text-align:left;cursor:pointer}.resource-link strong{font-size:11px;display:block}.resource-link span{font-size:10px;color:var(--muted)}
 .field-note{margin-top:18px;padding:18px;border:1px dashed #d6a900;border-radius:16px;background:#fffdf3}
 .field-note strong{display:block;margin-bottom:5px}
 .field-note p{margin:0;color:var(--muted);font-size:13px}
@@ -184,6 +189,7 @@ a{color:inherit;text-decoration:none}
   .topbar{align-items:flex-start}.student{display:none}
   .modules-grid{grid-template-columns:1fr}
   .resources{grid-template-columns:1fr}
+  .resource-links{grid-template-columns:1fr}
   .lesson-map{grid-template-columns:1fr}
   .idea-grid{grid-template-columns:1fr}
   .milestones{grid-template-columns:1fr}
@@ -309,11 +315,12 @@ a{color:inherit;text-decoration:none}
           </div>
         </div>
         <div class="resources">
-          <div class="resource"><strong>Cartão PAV</strong><span>Regra prática para trabalhar com IA com controle.</span></div>
-          <div class="resource"><strong>Workbooks</strong><span>Exercícios para transformar cada módulo em ação.</span></div>
-          <div class="resource"><strong>Checklists</strong><span>Conferências rápidas antes de publicar ou avançar.</span></div>
-          <div class="resource"><strong>Planilhas e templates</strong><span>Arquivos práticos para aplicar no projeto.</span></div>
+          <button class="resource" onclick="openResourceHub('pav')"><strong>Cartão PAV</strong><span>Regra prática para trabalhar com IA com controle.</span><small>Abrir caminho de aprendizado →</small></button>
+          <button class="resource" onclick="openResourceHub('workbooks')"><strong>Workbooks</strong><span>Exercícios para transformar cada módulo em ação.</span><small>Ver exercícios e aulas relacionadas →</small></button>
+          <button class="resource" onclick="openResourceHub('checklists')"><strong>Checklists</strong><span>Conferências rápidas antes de publicar ou avançar.</span><small>Revisar checklists por módulo →</small></button>
+          <button class="resource" onclick="openResourceHub('templates')"><strong>Planilhas e templates</strong><span>Arquivos práticos para aplicar no projeto.</span><small>Ver onde usar e o que aprender →</small></button>
         </div>
+        <div class="resource-hub" id="resourceHub"></div>
         <div class="field-note">
           <strong>O diferencial desta área</strong>
           <p>Os exemplos abaixo nasceram do desenvolvimento real do Clica, Compra e Ri e do próprio Clica do Zero: decisões que funcionaram, erros que exigiram correção, prompts usados para preservar o que já estava bom e integrações que só ficaram confiáveis depois de testar ponta a ponta. Quando uma conversa real é transformada em material didático, o português é revisado para facilitar a leitura, sem mudar a intenção original.</p>
@@ -997,6 +1004,61 @@ function renderModules(){
       <button class="open-module" onclick="openModule(${m.n})">Abrir módulo →</button>
     </article>`;
   }).join('');
+}
+
+const resourceRoutes={
+  pav:{
+    title:'Cartão PAV',
+    intro:'Use este caminho para aprender a pedir mudanças com precisão, preservar o que funciona e validar antes de avançar.',
+    links:[
+      {label:'Aprender o método PAV',detail:'Aula 0.4 — IA sem destruir seu projeto',n:0,i:3},
+      {label:'Aplicar no código',detail:'Aula 3.5 — PAV aplicado ao código',n:3,i:4},
+      {label:'Revisar mudanças seguras',detail:'Aula 3.6 — Commits que salvam projeto',n:3,i:5},
+      {label:'Validar antes de publicar',detail:'Aula 3.8 — QA antes de deploy',n:3,i:7}
+    ]
+  },
+  workbooks:{
+    title:'Workbooks',
+    intro:'Os workbooks existem para transformar conteúdo em ação. Entre pelo assunto que você está estudando e volte às aulas correspondentes sempre que precisar.',
+    links:[
+      {label:'Definir o projeto',detail:'Módulo 0 — base para o primeiro workbook',n:0,i:0},
+      {label:'Negócio e oferta',detail:'Módulo 1 — decisões de receita e validação',n:1,i:0},
+      {label:'Marca e posicionamento',detail:'Módulo 2 — identidade e proposta de valor',n:2,i:0},
+      {label:'Produto próprio',detail:'Módulo 13 — escopo, oferta e validação',n:13,i:0}
+    ]
+  },
+  checklists:{
+    title:'Checklists',
+    intro:'Escolha a etapa que quer conferir. Cada item está ligado ao módulo onde aquele conhecimento é ensinado.',
+    links:[
+      {label:'Publicação e deploy',detail:'Módulo 4 — conferir antes de considerar publicado',n:4,i:0},
+      {label:'Vitrine e experiência',detail:'Módulo 5 — revisão visual, mobile e confiança',n:5,i:0},
+      {label:'Produto afiliado',detail:'Módulo 6 — preço, disponibilidade, imagem e link',n:6,i:0},
+      {label:'Conversão e página',detail:'Módulo 7 — CTA, prova, objeções e CRO',n:7,i:0},
+      {label:'SEO e indexação',detail:'Módulo 8 — estrutura técnica e Search Console',n:8,i:0},
+      {label:'Tráfego pago',detail:'Módulo 12 — prontidão, orçamento e limites',n:12,i:0}
+    ]
+  },
+  templates:{
+    title:'Planilhas e templates',
+    intro:'Aqui o recurso não fica solto: cada template aponta para a aula que explica por que usá-lo e como interpretar o resultado.',
+    links:[
+      {label:'Mapa de receita',detail:'Aula 1.7 — primeiro mapa de receita',n:1,i:6},
+      {label:'Score de oferta',detail:'Aula 1.5 — critérios para comparar oportunidades',n:1,i:4},
+      {label:'Calendário editorial',detail:'Aula 9.6 — calendário enxuto',n:9,i:5},
+      {label:'Dashboard de decisão',detail:'Aula 11.4 — métricas que levam a ação',n:11,i:3},
+      {label:'Plano de 90 dias',detail:'Aula 14.9 — plano executável de continuidade',n:14,i:8}
+    ]
+  }
+};
+
+function openResourceHub(type){
+  const data=resourceRoutes[type];
+  const hub=document.getElementById('resourceHub');
+  if(!data||!hub)return;
+  hub.innerHTML='<h3>'+data.title+'</h3><p>'+data.intro+'</p><div class="resource-links">'+data.links.map(x=>'<button class="resource-link" onclick="openModule('+x.n+');setTimeout(()=>openLesson('+x.n+','+x.i+'),40)"><strong>'+x.label+'</strong><span>'+x.detail+'</span></button>').join('')+'</div>';
+  hub.classList.add('open');
+  hub.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 function toggleCardDetail(n,type,event){
