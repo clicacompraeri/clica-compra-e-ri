@@ -427,6 +427,25 @@ a{color:inherit;text-decoration:none}
   .diagnostic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .notes-center{padding:17px}
 }
+
+.guided-projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.guided-project{border:1px solid var(--line);border-radius:17px;padding:16px;background:#fff;display:flex;flex-direction:column;gap:10px;min-height:230px}
+.guided-project.done{background:#f7fbf5;border-color:#cbdcc4}
+.guided-project-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.guided-project-badge{font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.6px;color:#8a6800;background:#fff8d5;border-radius:999px;padding:6px 8px;white-space:nowrap}
+.guided-project h3{margin:0;font-size:15px;line-height:1.25}.guided-project p{margin:0;color:var(--muted);font-size:11px;line-height:1.55}
+.guided-project-result{border-left:3px solid #ffd21c;background:#fffdf3;border-radius:0 10px 10px 0;padding:9px 10px;font-size:10.5px;color:#555b62;line-height:1.45}
+.guided-project-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:auto}
+.guided-project-actions button{border:0;border-radius:10px;padding:9px 11px;font-size:10px;font-weight:900;cursor:pointer}
+.guided-project-actions .open-project{background:#111315;color:#fff}.guided-project-actions .finish-project{background:#fff1a8;color:#5d4800}
+.guided-project.done .finish-project{background:#eef6ea;color:#355b2a}
+.guided-project-detail{display:none;margin-top:2px;border-top:1px solid var(--line);padding-top:10px}.guided-project-detail.open{display:block}
+.guided-project-detail ol{margin:0;padding-left:18px}.guided-project-detail li{font-size:10.5px;color:#555b62;line-height:1.5;margin:4px 0}
+.guided-project-detail button{margin-top:9px;border:0;background:#ffd21c;color:#111;border-radius:9px;padding:8px 10px;font-size:10px;font-weight:900;cursor:pointer}
+.guided-project-progress{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px;padding:12px 14px;border-radius:13px;background:#fafbfc;border:1px solid var(--line)}
+.guided-project-progress strong{font-size:12px}.guided-project-progress span{font-size:11px;color:var(--muted)}
+@media(max-width:980px){.guided-projects{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.guided-projects{grid-template-columns:1fr}.guided-project-actions{display:grid}.guided-project-actions button{width:100%;min-height:42px}.guided-project-progress{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
@@ -524,6 +543,21 @@ a{color:inherit;text-decoration:none}
           </div>
         </div>
         <div class="modules-grid" id="modulesGrid"></div>
+      </section>
+
+      <section class="panel" id="projetos-guiados">
+        <div class="panel-head">
+          <div>
+            <div class="eyebrow">Projetos guiados</div>
+            <h2>Aprenda construindo algo que você consegue mostrar</h2>
+            <p>Escolha um projeto curto, siga as etapas e marque como concluído somente quando o resultado existir de verdade no seu projeto.</p>
+          </div>
+        </div>
+        <div class="guided-project-progress">
+          <strong>Seu progresso nos projetos guiados</strong>
+          <span id="guidedProjectCount">0 de 6 concluídos</span>
+        </div>
+        <div class="guided-projects" id="guidedProjects"></div>
       </section>
 
       <section class="panel">
@@ -2177,9 +2211,55 @@ document.getElementById('copyIdeaPromptBtn').onclick=async()=>{
   }
 };
 
+
+const guidedProjectsKey='clicaDoZeroGuidedProjectsV1';
+const guidedProjects=[
+  {id:'mapa',badge:'Começo',title:'Da ideia ao mapa do projeto',desc:'Transforme uma ideia solta em objetivo, público, proposta e primeiro plano de execução.',result:'Resultado observável: uma página de projeto com objetivo, público, proposta de valor e próximo passo definidos.',steps:['Defina o problema ou oportunidade que você quer explorar.','Escolha para quem o projeto existe.','Escreva a promessa principal em uma frase.','Decida qual é a menor versão que pode ser testada.'],n:0,i:0},
+  {id:'publicar',badge:'Construção',title:'Seu primeiro projeto publicado',desc:'Saia dos arquivos locais e chegue a uma versão pública, validada em desktop e celular.',result:'Resultado observável: uma URL pública funcionando e conferida por você.',steps:['Organize a estrutura básica do projeto.','Salve uma versão controlada no GitHub.','Faça o deploy.','Espere o status de sucesso e abra a URL pública.','Confira a versão em computador e celular.'],n:3,i:0},
+  {id:'vitrine',badge:'Venda',title:'Uma vitrine com produto real',desc:'Monte uma experiência simples em que uma pessoa entende o produto e sabe qual ação tomar.',result:'Resultado observável: uma página ou vitrine com produto, imagem, informação confiável e CTA funcionando.',steps:['Escolha um produto ou oferta específica.','Valide imagem, preço, disponibilidade e destino do link.','Organize o card ou página para facilitar a decisão.','Teste todos os botões e o mobile.'],n:5,i:0},
+  {id:'descoberta',badge:'Aquisição',title:'Ser encontrado e gerar interesse',desc:'Prepare uma página para busca e conecte isso a um conteúdo que leve alguém até ela.',result:'Resultado observável: uma página indexável + um conteúdo com destino e CTA definidos.',steps:['Revise título, heading, descrição e links internos.','Confirme sitemap, robots e indexação quando aplicável.','Crie um conteúdo ligado à intenção da página.','Defina de onde o clique virá e para onde deve ir.'],n:8,i:0},
+  {id:'medir',badge:'Decisão',title:'Medir antes de gastar mais',desc:'Crie um funil mínimo e defina quais números realmente mudam uma decisão.',result:'Resultado observável: um mapa origem → visita → ação → resultado com uma regra clara de decisão.',steps:['Escolha a ação principal que deseja medir.','Defina origem do tráfego e evento útil.','Registre uma hipótese antes do teste.','Decida antecipadamente o que faria você manter, ajustar ou parar.'],n:11,i:0},
+  {id:'proprio',badge:'Produto próprio',title:'Sua primeira oferta própria',desc:'Transforme um problema real em uma oferta pequena, entendível e possível de entregar.',result:'Resultado observável: uma oferta MVP com público, dor, formato, escopo, preço de teste e forma de entrega.',steps:['Escolha uma dor específica que você conhece.','Defina o resultado que a primeira versão entrega.','Escolha o formato mais simples possível.','Monte a oferta e a forma de entrega.','Valide antes de pensar em escalar.'],n:13,i:0}
+];
+
+function guidedDone(){
+  try{return JSON.parse(localStorage.getItem(guidedProjectsKey)||'[]')}catch(e){return[]}
+}
+function renderGuidedProjects(){
+  const done=guidedDone();
+  const wrap=document.getElementById('guidedProjects'); if(!wrap)return;
+  wrap.innerHTML=guidedProjects.map((p,idx)=>`
+    <article class="guided-project ${done.includes(p.id)?'done':''}" data-project="${p.id}">
+      <div class="guided-project-top"><div><h3>${p.title}</h3></div><span class="guided-project-badge">${p.badge}</span></div>
+      <p>${p.desc}</p>
+      <div class="guided-project-result">${p.result}</div>
+      <div class="guided-project-actions">
+        <button class="open-project" onclick="toggleGuidedProject('${p.id}')">Ver etapas</button>
+        <button class="finish-project" onclick="toggleGuidedProjectDone('${p.id}')">${done.includes(p.id)?'Concluído ✓':'Marcar como concluído'}</button>
+      </div>
+      <div class="guided-project-detail" id="guided-${p.id}">
+        <ol>${p.steps.map(x=>'<li>'+x+'</li>').join('')}</ol>
+        <button onclick="openModule(${p.n});setTimeout(()=>openLesson(${p.n},${p.i}),40)">Abrir aula para começar</button>
+      </div>
+    </article>`).join('');
+  const count=document.getElementById('guidedProjectCount');
+  if(count)count.textContent=done.length+' de '+guidedProjects.length+' concluídos';
+}
+function toggleGuidedProject(id){
+  const el=document.getElementById('guided-'+id); if(!el)return;
+  el.classList.toggle('open');
+}
+function toggleGuidedProjectDone(id){
+  let done=guidedDone();
+  done=done.includes(id)?done.filter(x=>x!==id):[...done,id];
+  localStorage.setItem(guidedProjectsKey,JSON.stringify(done));
+  renderGuidedProjects();
+}
+
 fetch('/api/suporte/mensagens',{cache:'no-store'}).then(r=>{if(r.ok)document.getElementById('masterSupportLink').style.display='inline';}).catch(()=>{});
 renderNav();
 renderModules();
+renderGuidedProjects();
 updateProgress();
 renderReviewCenter();
 initNotesCenter();
