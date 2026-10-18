@@ -151,6 +151,15 @@ a{color:inherit;text-decoration:none}
 .learning-bridge-actions .lb-start{background:#111315;color:#fff}.learning-bridge-actions .lb-start::after{content:"→"}
 .learning-bridge-actions .lb-module{background:#fff;border-color:#e3c84e;color:#5d4800}.learning-bridge-actions .lb-module::after{content:"↗"}
 .learning-bridge-note{margin-top:6px;color:var(--muted);font-size:9.5px;line-height:1.45}
+.related-learning{margin-top:12px;border:1px solid var(--line);border-radius:13px;background:#fafbfc;padding:12px}
+.related-learning>strong{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#765c00;margin-bottom:8px}
+.related-learning-list{display:grid;gap:7px}
+.related-learning-item{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #eceef0;background:#fff;border-radius:10px;padding:9px 10px}
+.related-learning-item span{font-size:10.5px;color:#555b62;line-height:1.4}
+.related-learning-item button{border:0;background:#111315;color:#fff;border-radius:999px;padding:7px 9px;font-size:9.5px;font-weight:900;cursor:pointer;white-space:nowrap}
+.next-action{margin-top:10px;padding:10px 11px;border-left:3px solid #ffd21c;background:#fffdf3;border-radius:0 10px 10px 0}
+.next-action strong{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#7a6000;margin-bottom:3px}
+.next-action span{font-size:10.5px;color:#555b62;line-height:1.45}
 .creative-lab{display:grid;grid-template-columns:1fr .9fr;gap:16px;align-items:start}
 .lab-feature{background:linear-gradient(135deg,#111315,#262b31);color:#fff;border-radius:20px;padding:24px;min-height:0;display:flex;flex-direction:column;gap:18px}
 .lab-feature .eyebrow{color:#ffd21c}.lab-feature h3{font-size:28px;line-height:1.05;margin:8px 0 10px}.lab-feature p{color:#c8ccd1;margin:0}
@@ -1475,6 +1484,7 @@ function openLesson(n,i){
         <div class="decision-feedback"></div>
       </div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="O conceito fica mais claro quando você consegue enxergá-lo acontecendo em algo que é seu.">Demonstração no seu projeto</h3><p>${data.demo}</p></div>
+      <div class="lesson-block" id="relatedLessonBlock-${key}"></div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Conhecer um erro antes de cometê-lo pode economizar horas de correção depois.">Erro comum</h3><p>${data.error}</p></div>
       <div class="lesson-block lesson-task"><h3 class="thought-tip" tabindex="0" data-thought="Uma tarefa pequena concluída vale mais para o aprendizado do que dez ideias deixadas para depois.">Sua tarefa agora</h3><p>${data.task}</p></div>
       <div class="lesson-block lesson-result"><h3 class="thought-tip" tabindex="0" data-thought="Quando existe um resultado observável, você não precisa adivinhar se aprendeu: você consegue conferir.">Como saber que concluiu</h3><p>${data.result}</p></div>
@@ -1496,6 +1506,12 @@ function openLesson(n,i){
         <button ${n===modules[modules.length-1].n&&i===m.lessons.length-1?'disabled':''} onclick="goRelative(${n},${i},1)">Próxima aula →</button>
       </div>
     </div>`;
+  const relatedHost=document.getElementById('relatedLessonBlock-'+key);
+  if(relatedHost){
+    relatedHost.innerHTML='<h3>Conexões desta aula</h3><p style="margin-bottom:8px">Veja assuntos que ajudam a aplicar ou aprofundar esta aula.</p>';
+    addRelatedLearning(relatedHost);
+    if(!relatedHost.querySelector('.related-learning')) relatedHost.style.display='none';
+  }
 }
 
 function escapeNote(value){
@@ -1649,6 +1665,34 @@ function addLearningBridge(el,path){
   el.appendChild(bridge);
 }
 
+const relatedLearningRules=[
+  {keys:['deploy','railway','publicar','produção','build'],related:[{n:3,i:5,label:'Commits que salvam projeto'},{n:4,i:4,label:'Validação de produção'},{n:4,i:5,label:'Atualizações sem medo'}],next:'Abra o último deploy e confirme o que mudou antes de seguir.'},
+  {keys:['produto','afiliado','amazon','shopee','mercado livre','catálogo'],related:[{n:6,i:1,label:'Preço e disponibilidade'},{n:7,i:0,label:'Intenção da página'},{n:11,i:1,label:'Eventos que valem a pena'}],next:'Escolha um produto real e valide imagem, preço, link e destino.'},
+  {keys:['seo','google','search console','indexação'],related:[{n:8,i:2,label:'Links internos e hubs'},{n:8,i:5,label:'Search Console'},{n:9,i:6,label:'Biblioteca de aprendizados'}],next:'Pegue uma página real e descubra se ela está indexada e ligada a outras páginas.'},
+  {keys:['conteúdo','reels','post','criativo'],related:[{n:9,i:2,label:'Gancho sem sensacionalismo'},{n:10,i:2,label:'Roteiro de 15 segundos'},{n:11,i:2,label:'UTM e origem de tráfego'}],next:'Escolha um conteúdo e defina antes qual ação ele deve provocar.'},
+  {keys:['venda','conversão','cta','cro','objeção'],related:[{n:7,i:3,label:'Prova social e transparência'},{n:7,i:4,label:'CTA e rastreamento'},{n:11,i:0,label:'O funil mínimo'}],next:'Abra uma página real e identifique onde a decisão do visitante pode travar.'},
+  {keys:['marca','identidade','posicionamento','tom de voz'],related:[{n:2,i:2,label:'Promessa e proposta de valor'},{n:2,i:4,label:'Tom de voz e linguagem'},{n:5,i:1,label:'Arquitetura de confiança'}],next:'Tente explicar sua marca em uma frase sem usar palavras genéricas.'},
+  {keys:['ideia','criatividade','streaming','rede social','comunidade','mvp'],related:[{n:0,i:0,label:'O que você vai construir'},{n:1,i:5,label:'Validação antes de anúncio'},{n:13,i:3,label:'Escopo da primeira versão'}],next:'Transforme a ideia em uma primeira versão pequena que possa ser testada.'},
+  {keys:['métrica','dashboard','clique','utm','funil'],related:[{n:11,i:3,label:'Dashboard que leva a decisão'},{n:11,i:5,label:'Revisão semanal'},{n:12,i:5,label:'Pausar, iterar e escalar'}],next:'Escolha uma métrica e escreva qual decisão ela pode mudar.'},
+  {keys:['aluno','acesso','hotmart','supabase','klaviyo','webhook'],related:[{n:13,i:6,label:'Checkout, entrega e pós-venda'},{n:4,i:4,label:'Validação de produção'},{n:11,i:1,label:'Eventos que valem a pena'}],next:'Desenhe o fluxo completo do clique até o acesso e marque onde cada sistema entra.'}
+];
+
+function relatedForText(text){
+  const t=String(text||'').toLowerCase();
+  return relatedLearningRules.find(r=>r.keys.some(k=>t.includes(k)))||null;
+}
+
+function addRelatedLearning(el){
+  if(!el||el.querySelector?.('.related-learning'))return;
+  const rule=relatedForText(el.innerText);
+  if(!rule)return;
+  const box=document.createElement('div');
+  box.className='related-learning';
+  box.innerHTML='<strong>Isso se conecta com</strong><div class="related-learning-list">'+rule.related.map(x=>'<div class="related-learning-item"><span>'+x.label+'</span><button type="button" data-n="'+x.n+'" data-i="'+x.i+'">Abrir</button></div>').join('')+'</div><div class="next-action"><strong>Próxima ação útil</strong><span>'+rule.next+'</span></div>';
+  box.querySelectorAll('button').forEach(btn=>btn.onclick=(e)=>{e.stopPropagation();openModule(Number(btn.dataset.n));setTimeout(()=>openLesson(Number(btn.dataset.n),Number(btn.dataset.i)),40);});
+  el.appendChild(box);
+}
+
 function connectLearningPaths(){
   const selectors=[
     '.knowledge',
@@ -1656,11 +1700,12 @@ function connectLearningPaths(){
     '.lesson-map .mini',
     '.milestone',
     '.start-card',
-    '.field-note'
+    '.field-note',
+    '.access-card'
   ];
   document.querySelectorAll(selectors.join(',')).forEach(el=>{
-    // Preserve elements that already have a clear learning action.
     if(el.closest('.module-card'))return;
+    addRelatedLearning(el);
     if(el.querySelector('.resource-link,.open-module,.mini-action,.path-access,.access-actions,.learning-bridge'))return;
     const path=findLearningPathForText(el.innerText);
     addLearningBridge(el,path);
