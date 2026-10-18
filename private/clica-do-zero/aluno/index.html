@@ -153,6 +153,13 @@ a{color:inherit;text-decoration:none}
 .lesson-block{border:1px solid var(--line);border-radius:15px;padding:16px;background:#fff}.lesson-block h3{font-size:14px;margin:0 0 7px}.lesson-block p{font-size:13px;color:#555b62;line-height:1.65;margin:0}.lesson-block ul{margin:7px 0 0;padding-left:18px;color:#555b62;font-size:13px;line-height:1.6}
 .lesson-task{background:#fff9df;border-color:#f0d970}.lesson-result{background:#f4f7f5}.lesson-prompt{background:#111315;color:#f6f7f8;border-color:#111315}.lesson-prompt h3{color:#ffd21c}.lesson-prompt p{color:#e5e7ea;font-family:Consolas,Monaco,monospace;white-space:pre-wrap}
 .lesson-complete{border:0;background:var(--yellow);border-radius:12px;padding:12px 15px;font-weight:900;cursor:pointer}
+.lesson-actions{display:flex;gap:8px;flex-wrap:wrap}
+.lesson-secondary{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 13px;font-size:11px;font-weight:900;cursor:pointer}
+.lesson-secondary.active{background:#fff7d2;border-color:#e3c344}
+.lesson-note{width:100%;min-height:96px;border:1px solid var(--line);border-radius:12px;padding:12px;font:13px/1.5 Inter,Arial,sans-serif;resize:vertical;outline:0}
+.lesson-note:focus{border-color:#d6a900;box-shadow:0 0 0 3px rgba(255,210,28,.16)}
+.lesson-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px}.lesson-nav button{border:1px solid var(--line);background:#f7f8f9;border-radius:12px;padding:11px;font-size:11px;font-weight:900;cursor:pointer}.lesson-nav button:disabled{opacity:.45;cursor:not-allowed}
+.review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.review-item{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fafbfc}.review-item strong{display:block;font-size:12px}.review-item span{font-size:10.5px;color:var(--muted)}.review-item button{margin-top:8px;border:0;background:#111315;color:#fff;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:900;cursor:pointer}
 .check{width:24px;height:24px;border-radius:50%;border:1px solid #cfd3d7;background:#fff;cursor:pointer;font-weight:900}
 .check.done{background:var(--yellow);border-color:var(--yellow)}
 .overlay{position:fixed;inset:0;background:rgba(17,19,21,.4);z-index:20;opacity:0;visibility:hidden;transition:.2s}
@@ -180,6 +187,8 @@ a{color:inherit;text-decoration:none}
   .lesson-map{grid-template-columns:1fr}
   .idea-grid{grid-template-columns:1fr}
   .milestones{grid-template-columns:1fr}
+  .review-grid{grid-template-columns:1fr}
+  .lesson-nav{grid-template-columns:1fr}
   .module-nav{grid-template-columns:repeat(5,minmax(0,1fr))}
 }
 </style>
@@ -275,6 +284,21 @@ a{color:inherit;text-decoration:none}
           </div>
         </div>
         <div class="modules-grid" id="modulesGrid"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="eyebrow">Aprendizado contínuo</div>
+            <h2>Continue, revise e não perca o fio da jornada</h2>
+            <p>A área guarda sua última aula aberta neste navegador, suas aulas concluídas, as que você marcou para revisar e suas anotações pessoais.</p>
+          </div>
+        </div>
+        <div class="review-grid" id="reviewGrid"></div>
+        <div class="field-note">
+          <strong>Como usar esta área</strong>
+          <p>Marque uma aula para revisar quando sentir que ainda não domina o assunto. Faça uma anotação curta com a sua própria linguagem e volte depois. Revisar o que já foi estudado faz parte do progresso.</p>
+        </div>
       </section>
 
       <section class="panel">
@@ -932,7 +956,12 @@ const moduleChecklists={
 };
 
 const storageKey='clicaDoZeroProgressV1';
+const reviewKey='clicaDoZeroReviewV1';
+const notesKey='clicaDoZeroNotesV1';
+const lastLessonKey='clicaDoZeroLastLessonV1';
 let completed=JSON.parse(localStorage.getItem(storageKey)||'[]');
+let reviewLater=JSON.parse(localStorage.getItem(reviewKey)||'[]');
+let lessonNotes=JSON.parse(localStorage.getItem(notesKey)||'{}');
 let activeFilter='Todos';
 
 function lessonKey(moduleNumber,index){ return moduleNumber+'-'+index; }
@@ -1008,7 +1037,7 @@ function renderLessonList(m){
     const isDone=completed.includes(key);
     return `<div class="lesson">
       <div class="lesson-index">${m.n}.${i+1}</div>
-      <button class="lesson-open" onclick="openLesson(${m.n},${i})"><strong>${lesson.t}</strong><small>${lesson.d} • Aula completa</small></button>
+      <button class="lesson-open" onclick="openLesson(${m.n},${i})"><strong>${lesson.t}</strong><small>${lesson.d} • ${reviewLater.includes(key)?'Revisar depois':'Aula completa'}</small></button>
       <button class="check ${isDone?'done':''}" onclick="toggleLesson('${key}',this)" aria-label="Marcar como concluída">${isDone?'✓':''}</button>
     </div>`;
   }).join('');
@@ -1017,6 +1046,8 @@ function renderLessonList(m){
 function openLesson(n,i){
   const m=modules.find(x=>x.n===n); if(!m)return;
   const lesson=m.lessons[i]; const data=lessonContent(m,lesson); const key=lessonKey(n,i); const done=completed.includes(key);
+  localStorage.setItem(lastLessonKey,JSON.stringify({n,i}));
+  updateProgress();
   document.getElementById('drawerModule').textContent='Módulo '+m.n+' • Aula '+m.n+'.'+(i+1);
   document.getElementById('drawerTitle').textContent=lesson.t;
   document.getElementById('lessonList').innerHTML=`
@@ -1031,8 +1062,80 @@ function openLesson(n,i){
       <div class="lesson-block lesson-task"><h3>Sua tarefa agora</h3><p>${data.task}</p></div>
       <div class="lesson-block lesson-result"><h3>Como saber que concluiu</h3><p>${data.result}</p></div>
       <div class="lesson-block lesson-prompt"><h3>Prompt para usar nesta aula</h3><p>${data.prompt}</p></div>
-      <button class="lesson-complete" onclick="completeFromReader('${key}',this)">${done?'Aula concluída ✓':'Marcar aula como concluída'}</button>
+      <div class="lesson-block">
+        <h3>Minha anotação</h3>
+        <p style="margin-bottom:9px">Escreva com suas palavras o que você entendeu, decidiu ou quer testar depois.</p>
+        <textarea class="lesson-note" id="note-${key}" placeholder="Minha anotação sobre esta aula...">${escapeNote(lessonNotes[key]||'')}</textarea>
+        <div class="lesson-actions">
+          <button class="lesson-secondary" onclick="saveLessonNote('${key}')">Salvar anotação</button>
+          <button class="lesson-secondary ${reviewLater.includes(key)?'active':''}" id="reviewBtn-${key}" onclick="toggleReview('${key}',this)">${reviewLater.includes(key)?'Marcada para revisar ✓':'Revisar depois'}</button>
+        </div>
+      </div>
+      <div class="lesson-actions">
+        <button class="lesson-complete" onclick="completeFromReader('${key}',this)">${done?'Aula concluída ✓':'Marcar aula como concluída'}</button>
+      </div>
+      <div class="lesson-nav">
+        <button ${i===0&&n===0?'disabled':''} onclick="goRelative(${n},${i},-1)">← Aula anterior</button>
+        <button ${n===modules[modules.length-1].n&&i===m.lessons.length-1?'disabled':''} onclick="goRelative(${n},${i},1)">Próxima aula →</button>
+      </div>
     </div>`;
+}
+
+function escapeNote(value){
+  return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function saveLessonNote(key){
+  const el=document.getElementById('note-'+key);
+  if(!el)return;
+  lessonNotes[key]=el.value.trim();
+  localStorage.setItem(notesKey,JSON.stringify(lessonNotes));
+  const btn=el.parentElement.querySelector('.lesson-secondary');
+  if(btn){const old=btn.textContent;btn.textContent='Anotação salva ✓';setTimeout(()=>btn.textContent=old,1300);}
+}
+
+function toggleReview(key,button){
+  if(reviewLater.includes(key)) reviewLater=reviewLater.filter(x=>x!==key);
+  else reviewLater.push(key);
+  localStorage.setItem(reviewKey,JSON.stringify(reviewLater));
+  button.classList.toggle('active');
+  button.textContent=reviewLater.includes(key)?'Marcada para revisar ✓':'Revisar depois';
+  renderReviewCenter();
+}
+
+function goRelative(n,i,dir){
+  let mi=modules.findIndex(x=>x.n===n);
+  let li=i+dir;
+  if(li<0){mi--;if(mi<0)return;li=modules[mi].lessons.length-1;}
+  if(li>=modules[mi].lessons.length){mi++;if(mi>=modules.length)return;li=0;}
+  openLesson(modules[mi].n,li);
+}
+
+function findLessonByKey(key){
+  const parts=String(key).split('-').map(Number);
+  const n=parts[0],i=parts[1];
+  const m=modules.find(x=>x.n===n);
+  if(!m||!m.lessons[i])return null;
+  return {m,i,lesson:m.lessons[i]};
+}
+
+function renderReviewCenter(){
+  const grid=document.getElementById('reviewGrid');
+  if(!grid)return;
+  const last=JSON.parse(localStorage.getItem(lastLessonKey)||'null');
+  let html='';
+  if(last){
+    const m=modules.find(x=>x.n===last.n);
+    if(m&&m.lessons[last.i]){
+      html+='<div class="review-item"><strong>Continuar de onde parei</strong><span>Módulo '+m.n+' • '+m.lessons[last.i].t+'</span><button onclick="openModule('+m.n+');setTimeout(()=>openLesson('+m.n+','+last.i+'),40)">Continuar</button></div>';
+    }
+  }
+  reviewLater.slice(0,5).forEach(key=>{
+    const x=findLessonByKey(key); if(!x)return;
+    html+='<div class="review-item"><strong>Revisar aula '+x.m.n+'.'+(x.i+1)+'</strong><span>'+x.lesson.t+'</span><button onclick="openModule('+x.m.n+');setTimeout(()=>openLesson('+x.m.n+','+x.i+'),40)">Revisar</button></div>';
+  });
+  if(!html) html='<div class="review-item"><strong>Nada pendente por enquanto</strong><span>Abra uma aula para criar seu ponto de continuação ou marque alguma para revisar depois.</span></div>';
+  grid.innerHTML=html;
 }
 
 function completeFromReader(key,button){
@@ -1065,14 +1168,22 @@ function updateProgress(){
   document.getElementById('progressFill').style.width=percent+'%';
   document.getElementById('progressText').textContent=completed.length+' de '+total+' aulas marcadas como concluídas.';
   let next={m:modules[0],i:0};
-  outer: for(const m of modules){
-    for(let i=0;i<m.lessons.length;i++){
-      if(!completed.includes(lessonKey(m.n,i))){ next={m,i}; break outer; }
+  const last=JSON.parse(localStorage.getItem(lastLessonKey)||'null');
+  if(last){
+    const lm=modules.find(x=>x.n===last.n);
+    if(lm&&lm.lessons[last.i]) next={m:lm,i:last.i};
+  }else{
+    outer: for(const m of modules){
+      for(let i=0;i<m.lessons.length;i++){
+        if(!completed.includes(lessonKey(m.n,i))){ next={m,i}; break outer; }
+      }
     }
   }
   document.getElementById('continueTitle').textContent='Módulo '+next.m.n+' — '+next.m.title;
   document.getElementById('continueText').textContent=next.m.lessons[next.i].t;
+  document.getElementById('continueBtn').textContent=last?'Continuar de onde parei':'Continuar aula';
   document.getElementById('continueBtn').onclick=()=>{openModule(next.m.n);setTimeout(()=>openLesson(next.m.n,next.i),40);};
+  renderReviewCenter();
 }
 
 document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{
@@ -1114,6 +1225,7 @@ fetch('/api/suporte/mensagens',{cache:'no-store'}).then(r=>{if(r.ok)document.get
 renderNav();
 renderModules();
 updateProgress();
+renderReviewCenter();
 </script>
 </body>
 </html>
