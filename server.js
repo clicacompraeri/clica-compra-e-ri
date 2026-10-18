@@ -45,14 +45,35 @@ function verifySession(token){
   }
 }
 
-function allowedStudents(){
-  return new Set((process.env.CLICA_ALUNO_EMAILS || "").split(",").map(v => v.trim().toLowerCase()).filter(Boolean));
+async function isAllowedStudent(email){
+  const url = process.env.CLICA_STUDENT_ACCESS_URL;
+  const secret = process.env.CLICA_STUDENT_ACCESS_SECRET;
+  if(!url || !secret) return false;
+
+  try{
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-clica-internal": secret
+      },
+      body: JSON.stringify({ email }),
+      signal: AbortSignal.timeout(5000)
+    });
+
+    if(!response.ok) return false;
+    const data = await response.json();
+    return data.allowed === true;
+  }catch{
+    return false;
+  }
 }
 
-app.post("/api/aluno/login", (req, res) => {
+app.post("/api/aluno/login", async (req, res) => {
   if(!process.env.CLICA_SESSION_SECRET) return res.redirect("/clica-do-zero/aluno-login.html?erro=config");
   const email = String(req.body.email || "").trim().toLowerCase();
-  if(!email || !allowedStudents().has(email)) return res.redirect("/clica-do-zero/aluno-login.html?erro=acesso");
+  if(!email || !(await isAllowedStudent(email))) return res.redirect("/clica-do-zero/aluno-login.html?erro=acesso");
+
   const token = createSession(email);
   res.cookie("clica_aluno", token, {
     httpOnly: true,
@@ -69,9 +90,13 @@ app.get("/api/aluno/logout", (req, res) => {
   res.redirect("/clica-do-zero/aluno-login.html");
 });
 
-app.get("/clica-do-zero/aluno/", (req, res) => {
+app.get("/clica-do-zero/aluno/", async (req, res) => {
   const email = verifySession(parseCookies(req).clica_aluno);
-  if(!email || !allowedStudents().has(email)) return res.redirect("/clica-do-zero/aluno-login.html");
+  if(!email || !(await isAllowedStudent(email))) {
+    res.clearCookie("clica_aluno", { path: "/" });
+    return res.redirect("/clica-do-zero/aluno-login.html");
+  }
+
   res.set("Cache-Control", "no-store");
   res.sendFile(privateCoursePath);
 });
