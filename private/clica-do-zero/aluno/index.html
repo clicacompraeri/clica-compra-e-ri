@@ -52,6 +52,13 @@ a{color:inherit;text-decoration:none}
 .progress-track{height:10px;background:#eceff1;border-radius:999px;overflow:hidden;margin:10px 0}
 .progress-fill{height:100%;width:0;background:var(--yellow);transition:.25s}
 .progress-card p{font-size:13px;color:var(--muted);margin:0}
+.start-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+.start-card{border:1px solid var(--line);border-radius:18px;padding:20px;background:#fff}
+.start-card.dark{background:#111315;color:#fff;border-color:#111315}
+.start-card.dark p{color:#c7cbd0}.start-card h3{margin:5px 0 8px;font-size:20px}.start-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.start-check{display:grid;gap:8px;margin-top:14px}.start-check div{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#555b62}.start-check div::before{content:"";width:14px;height:14px;border:2px solid #d2a400;border-radius:4px;flex:0 0 14px;margin-top:2px}
+.start-card.dark .start-check div{color:#d7dade}
+.milestones{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:14px}.milestone{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fafbfc}.milestone b{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:#111315;color:#ffd21c;font-size:11px;margin-bottom:8px}.milestone strong{display:block;font-size:12px}.milestone span{font-size:10.5px;color:var(--muted)}
 .panel{padding:24px;margin-top:18px}
 .panel-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:18px}
 .panel h2{margin:0;font-size:23px;letter-spacing:-.5px}
@@ -148,6 +155,8 @@ a{color:inherit;text-decoration:none}
   .knowledge-grid{grid-template-columns:1fr}
   .lesson-map{grid-template-columns:repeat(2,minmax(0,1fr))}
   .creative-lab{grid-template-columns:1fr}
+  .start-grid{grid-template-columns:1fr}
+  .milestones{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:620px){
   .main{padding:16px}
@@ -156,6 +165,7 @@ a{color:inherit;text-decoration:none}
   .resources{grid-template-columns:1fr}
   .lesson-map{grid-template-columns:1fr}
   .idea-grid{grid-template-columns:1fr}
+  .milestones{grid-template-columns:1fr}
   .module-nav{grid-template-columns:repeat(5,minmax(0,1fr))}
 }
 </style>
@@ -193,6 +203,47 @@ a{color:inherit;text-decoration:none}
           <div class="progress-number" id="progressNumber">0%</div>
           <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
           <p id="progressText">Comece pela primeira aula e avance no seu ritmo.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="eyebrow">Comece aqui</div>
+            <h2>Seu primeiro caminho dentro do Clica do Zero</h2>
+            <p>Antes de tentar consumir tudo, organize o projeto e siga uma sequência simples. A área foi feita para sempre mostrar o próximo passo.</p>
+          </div>
+        </div>
+        <div class="start-grid">
+          <div class="start-card dark">
+            <div class="eyebrow">Primeiros 10 minutos</div>
+            <h3>Prepare o terreno antes da primeira aula.</h3>
+            <p>Você não precisa ter tudo pronto. Só precisa deixar o básico organizado para aprender construindo.</p>
+            <div class="start-check">
+              <div>Defina qual projeto você quer começar a construir.</div>
+              <div>Separe um e-mail que você usa para suas ferramentas.</div>
+              <div>Crie uma pasta para guardar arquivos e decisões do projeto.</div>
+              <div>Defina um limite consciente para qualquer gasto futuro.</div>
+            </div>
+            <button class="primary" onclick="openModule(0);setTimeout(()=>openLesson(0,0),40)">Começar pela aula 0.1</button>
+          </div>
+          <div class="start-card">
+            <div class="eyebrow">Regra da jornada</div>
+            <h3>Não avance só porque terminou de ler.</h3>
+            <p>Cada módulo precisa deixar uma evidência: uma decisão, uma página, uma configuração, um teste ou uma versão publicada. O progresso real é o que você consegue mostrar.</p>
+            <div class="field-note" style="margin-top:14px">
+              <strong>Quando bater dúvida</strong>
+              <p>Volte para a tarefa da aula, produza a menor evidência possível e só então siga. O curso foi desenhado para reduzir escolhas e evitar que você fique pulando de ferramenta em ferramenta.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="milestones">
+          <div class="milestone"><b>1</b><strong>Projeto definido</strong><span>Fim do Módulo 0</span></div>
+          <div class="milestone"><b>2</b><strong>Projeto público</strong><span>Fim do Módulo 4</span></div>
+          <div class="milestone"><b>3</b><strong>Vitrine encontrável</strong><span>Fim do Módulo 8</span></div>
+          <div class="milestone"><b>4</b><strong>Sistema medido</strong><span>Fim do Módulo 12</span></div>
+          <div class="milestone"><b>5</b><strong>Operação própria</strong><span>Fim do Módulo 14</span></div>
         </div>
       </section>
 
