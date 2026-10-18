@@ -551,6 +551,15 @@ a{color:inherit;text-decoration:none}
 .lesson-quick-summary-card{border:1px solid var(--line);border-radius:11px;padding:10px;background:#fafbfc}
 .lesson-quick-summary-card b{display:block;font-size:10px;margin-bottom:4px}.lesson-quick-summary-card p{margin:0;font-size:9.8px;line-height:1.48;color:#5f666d}
 @media(max-width:620px){.lesson-quick-summary-grid{grid-template-columns:1fr}.lesson-quick-summary-head{flex-direction:column}}
+
+.simple-help{margin:12px 0;border:1px dashed #d9dde1;border-radius:14px;padding:12px;background:#fcfcfd}
+.simple-help button{border:0;background:#fff1a8;color:#5d4800;border-radius:9px;padding:8px 10px;font-size:9.5px;font-weight:900;cursor:pointer}
+.simple-help-content{display:none;margin-top:10px;padding:11px;border-radius:11px;background:#fff;border:1px solid var(--line)}
+.simple-help-content.open{display:block}
+.simple-help-content strong{display:block;font-size:11px;margin-bottom:5px}
+.simple-help-content p{margin:0;font-size:10.5px;line-height:1.55;color:#555b62}
+.simple-help-content p+p{margin-top:7px}
+@media(max-width:620px){.simple-help button{width:100%;min-height:40px}}
 </style>
 </head>
 <body>
@@ -2187,6 +2196,14 @@ function openLesson(n,i){
       </div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Antes de estudar, saiba o que deve mudar em você ou no projeto ao terminar esta aula.">Objetivo</h3><p>${data.objective}</p></div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Se você consegue explicar com suas palavras, já começou a transformar informação em conhecimento.">Entenda de verdade</h3><p>${data.explain}</p></div>
+      <div class="simple-help">
+        <button type="button" onclick="toggleSimpleHelp()">Não entendi — explique mais simples</button>
+        <div class="simple-help-content" id="simpleHelpContent">
+          <strong>Em palavras bem simples</strong>
+          <p>${simpleExplanationFor(m,lesson,data)}</p>
+          <p>Agora não tente decorar. Faça só a tarefa desta aula e confira se o resultado apareceu no seu projeto.</p>
+        </div>
+      </div>
       <div class="reflection-card">
         <span class="reflection-label">${reflection.label}</span>
         <h3>${lesson.t}</h3>
@@ -2237,6 +2254,18 @@ function openLesson(n,i){
     if(!relatedHost.querySelector('.related-learning')) relatedHost.style.display='none';
   }
   initLessonAudio(n,i);
+}
+
+
+function simpleExplanationFor(m,lesson,data){
+  const playbook=modulePlaybooks[m.n]||{};
+  const goal=playbook.goal||data.objective;
+  const practice=playbook.practice||data.task;
+  return 'A ideia desta aula é simples: '+goal+'. Na prática, você só precisa '+practice+'. Se isso acontecer, você já aprendeu o essencial desta etapa.';
+}
+function toggleSimpleHelp(){
+  const box=document.getElementById('simpleHelpContent');
+  if(box)box.classList.toggle('open');
 }
 
 function escapeNote(value){
