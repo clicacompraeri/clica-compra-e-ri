@@ -39,6 +39,21 @@ small{color:#777d84}@media(max-width:650px){.grid{grid-template-columns:1fr}}
 .preview-visual img{width:100%;display:block}
 @media(max-width:650px){.flow,.compare{grid-template-columns:1fr}}
 
+
+.buy-area{margin:34px 0 8px;padding:28px;border-radius:22px;background:linear-gradient(135deg,#111315,#25292f);color:#fff}
+.buy-area .kicker{color:#ffd21c}
+.buy-area h2{margin:7px 0 10px;font-size:30px}
+.buy-area p{color:#d0d4d8;margin:0}
+.buy-price{display:flex;align-items:end;gap:10px;margin:18px 0 10px}
+.buy-price strong{font-size:42px;line-height:1;color:#fff;letter-spacing:-1px}
+.buy-price span{font-size:13px;color:#aeb4ba}
+.buy-points{display:grid;gap:7px;margin:14px 0 4px}
+.buy-points div{font-size:13px;color:#eef0f2}
+.buy-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.buy-actions .cta{margin-top:0}
+.login-now{display:inline-flex;min-height:52px;align-items:center;justify-content:center;padding:0 20px;border-radius:13px;border:1px solid rgba(255,255,255,.22);color:#fff;text-decoration:none;font-weight:900}
+.buy-note{margin-top:13px!important;font-size:12px!important;color:#aeb4ba!important}
+@media(max-width:650px){.buy-area{padding:22px}.buy-actions{display:grid}.buy-actions a{width:100%}.buy-price strong{font-size:36px}}
 </style>
 </head>
 <body>
@@ -94,7 +109,22 @@ Antes de avançar, explique como validar se a etapa atual funcionou.</div>
       Se esta prévia já mostrou uma forma mais organizada de usar IA, o Clica do Zero completo aprofunda cada etapa para ajudar você a sair da ideia e chegar a um projeto publicado, validado e pronto para evoluir.
     </div>
 
-    <a class="cta" href="/clica-do-zero/">Conhecer o Clica do Zero</a>
+    <div class="buy-area" id="comprar">
+      <div class="kicker">Pronto para continuar?</div>
+      <h2>Leve o Clica do Zero completo para a sua Área do Aluno.</h2>
+      <p>Se a prévia fez sentido para você, o próximo passo é liberar o conteúdo completo, os módulos, exercícios, anotações, trilhas e recursos da Área do Aluno.</p>
+      <div class="buy-price"><strong>R$ 47</strong><span>pagamento único</span></div>
+      <div class="buy-points">
+        <div>15 módulos e 111 aulas organizadas em sequência.</div>
+        <div>Área do Aluno própria com progresso, anotações e continuidade.</div>
+        <div>Checkout processado com segurança pela Hotmart.</div>
+      </div>
+      <div class="buy-actions">
+        <a class="cta" href="https://pay.hotmart.com/D108063505L?checkoutMode=2">Comprar agora na Hotmart</a>
+        <a class="login-now" href="/clica-do-zero/aluno-login.html">Já pagou? Entrar na Área do Aluno</a>
+      </div>
+      <p class="buy-note">Após a confirmação da compra pela Hotmart, use o mesmo e-mail informado no pagamento para entrar na Área do Aluno. Se a aprovação ainda estiver sendo processada, aguarde a confirmação antes de tentar o acesso.</p>
+    </div>
     <p><small>Material do Clica, Compra e Ri. Nenhuma compra é necessária para acessar esta prévia.</small></p>
 
     <section class="extra-section">
@@ -162,6 +192,10 @@ Antes de avançar, explique como validar se a etapa atual funcionou.</div>
       </div>
       <div class="preview-visual">
         <img src="/assets/Clika%20do%20Zero_%20Projetos%20Reais%20com%20IA.png" alt="Visão do Clica do Zero e criação de projetos digitais com IA">
+      </div>
+      <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+        <a class="cta" href="#comprar">Quero continuar no Clica do Zero</a>
+        <a class="login-now" style="background:#111315" href="/clica-do-zero/aluno-login.html">Já sou aluno</a>
       </div>
     </section>
 
