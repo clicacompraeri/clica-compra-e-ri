@@ -560,6 +560,13 @@ a{color:inherit;text-decoration:none}
 .simple-help-content p{margin:0;font-size:10.5px;line-height:1.55;color:#555b62}
 .simple-help-content p+p{margin-top:7px}
 @media(max-width:620px){.simple-help button{width:100%;min-height:40px}}
+
+.daily-example{margin:12px 0;border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}
+.daily-example-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px}
+.daily-example-head h3{margin:0;font-size:13px}.daily-example-head span{font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.5px;color:#6a4f00;background:#fff4bd;border-radius:999px;padding:5px 8px;white-space:nowrap}
+.daily-example p{margin:0;font-size:10.5px;line-height:1.55;color:#555b62}
+.daily-example .lesson-link{margin-top:9px;font-size:10px;font-weight:850;color:#333}
+@media(max-width:620px){.daily-example-head{flex-direction:column}}
 </style>
 </head>
 <body>
@@ -2204,6 +2211,13 @@ function openLesson(n,i){
           <p>Agora não tente decorar. Faça só a tarefa desta aula e confira se o resultado apareceu no seu projeto.</p>
         </div>
       </div>
+      <div class="daily-example">
+        <div class="daily-example-head">
+          <h3>Um exemplo do dia a dia</h3>
+          <span>Para ficar fácil de imaginar</span>
+        </div>
+        <p>${everydayExampleFor(m.n)}</p>
+      </div>
       <div class="reflection-card">
         <span class="reflection-label">${reflection.label}</span>
         <h3>${lesson.t}</h3>
@@ -2256,6 +2270,28 @@ function openLesson(n,i){
   initLessonAudio(n,i);
 }
 
+
+
+const everydayExamples={
+  0:'Pense em alguém que quer começar a correr. Antes de comprar tênis, relógio e aplicativo, ela decide apenas: “vou caminhar 20 minutos três vezes por semana”. No projeto digital, começar pequeno funciona do mesmo jeito.',
+  1:'É como vender bolo. Antes de fazer cem unidades, você precisa saber quanto custa cada bolo, por quanto vai vender e quantos precisa vender para valer a pena.',
+  2:'É como reconhecer uma padaria pela fachada, pelo jeito de falar e pelo atendimento. Marca é fazer o seu projeto parecer o mesmo projeto em todos os pontos de contato.',
+  3:'É como consertar uma tomada sem derrubar a casa inteira. Você mexe só no ponto com problema, testa e confirma que o resto continua funcionando.',
+  4:'É como enviar uma encomenda. Colocar na caixa não significa que chegou. Publicar só termina quando a versão realmente abre na internet e você confere.',
+  5:'É como entrar em uma loja organizada: em poucos segundos você entende o que tem ali, onde olhar e o que fazer depois. Uma boa homepage faz exatamente isso.',
+  6:'É como conferir a etiqueta antes de comprar no mercado. Foto bonita não basta: nome, preço, versão e disponibilidade precisam bater.',
+  7:'É como um vendedor que responde às dúvidas antes de você perguntar. Uma boa página de produto facilita a decisão sem pressionar.',
+  8:'É como colocar placas numa cidade. Título, links e organização ajudam o Google e as pessoas a entenderem onde cada página leva.',
+  9:'É como conversar com alguém com um assunto em mente. Um bom conteúdo sabe por que existe, o que entrega e qual é o próximo passo.',
+  10:'É como dar instruções a um fotógrafo. Quanto melhor você explica enquadramento, referência e limite, maior a chance de receber algo fiel ao que imaginou.',
+  11:'É como acompanhar o consumo de combustível do carro. O número só serve se ajudar você a decidir se continua, ajusta ou para.',
+  12:'É como testar uma receita nova com poucos ingredientes antes de cozinhar para cinquenta pessoas. Primeiro você testa pequeno e aprende barato.',
+  13:'É como montar uma primeira versão de um serviço para um cliente real. Você resolve uma dor específica, entrega bem e só depois aumenta.',
+  14:'É como manter uma casa organizada: pequenas rotinas repetidas evitam que tudo vire urgência. Escala começa com rotina previsível.'
+};
+function everydayExampleFor(n){
+  return everydayExamples[n]||'Pense em uma situação comum do seu dia a dia: primeiro você entende o objetivo, depois faz uma ação pequena e por fim confere se funcionou. Nesta aula, siga a mesma lógica.';
+}
 
 function simpleExplanationFor(m,lesson,data){
   const playbook=modulePlaybooks[m.n]||{};
