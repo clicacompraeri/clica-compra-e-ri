@@ -487,6 +487,23 @@ a{color:inherit;text-decoration:none}
 .ba-side p{margin:0;font-size:10.5px;line-height:1.5;color:#555b62}
 .ba-action{margin-top:10px;border:0;background:#111315;color:#fff;border-radius:9px;padding:8px 10px;font-size:10px;font-weight:900;cursor:pointer}
 @media(max-width:760px){.before-after{grid-template-columns:1fr}.ba-columns{grid-template-columns:1fr}}
+
+.prompt-library{display:grid;gap:14px}
+.prompt-filters{display:flex;gap:7px;flex-wrap:wrap}
+.prompt-filter{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px;font-size:10px;font-weight:900;cursor:pointer}
+.prompt-filter.active{background:#111315;color:#fff;border-color:#111315}
+.prompt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.prompt-card{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff;display:flex;flex-direction:column;gap:9px}
+.prompt-card.hidden{display:none}
+.prompt-card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.prompt-card h3{margin:0;font-size:13px;line-height:1.3}
+.prompt-category{font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.5px;color:#8a6800;background:#fff8d5;border-radius:999px;padding:5px 8px;white-space:nowrap}
+.prompt-card p{margin:0;font-size:10.5px;color:var(--muted);line-height:1.5}
+.prompt-copy-box{background:#f7f8fa;border-left:3px solid #ffd21c;border-radius:0 10px 10px 0;padding:10px 11px;font:10.5px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;color:#3f454b}
+.prompt-card-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:auto}
+.prompt-card-actions button{border:0;border-radius:9px;padding:8px 10px;font-size:9.5px;font-weight:900;cursor:pointer}
+.prompt-copy-btn{background:#111315;color:#fff}.prompt-open-btn{background:#fff1a8;color:#5d4800}
+@media(max-width:760px){.prompt-grid{grid-template-columns:1fr}.prompt-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.prompt-filter{width:100%}.prompt-card-actions{display:grid}.prompt-card-actions button{width:100%;min-height:40px}}
 </style>
 </head>
 <body>
@@ -584,6 +601,28 @@ a{color:inherit;text-decoration:none}
           </div>
         </div>
         <div class="modules-grid" id="modulesGrid"></div>
+      </section>
+
+      <section class="panel" id="biblioteca-prompts">
+        <div class="panel-head">
+          <div>
+            <div class="eyebrow">Biblioteca de prompts</div>
+            <h2>Um prompt certo para cada tipo de problema</h2>
+            <p>Em vez de procurar comandos soltos, escolha o objetivo e use um ponto de partida já estruturado para criar, corrigir, vender, publicar, analisar ou melhorar.</p>
+          </div>
+        </div>
+        <div class="prompt-library">
+          <div class="prompt-filters" id="promptFilters">
+            <button class="prompt-filter active" data-prompt-filter="Todos">Todos</button>
+            <button class="prompt-filter" data-prompt-filter="Criar">Criar</button>
+            <button class="prompt-filter" data-prompt-filter="Corrigir">Corrigir</button>
+            <button class="prompt-filter" data-prompt-filter="Vender">Vender</button>
+            <button class="prompt-filter" data-prompt-filter="Publicar">Publicar</button>
+            <button class="prompt-filter" data-prompt-filter="Analisar">Analisar</button>
+            <button class="prompt-filter" data-prompt-filter="Melhorar">Melhorar</button>
+          </div>
+          <div class="prompt-grid" id="promptGrid"></div>
+        </div>
       </section>
 
       <section class="panel" id="antes-depois">
@@ -2367,6 +2406,49 @@ document.getElementById('copyIdeaPromptBtn').onclick=async()=>{
 
 
 
+
+const promptLibrary=[
+  {id:'criar-projeto',cat:'Criar',title:'Transformar uma ideia em projeto',desc:'Para sair da ideia solta e chegar a uma primeira versão publicável.',prompt:'Quero transformar esta ideia em um projeto real: [IDEIA]. Defina objetivo, público, problema, ação principal do usuário, páginas essenciais, funcionalidades mínimas e o primeiro MVP. Faça uma etapa por vez e mantenha o escopo pequeno o suficiente para publicar e testar.',n:0,i:0},
+  {id:'corrigir-sem-quebrar',cat:'Corrigir',title:'Corrigir sem destruir o que funciona',desc:'Use quando existe um problema específico em uma parte do projeto.',prompt:'Corrija somente [PROBLEMA/COMPONENTE]. Preserve todo o restante exatamente como está. Antes de alterar, identifique a causa provável. Faça a menor mudança possível, valide o resultado no ambiente publicado e confirme que nenhuma função existente foi afetada.',n:3,i:4},
+  {id:'vender-pagina',cat:'Vender',title:'Revisar uma página para vender melhor',desc:'Para enxergar clareza, confiança, objeções e CTA sem refazer tudo.',prompt:'Analise esta página pensando em conversão. Preserve o visual e as funções que já estão boas. Aponte apenas o que reduz clareza, confiança ou decisão. Priorize uma melhoria por vez em: promessa, prova, objeções, CTA e fluxo até a compra.',n:7,i:0},
+  {id:'publicar-seguro',cat:'Publicar',title:'Publicar com segurança',desc:'Para não confundir código salvo com versão realmente disponível.',prompt:'Vou publicar esta alteração: [MUDANÇA]. Crie um checklist mínimo de publicação com commit, build, logs, status do deploy, URL pública, teste no desktop e celular. Não considere concluído até a versão publicada ser validada.',n:4,i:1},
+  {id:'analisar-metrica',cat:'Analisar',title:'Transformar números em decisão',desc:'Para evitar dashboards que mostram muito e dizem pouco.',prompt:'Tenho estes dados: [DADOS]. Não quero apenas um resumo. Diga o que cada número pode significar, quais hipóteses são plausíveis, o que ainda não dá para concluir e qual próxima ação concreta eu deveria testar. Separe fato, hipótese e decisão.',n:11,i:3},
+  {id:'melhorar-mobile',cat:'Melhorar',title:'Melhorar mobile sem mudar o desktop',desc:'Para corrigir experiência no celular mantendo o que já funciona.',prompt:'Revise somente a experiência mobile desta página. Preserve o desktop e toda funcionalidade existente. Procure cortes, overflow, texto pequeno, botões difíceis de tocar, espaçamento, imagens fora de escala e navegação confusa. Faça apenas ajustes responsivos necessários.',n:5,i:4},
+  {id:'criar-conteudo',cat:'Criar',title:'Criar conteúdo com destino',desc:'Para não produzir postagem sem objetivo.',prompt:'Crie um conteúdo para [PÚBLICO] sobre [TEMA]. Defina primeiro o objetivo da peça, o gancho, o valor entregue, o CTA e o destino do clique. Depois escreva a peça no formato [FORMATO], sem exageros e com uma ação clara no final.',n:9,i:0},
+  {id:'vender-produto',cat:'Vender',title:'Validar produto antes de divulgar',desc:'Para afiliados e vitrines com dados reais.',prompt:'Antes de publicar este produto, valide: nome exato, imagem correta, preço atual, disponibilidade, destino do link, identificação da loja e se o link leva ao item específico. Não use placeholders. Liste qualquer ponto que precise ser confirmado antes de publicar.',n:6,i:2}
+];
+
+function renderPromptLibrary(filter='Todos'){
+  const grid=document.getElementById('promptGrid'); if(!grid)return;
+  grid.innerHTML=promptLibrary.map(p=>`
+    <article class="prompt-card ${filter!=='Todos'&&p.cat!==filter?'hidden':''}">
+      <div class="prompt-card-top"><h3>${p.title}</h3><span class="prompt-category">${p.cat}</span></div>
+      <p>${p.desc}</p>
+      <div class="prompt-copy-box" id="prompt-${p.id}">${p.prompt}</div>
+      <div class="prompt-card-actions">
+        <button class="prompt-copy-btn" onclick="copyLibraryPrompt('${p.id}',this)">Copiar prompt</button>
+        <button class="prompt-open-btn" onclick="openModule(${p.n});setTimeout(()=>openLesson(${p.n},${p.i}),40)">Ver aula relacionada</button>
+      </div>
+    </article>`).join('');
+}
+async function copyLibraryPrompt(id,button){
+  const p=promptLibrary.find(x=>x.id===id); if(!p)return;
+  try{
+    await navigator.clipboard.writeText(p.prompt);
+    const old=button.textContent;button.textContent='Copiado ✓';setTimeout(()=>button.textContent=old,1400);
+  }catch(e){
+    const box=document.getElementById('prompt-'+id);
+    if(box){const range=document.createRange();range.selectNodeContents(box);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);}
+  }
+}
+function initPromptLibrary(){
+  document.querySelectorAll('.prompt-filter').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('.prompt-filter').forEach(b=>b.classList.toggle('active',b===btn));
+    renderPromptLibrary(btn.dataset.promptFilter);
+  }));
+  renderPromptLibrary();
+}
+
 const quickChallengesKey='clicaDoZeroQuickChallengesV1';
 const quickChallenges=[
   {id:'ideia',time:'10 min',title:'Explique sua ideia em uma frase',desc:'Escreva o que você quer criar sem citar ferramenta, tecnologia ou plataforma.',result:'Evidência: uma frase que diz para quem é, o que resolve e por que importa.',n:0,i:0},
@@ -2449,6 +2531,7 @@ function toggleGuidedProjectDone(id){
 fetch('/api/suporte/mensagens',{cache:'no-store'}).then(r=>{if(r.ok)document.getElementById('masterSupportLink').style.display='inline';}).catch(()=>{});
 renderNav();
 renderModules();
+initPromptLibrary();
 renderQuickChallenges();
 renderGuidedProjects();
 updateProgress();
