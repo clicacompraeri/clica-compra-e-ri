@@ -60,8 +60,19 @@ a{color:inherit;text-decoration:none}
 .filter{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:850;cursor:pointer}
 .filter.active{background:#111315;color:#fff;border-color:#111315}
 .modules-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.module-card{border:1px solid var(--line);border-radius:17px;padding:17px;background:#fff;display:flex;flex-direction:column;min-height:190px;transition:.18s}
+.module-card{border:1px solid var(--line);border-radius:17px;padding:12px;background:#fff;display:flex;flex-direction:column;min-height:250px;transition:.18s;overflow:hidden}
 .module-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.07)}
+.module-thumb{position:relative;height:92px;border-radius:13px;overflow:hidden;background:linear-gradient(135deg,#111315,#2a2e33);margin-bottom:13px;isolation:isolate}
+.module-thumb::before{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:-26px;top:-48px;background:rgba(255,210,28,.92);z-index:-1}
+.module-thumb::after{content:"";position:absolute;width:78px;height:78px;border:1px solid rgba(255,255,255,.18);border-radius:18px;right:18px;bottom:-30px;transform:rotate(22deg)}
+.thumb-kicker{position:absolute;left:12px;top:11px;font-size:9px;font-weight:950;letter-spacing:.8px;text-transform:uppercase;color:#ffd21c}
+.thumb-title{position:absolute;left:12px;bottom:12px;max-width:72%;font-size:15px;line-height:1.05;font-weight:950;color:#fff;letter-spacing:-.2px}
+.thumb-mark{position:absolute;right:13px;top:13px;width:30px;height:30px;border-radius:9px;background:#fff;color:#111315;display:grid;place-items:center;font-size:11px;font-weight:950;box-shadow:0 5px 14px rgba(0,0,0,.18)}
+.thumb-lines{position:absolute;left:12px;right:12px;bottom:8px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.3),transparent)}
+.module-card:nth-child(3n+2) .module-thumb{background:linear-gradient(135deg,#1c2024,#3a4047)}
+.module-card:nth-child(3n) .module-thumb{background:linear-gradient(135deg,#0e1012,#22262a)}
+.module-card:nth-child(4n) .module-thumb::before{width:90px;height:90px;top:-18px;right:-10px}
+.module-card:nth-child(5n) .module-thumb::after{border-radius:50%;width:66px;height:66px;bottom:-18px}
 .module-card-top{display:flex;justify-content:space-between;gap:10px;align-items:start}
 .module-badge{font-size:10px;text-transform:uppercase;letter-spacing:.6px;font-weight:900;color:#9b7400}
 .status{font-size:10px;font-weight:850;background:#f2f3f4;border-radius:999px;padding:5px 8px;color:#60656b}
@@ -105,13 +116,18 @@ a{color:inherit;text-decoration:none}
 .drawer-head h2{font-size:20px;margin:3px 0 0}
 .close{width:36px;height:36px;border:1px solid var(--line);background:#fff;border-radius:10px;cursor:pointer}
 .lesson-list{padding:18px;overflow:auto}
-.lesson{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:13px;margin-bottom:9px}
-.lesson-index{width:34px;height:34px;border-radius:9px;background:#f2f3f4;display:grid;place-items:center;font-size:11px;font-weight:900}
+.lesson{display:grid;grid-template-columns:44px 1fr auto;gap:11px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:13px;margin-bottom:9px}
+.lesson-index{width:44px;height:44px;border-radius:11px;background:linear-gradient(145deg,#111315,#2c3035);color:#ffd21c;display:grid;place-items:center;font-size:10px;font-weight:950;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
 .lesson strong{font-size:13px;display:block}
 .lesson small{font-size:11px;color:var(--muted)}
 .lesson-open{border:0;background:transparent;padding:0;text-align:left;cursor:pointer;color:inherit;width:100%}
 .lesson-open:hover strong{text-decoration:underline}
 .lesson-reader{display:grid;gap:14px}
+.lesson-cover{position:relative;min-height:130px;border-radius:18px;padding:20px;background:linear-gradient(135deg,#111315,#272c31);overflow:hidden;color:#fff}
+.lesson-cover::before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-65px;top:-82px;background:rgba(255,210,28,.92)}
+.lesson-cover::after{content:"";position:absolute;width:95px;height:95px;border:1px solid rgba(255,255,255,.18);border-radius:22px;right:30px;bottom:-52px;transform:rotate(25deg)}
+.lesson-cover small{position:relative;z-index:1;color:#ffd21c;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.8px}
+.lesson-cover strong{position:relative;z-index:1;display:block;max-width:72%;font-size:23px;line-height:1.08;margin-top:8px;letter-spacing:-.5px}
 .lesson-back{border:0;background:#f2f3f4;border-radius:10px;padding:9px 11px;font-size:11px;font-weight:900;cursor:pointer;width:max-content}
 .lesson-meta-row{display:flex;gap:8px;flex-wrap:wrap}.lesson-pill{background:#f2f3f4;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:850;color:#555b62}
 .lesson-block{border:1px solid var(--line);border-radius:15px;padding:16px;background:#fff}.lesson-block h3{font-size:14px;margin:0 0 7px}.lesson-block p{font-size:13px;color:#555b62;line-height:1.65;margin:0}.lesson-block ul{margin:7px 0 0;padding-left:18px;color:#555b62;font-size:13px;line-height:1.6}
@@ -644,6 +660,12 @@ function renderModules(){
     const done=m.lessons.filter((_,i)=>completed.includes(lessonKey(m.n,i))).length;
     const status=done===m.lessons.length?'Concluído':done>0?'Em andamento':'Disponível';
     return `<article class="module-card" id="m${m.n}">
+      <div class="module-thumb" aria-hidden="true">
+        <span class="thumb-kicker">Clica do Zero</span>
+        <span class="thumb-title">${m.title}</span>
+        <span class="thumb-mark">M${String(m.n).padStart(2,'0')}</span>
+        <span class="thumb-lines"></span>
+      </div>
       <div class="module-card-top"><div class="module-badge">Módulo ${m.n}</div><div class="status">${status}</div></div>
       <h3>${m.title}</h3>
       <p>${m.desc}</p>
@@ -686,6 +708,7 @@ function openLesson(n,i){
   document.getElementById('drawerTitle').textContent=lesson.t;
   document.getElementById('lessonList').innerHTML=`
     <div class="lesson-reader">
+      <div class="lesson-cover" aria-hidden="true"><small>Módulo ${m.n} • Aula ${m.n}.${i+1}</small><strong>${lesson.t}</strong></div>
       <button class="lesson-back" onclick="renderLessonList(modules.find(x=>x.n===${n}));document.getElementById('drawerTitle').textContent=modules.find(x=>x.n===${n}).title;document.getElementById('drawerModule').textContent='Módulo '+${n};">← Voltar às aulas</button>
       <div class="lesson-meta-row"><span class="lesson-pill">${lesson.d}</span><span class="lesson-pill">Aplicação prática</span><span class="lesson-pill">Método PAV</span></div>
       <div class="lesson-block"><h3>Objetivo</h3><p>${data.objective}</p></div>
