@@ -176,6 +176,9 @@ a{color:inherit;text-decoration:none}
 .reflection-card h3{font-size:15px;margin:0 0 7px}.reflection-card p{font-size:13px;color:#4f5358;line-height:1.65;margin:0}.reflection-question{margin-top:10px;font-weight:850;color:#222}
 .good-path{border:1px solid #dce7d9;border-radius:15px;padding:16px;background:#f6fbf4}
 .good-path .reflection-label{background:#e6f3df;color:#355b2a}.good-path h3{font-size:14px;margin:0 0 7px}.good-path p{font-size:13px;color:#4f5850;line-height:1.65;margin:0}
+.decision-check{border:1px solid var(--line);border-radius:15px;padding:16px;background:#fff}
+.decision-check h3{font-size:14px;margin:0 0 6px}.decision-check>p{font-size:12px;color:var(--muted);margin:0 0 10px}
+.decision-options{display:grid;gap:7px}.decision-option{border:1px solid var(--line);background:#fafbfc;border-radius:11px;padding:10px 11px;text-align:left;font-size:11.5px;font-weight:800;cursor:pointer}.decision-option:hover{border-color:#d3b531;background:#fffbea}.decision-option.correct{background:#f0f8ed;border-color:#b9d6ad}.decision-option.wrong{background:#fff3ef;border-color:#efc2b5}.decision-feedback{display:none;margin-top:9px;font-size:11.5px;line-height:1.55;color:#4d5358}.decision-feedback.show{display:block}
 .lesson-complete{border:0;background:var(--yellow);border-radius:12px;padding:12px 15px;font-weight:900;cursor:pointer}
 .lesson-actions{display:flex;gap:8px;flex-wrap:wrap}
 .lesson-secondary{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 13px;font-size:11px;font-weight:900;cursor:pointer}
@@ -1099,6 +1102,42 @@ function goodPathFor(m,lesson,i){
   return base+' '+endings[(m.n+i)%endings.length];
 }
 
+const moduleDecisionChecks={
+0:{q:'Você tem uma ideia grande, mas ainda não sabe tudo. Qual é o melhor próximo passo?',a:['Esperar até ter certeza de tudo','Criar uma primeira versão pequena e testável','Adicionar o máximo de funções antes de mostrar'],correct:1,why:'Uma versão pequena cria aprendizado real. Você pode melhorar depois com evidência, em vez de tentar adivinhar tudo antes de começar.'},
+1:{q:'Você gostou de uma oportunidade, mas ainda não tem dados. O que faz mais sentido?',a:['Investir imediatamente','Procurar uma evidência simples de demanda e números básicos','Escolher só pelo que parece mais bonito'],correct:1,why:'Entusiasmo ajuda a começar, mas evidência ajuda a decidir. Validar antes reduz desperdício e melhora a qualidade da escolha.'},
+2:{q:'Sua marca ainda está começando. O que deve vir primeiro?',a:['Parecer uma empresa enorme','Deixar claro para quem existe e por que é útil','Trocar identidade visual toda semana'],correct:1,why:'Clareza e coerência constroem confiança antes de qualquer aparência de tamanho.'},
+3:{q:'Uma parte do projeto está errada. Qual abordagem protege melhor o que já funciona?',a:['Refazer a página inteira','Alterar somente o componente relacionado ao problema','Trocar várias coisas de uma vez para aproveitar'],correct:1,why:'Mudanças pequenas tornam causa e efeito mais fáceis de entender e reduzem o risco de criar novos problemas.'},
+4:{q:'O deploy terminou. Quando você pode considerar a mudança pronta?',a:['Assim que o código foi enviado','Quando o status fica SUCCESS e a versão pública foi testada','Quando aparece um novo commit'],correct:1,why:'Deploy concluído não garante experiência correta. A validação na versão publicada fecha o ciclo.'},
+5:{q:'Uma tela parece bonita, mas o usuário não sabe onde clicar. Qual deve ser a prioridade?',a:['Adicionar mais elementos visuais','Facilitar a próxima decisão do usuário','Aumentar todos os textos'],correct:1,why:'Boa experiência reduz dúvida e esforço. Beleza ajuda, mas clareza orienta ação.'},
+6:{q:'Você encontrou um produto interessante para divulgar. O que deve conferir antes de publicar?',a:['Só a foto','Disponibilidade, preço, imagem e destino do link','Apenas o número de avaliações'],correct:1,why:'Cada dado incorreto quebra confiança. O conjunto precisa estar coerente e atual.'},
+7:{q:'A página não está convertendo como esperado. Qual é o melhor primeiro movimento?',a:['Trocar tudo','Descobrir onde a decisão está travando e testar um ponto por vez','Adicionar urgência em todos os lugares'],correct:1,why:'Diagnóstico antes de mudança evita achismos e permite aprender com cada teste.'},
+8:{q:'Qual é a base mais saudável para SEO?',a:['Encher a página de palavras-chave','Organizar conteúdo útil e deixar claro o assunto de cada página','Criar páginas escondidas só para o Google'],correct:1,why:'SEO sustentável combina utilidade, estrutura e clareza para pessoas e buscadores.'},
+9:{q:'Antes de criar um post, o que vale definir primeiro?',a:['O efeito visual','A ideia útil e a ação que você quer provocar','O número de hashtags'],correct:1,why:'Quando objetivo e mensagem vêm primeiro, formato e CTA ficam muito mais coerentes.'},
+10:{q:'Como usar IA criativa sem perder identidade?',a:['Aceitar qualquer resultado','Definir o que precisa permanecer fiel e deixar espaço para explorar o restante','Copiar exatamente uma referência'],correct:1,why:'Direção clara dá liberdade criativa sem perder os elementos que realmente importam.'},
+11:{q:'Você tem muitas métricas disponíveis. O que fazer?',a:['Acompanhar todas sem critério','Escolher as que realmente mudam decisões','Ignorar dados e seguir apenas intuição'],correct:1,why:'Uma métrica vale quando leva a uma ação ou decisão concreta.'},
+12:{q:'Um anúncio começou a mostrar sinais positivos. Qual o caminho mais seguro?',a:['Dobrar orçamento imediatamente','Entender o que funcionou e aumentar com controle','Criar várias campanhas novas ao mesmo tempo'],correct:1,why:'Escala saudável vem depois de aprendizado suficiente para saber o que está sendo ampliado.'},
+13:{q:'Você quer criar um produto próprio. Qual é um bom começo?',a:['Construir a versão mais completa possível','Resolver uma dor específica em uma primeira versão clara','Adicionar recursos antes de falar com usuários'],correct:1,why:'Escopo focado acelera validação e melhora a chance de entregar algo realmente útil.'},
+14:{q:'O projeto está crescendo. O que ajuda mais a sustentar esse crescimento?',a:['Depender de motivação todos os dias','Criar rotinas e sistemas simples que possam ser repetidos e melhorados','Mudar o processo inteiro toda semana'],correct:1,why:'Sistemas preservam continuidade e liberam energia para melhorar o que realmente precisa evoluir.'}
+};
+
+function decisionCheckFor(m){
+  return moduleDecisionChecks[m.n]||moduleDecisionChecks[0];
+}
+
+function answerDecision(btn,isCorrect,why){
+  const root=btn.closest('.decision-check');
+  root.querySelectorAll('.decision-option').forEach(b=>{b.disabled=true;});
+  btn.classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect){
+    const buttons=[...root.querySelectorAll('.decision-option')];
+    const correctIndex=Number(root.dataset.correct);
+    if(buttons[correctIndex])buttons[correctIndex].classList.add('correct');
+  }
+  const feedback=root.querySelector('.decision-feedback');
+  feedback.textContent=(isCorrect?'Boa decisão. ':'Vale reconsiderar esse caminho. ')+why;
+  feedback.classList.add('show');
+}
+
 const lessonOverrides={
 'O que você vai construir':{explain:'Ao longo do Clica do Zero você transforma uma ideia em um projeto publicado: marca, site, páginas, conteúdo, descoberta e métricas. Programação é meio; o objetivo é saber construir, entender e validar.',task:'Crie a pasta do projeto e responda em uma frase: o que vou construir, para quem e qual ação quero que a pessoa realize?',result:'Você consegue explicar o projeto em uma frase.'},
 'O modelo que vamos usar':{explain:'A vitrine de afiliados é usada como laboratório porque permite treinar página, oferta, tráfego, SEO, confiança e medição sem exigir estoque no início. O aprendizado depois pode ser aplicado a serviços, produtos próprios e outras plataformas.',task:'Escolha provisoriamente físico, digital, serviço ou híbrido e registre por quê.',result:'Modelo inicial escolhido sem travar em perfeccionismo.'},
@@ -1383,7 +1422,7 @@ function renderLessonList(m){
 
 function openLesson(n,i){
   const m=modules.find(x=>x.n===n); if(!m)return;
-  const lesson=m.lessons[i]; const data=lessonContent(m,lesson); const reflection=reflectionFor(m,lesson,i); const goodPath=goodPathFor(m,lesson,i); const key=lessonKey(n,i); const done=completed.includes(key);
+  const lesson=m.lessons[i]; const data=lessonContent(m,lesson); const reflection=reflectionFor(m,lesson,i); const goodPath=goodPathFor(m,lesson,i); const decision=decisionCheckFor(m); const key=lessonKey(n,i); const done=completed.includes(key);
   localStorage.setItem(lastLessonKey,JSON.stringify({n,i}));
   updateProgress();
   document.getElementById('drawerModule').textContent='Módulo '+m.n+' • Aula '+m.n+'.'+(i+1);
@@ -1405,6 +1444,15 @@ function openLesson(n,i){
         <span class="reflection-label">Um bom caminho</span>
         <h3>Se você estiver em dúvida sobre como seguir</h3>
         <p>${goodPath}</p>
+      </div>
+      <div class="decision-check" data-correct="${decision.correct}">
+        <span class="reflection-label">Teste rápido</span>
+        <h3>${decision.q}</h3>
+        <p>Escolha a opção que melhor protege o aprendizado e o projeto.</p>
+        <div class="decision-options">
+          ${decision.a.map((opt,idx)=>`<button class="decision-option" onclick="answerDecision(this,${idx===decision.correct},'${decision.why.replace(/'/g,"&#39;")}')">${opt}</button>`).join('')}
+        </div>
+        <div class="decision-feedback"></div>
       </div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="O conceito fica mais claro quando você consegue enxergá-lo acontecendo em algo que é seu.">Demonstração no seu projeto</h3><p>${data.demo}</p></div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Conhecer um erro antes de cometê-lo pode economizar horas de correção depois.">Erro comum</h3><p>${data.error}</p></div>
