@@ -1685,22 +1685,26 @@ footer{
 .item-category-chips{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
+  width:100%;
   gap:4px;
-  margin-bottom:8px;
+  margin:0 0 8px;
 }
 .item-category-chip{
   display:flex;
   align-items:center;
   justify-content:center;
+  width:100%;
   min-width:0;
+  overflow:hidden;
   white-space:nowrap;
-  font-size:9px;
+  text-align:center;
+  font-size:10px;
   line-height:1;
   font-weight:800;
   background:#f4f5f7;
   color:#363a3f;
   border-radius:999px;
-  padding:6px 5px;
+  padding:6px 3px;
   transition:transform .18s ease;
 }
 .item-category-chip:hover{
@@ -3134,6 +3138,18 @@ function getProductTags(product){
   return [product.category, 'Destaque', 'Seleção'];
 }
 
+function fitCategoryChips(root=document){
+  root.querySelectorAll('.item-category-chip').forEach(chip => {
+    chip.style.fontSize = '10px';
+    let size = 10;
+    while(chip.scrollWidth > chip.clientWidth && size > 6.5){
+      size -= 0.25;
+      chip.style.fontSize = size + 'px';
+    }
+    chip.title = chip.textContent.trim();
+  });
+}
+
 function renderProducts(containerId, items = products) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -3167,6 +3183,7 @@ function renderProducts(containerId, items = products) {
       </div>
     </a>
   `).join('');
+  requestAnimationFrame(() => fitCategoryChips(container));
 }
 
 function handleNewsletterSubmit(event){
@@ -3502,6 +3519,7 @@ class HeroCarousel {
 
 document.addEventListener('DOMContentLoaded', () => {
   new HeroCarousel('heroCarouselInner');
+  fitCategoryChips(document);
 });
 </script>
 
