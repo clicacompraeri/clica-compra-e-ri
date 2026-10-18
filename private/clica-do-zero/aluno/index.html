@@ -250,7 +250,7 @@ a{color:inherit;text-decoration:none}
         <div class="start-grid">
           <div class="start-card dark">
             <div class="eyebrow">Primeiros 10 minutos</div>
-            <h3>Prepare o terreno antes da primeira aula.</h3>
+            <h3 class="thought-tip" tabindex="0" data-thought="Começar organizado economiza tempo depois. Você não precisa saber tudo; precisa saber qual é o próximo passo.">Prepare o terreno antes da primeira aula.</h3>
             <p>Você não precisa ter tudo pronto. Só precisa deixar o básico organizado para aprender construindo.</p>
             <div class="start-check">
               <div>Defina qual projeto você quer começar a construir.</div>
@@ -262,7 +262,7 @@ a{color:inherit;text-decoration:none}
           </div>
           <div class="start-card">
             <div class="eyebrow">Regra da jornada</div>
-            <h3>Não avance só porque terminou de ler.</h3>
+            <h3 class="thought-tip" tabindex="0" data-thought="Aprender não é chegar ao fim da página. É conseguir fazer algo que antes você ainda não conseguia.">Não avance só porque terminou de ler.</h3>
             <p>Cada módulo precisa deixar uma evidência: uma decisão, uma página, uma configuração, um teste ou uma versão publicada. O progresso real é aquilo que você consegue mostrar.</p>
             <div class="field-note" style="margin-top:14px">
               <strong>Quando bater dúvida</strong>
@@ -306,7 +306,7 @@ a{color:inherit;text-decoration:none}
         </div>
         <div class="review-grid" id="reviewGrid"></div>
         <div class="field-note">
-          <strong>Como usar esta área</strong>
+          <strong class="thought-tip" tabindex="0" data-thought="Revisar não é voltar para trás. É fortalecer o que precisa ficar fácil quando você for aplicar.">Como usar esta área</strong>
           <p>Marque uma aula para revisar quando sentir que ainda não domina o assunto. Faça uma anotação curta com a sua própria linguagem e volte depois. Revisar o que já foi estudado faz parte do progresso.</p>
         </div>
       </section>
@@ -326,7 +326,7 @@ a{color:inherit;text-decoration:none}
         </div>
         <div class="resource-hub" id="resourceHub"></div>
         <div class="field-note">
-          <strong>O diferencial desta área</strong>
+          <strong class="thought-tip" tabindex="0" data-thought="Aprendizado real fica mais forte quando nasce de decisões, erros, testes e resultados que realmente aconteceram.">O diferencial desta área</strong>
           <p>Os exemplos abaixo nasceram do desenvolvimento real do Clica, Compra e Ri e do próprio Clica do Zero: decisões que funcionaram, erros que exigiram correção, prompts usados para preservar o que já estava bom e integrações que só ficaram confiáveis depois de testar ponta a ponta. Quando uma conversa real é transformada em material didático, o português é revisado para facilitar a leitura, sem mudar a intenção original.</p>
         </div>
       </section>
@@ -773,7 +773,7 @@ Depois → abrir URL pública e validar a mudança</div>
         </div>
 
         <div class="field-note">
-          <strong>A ideia mais importante:</strong>
+          <strong class="thought-tip" tabindex="0" data-thought="Projetos avançam melhor com ciclos pequenos: fazer, conferir, aprender e então melhorar.">A ideia mais importante:</strong>
           <p>Não existe um único “botão certo”. O que nos trouxe resultado foi trabalhar em ciclos curtos: fazer uma mudança pequena, conferir o efeito real, guardar o aprendizado e só depois avançar. Esse processo pode ser reutilizado em praticamente qualquer projeto permitido na internet.</p>
         </div>
       </section>
@@ -1121,15 +1121,15 @@ function openLesson(n,i){
       <div class="lesson-cover" aria-hidden="true"><small>Módulo ${m.n} • Aula ${m.n}.${i+1}</small><strong>${lesson.t}</strong></div>
       <button class="lesson-back" onclick="renderLessonList(modules.find(x=>x.n===${n}));document.getElementById('drawerTitle').textContent=modules.find(x=>x.n===${n}).title;document.getElementById('drawerModule').textContent='Módulo '+${n};">← Voltar às aulas</button>
       <div class="lesson-meta-row"><span class="lesson-pill">${lesson.d}</span><span class="lesson-pill">Aplicação prática</span><span class="lesson-pill">Método PAV</span></div>
-      <div class="lesson-block"><h3>Objetivo</h3><p>${data.objective}</p></div>
-      <div class="lesson-block"><h3>Entenda de verdade</h3><p>${data.explain}</p></div>
-      <div class="lesson-block"><h3>Demonstração no seu projeto</h3><p>${data.demo}</p></div>
-      <div class="lesson-block"><h3>Erro comum</h3><p>${data.error}</p></div>
-      <div class="lesson-block lesson-task"><h3>Sua tarefa agora</h3><p>${data.task}</p></div>
-      <div class="lesson-block lesson-result"><h3>Como saber que concluiu</h3><p>${data.result}</p></div>
-      <div class="lesson-block lesson-prompt"><h3>Prompt para usar nesta aula</h3><p>${data.prompt}</p></div>
+      <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Antes de estudar, saiba o que deve mudar em você ou no projeto ao terminar esta aula.">Objetivo</h3><p>${data.objective}</p></div>
+      <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Se você consegue explicar com suas palavras, já começou a transformar informação em conhecimento.">Entenda de verdade</h3><p>${data.explain}</p></div>
+      <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="O conceito fica mais claro quando você consegue enxergá-lo acontecendo em algo que é seu.">Demonstração no seu projeto</h3><p>${data.demo}</p></div>
+      <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Conhecer um erro antes de cometê-lo pode economizar horas de correção depois.">Erro comum</h3><p>${data.error}</p></div>
+      <div class="lesson-block lesson-task"><h3 class="thought-tip" tabindex="0" data-thought="Uma tarefa pequena concluída vale mais para o aprendizado do que dez ideias deixadas para depois.">Sua tarefa agora</h3><p>${data.task}</p></div>
+      <div class="lesson-block lesson-result"><h3 class="thought-tip" tabindex="0" data-thought="Quando existe um resultado observável, você não precisa adivinhar se aprendeu: você consegue conferir.">Como saber que concluiu</h3><p>${data.result}</p></div>
+      <div class="lesson-block lesson-prompt"><h3 class="thought-tip" tabindex="0" data-thought="Um bom prompt não pensa por você; ele ajuda você a transformar uma intenção clara em um próximo passo melhor.">Prompt para usar nesta aula</h3><p>${data.prompt}</p></div>
       <div class="lesson-block">
-        <h3>Minha anotação</h3>
+        <h3 class="thought-tip" tabindex="0" data-thought="Escrever com suas próprias palavras revela o que você entendeu e o que ainda precisa revisar.">Minha anotação</h3>
         <p style="margin-bottom:9px">Escreva com suas palavras o que você entendeu, decidiu ou quer testar depois.</p>
         <textarea class="lesson-note" id="note-${key}" placeholder="Minha anotação sobre esta aula...">${escapeNote(lessonNotes[key]||'')}</textarea>
         <div class="lesson-actions">
