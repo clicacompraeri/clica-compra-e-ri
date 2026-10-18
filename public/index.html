@@ -1683,24 +1683,24 @@ footer{
   transform:scale(1.06);
 }
 .item-category-chips{
-  display:flex;
-  flex-wrap:nowrap;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:4px;
   margin-bottom:8px;
 }
 .item-category-chip{
-  display:inline-flex;
+  display:flex;
   align-items:center;
-  width:max-content;
-  max-width:100%;
+  justify-content:center;
+  min-width:0;
   white-space:nowrap;
-  font-size:10px;
+  font-size:9px;
   line-height:1;
   font-weight:800;
   background:#f4f5f7;
   color:#363a3f;
   border-radius:999px;
-  padding:6px 7px;
+  padding:6px 5px;
   transition:transform .18s ease;
 }
 .item-category-chip:hover{
@@ -3116,7 +3116,7 @@ function discountPercent(product){
 function getProductTags(product){
   const name = (product.name || '').toLowerCase();
 
-  if(name.includes('airfryer') || name.includes('liquidificador')) return [product.category, 'Cozinha', 'Praticidade'];
+  if(name.includes('airfryer') || name.includes('liquidificador')) return [product.category, 'Cozinha', 'Prático'];
   if(name.includes('organizador')) return [product.category, 'Organização', 'Utilidades'];
   if(name.includes('travesseiro')) return [product.category, 'Conforto', 'Bem-estar'];
   if(name.includes('luminária') || name.includes('luminaria')) return [product.category, 'Decoração', 'Iluminação'];
@@ -3124,14 +3124,14 @@ function getProductTags(product){
   if(name.includes('mochila') || name.includes('tênis') || name.includes('tenis')) return [product.category, 'Estilo', 'Dia a dia'];
   if(name.includes('pincel')) return [product.category, 'Maquiagem', 'Cuidados'];
   if(name.includes('pet') || name.includes('cachorro') || name.includes('gato')) return [product.category, 'Cuidados', 'Pets'];
-  if(product.category === 'Automotivo') return [product.category, 'Acessórios', 'Praticidade'];
+  if(product.category === 'Automotivo') return [product.category, 'Acessórios', 'Prático'];
   if(product.category === 'Tecnologia') return [product.category, 'Eletrônicos', 'Inovação'];
-  if(product.category === 'Casa') return [product.category, 'Utilidades', 'Praticidade'];
+  if(product.category === 'Casa') return [product.category, 'Utilidades', 'Prático'];
   if(product.category === 'Moda') return [product.category, 'Estilo', 'Acessórios'];
   if(product.category === 'Beleza') return [product.category, 'Cuidados', 'Beleza'];
   if(product.category === 'Pet') return [product.category, 'Cuidados', 'Pets'];
 
-  return [product.category, 'Destaque', 'Selecionado'];
+  return [product.category, 'Destaque', 'Seleção'];
 }
 
 function renderProducts(containerId, items = products) {
