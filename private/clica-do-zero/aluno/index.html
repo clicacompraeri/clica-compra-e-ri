@@ -567,6 +567,17 @@ a{color:inherit;text-decoration:none}
 .daily-example p{margin:0;font-size:10.5px;line-height:1.55;color:#555b62}
 .daily-example .lesson-link{margin-top:9px;font-size:10px;font-weight:850;color:#333}
 @media(max-width:620px){.daily-example-head{flex-direction:column}}
+
+.lesson-selfcheck{margin:12px 0;border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}
+.lesson-selfcheck h3{margin:0 0 6px;font-size:13px}
+.lesson-selfcheck p{margin:0 0 10px;font-size:10.5px;line-height:1.5;color:#5d646b}
+.lesson-selfcheck-list{display:grid;gap:7px}
+.lesson-selfcheck-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border:1px solid #e8eaed;border-radius:10px;background:#fafbfc;cursor:pointer}
+.lesson-selfcheck-item input{width:16px;height:16px;accent-color:#ffd21c;flex:0 0 auto}
+.lesson-selfcheck-item span{font-size:10px;font-weight:800;color:#41464b}
+.lesson-selfcheck-status{margin-top:9px;font-size:9.8px;color:#6b7278}
+.lesson-selfcheck.ready{background:#f8fcf6;border-color:#cfe0c8}
+.lesson-selfcheck.ready .lesson-selfcheck-status{color:#37652e;font-weight:850}
 </style>
 </head>
 <body>
@@ -2253,6 +2264,16 @@ function openLesson(n,i){
           <button class="lesson-secondary ${reviewLater.includes(key)?'active':''}" id="reviewBtn-${key}" onclick="toggleReview('${key}',this)">${reviewLater.includes(key)?'Marcada para revisar ✓':'Revisar depois'}</button>
         </div>
       </div>
+      <div class="lesson-selfcheck" id="selfcheck-${key}">
+        <h3>Antes de concluir, só confira 3 coisas</h3>
+        <p>Não é prova. É só um jeito simples de perceber se a aula já virou aprendizado de verdade.</p>
+        <div class="lesson-selfcheck-list">
+          <label class="lesson-selfcheck-item"><input type="checkbox" data-selfcheck="entendi" onchange="updateLessonSelfCheck('${key}')"><span>Eu entendi a ideia principal com minhas palavras.</span></label>
+          <label class="lesson-selfcheck-item"><input type="checkbox" data-selfcheck="fiz" onchange="updateLessonSelfCheck('${key}')"><span>Eu fiz pelo menos uma pequena ação no meu projeto.</span></label>
+          <label class="lesson-selfcheck-item"><input type="checkbox" data-selfcheck="conferi" onchange="updateLessonSelfCheck('${key}')"><span>Eu conferi se apareceu algum resultado real.</span></label>
+        </div>
+        <div class="lesson-selfcheck-status" id="selfcheckStatus-${key}">Marque o que já aconteceu. Se faltar algo, volte só ao passo necessário.</div>
+      </div>
       <div class="lesson-actions">
         <button class="lesson-complete" onclick="completeFromReader('${key}',this)">${done?'Aula concluída ✓':'Marcar aula como concluída'}</button>
       </div>
@@ -2268,6 +2289,7 @@ function openLesson(n,i){
     if(!relatedHost.querySelector('.related-learning')) relatedHost.style.display='none';
   }
   initLessonAudio(n,i);
+  restoreLessonSelfCheck(key);
 }
 
 
@@ -2397,6 +2419,43 @@ function renderReviewCenter(){
   });
   if(!html) html='<div class="review-item"><strong>Nada pendente por enquanto</strong><span>Abra uma aula para criar seu ponto de continuação ou marque alguma para revisar depois.</span></div>';
   grid.innerHTML=html;
+}
+
+
+const lessonSelfCheckKey='clicaDoZeroSelfCheckV1';
+
+function getLessonSelfChecks(){
+  try{return JSON.parse(localStorage.getItem(lessonSelfCheckKey)||'{}')}catch(e){return {}}
+}
+function restoreLessonSelfCheck(key){
+  const state=getLessonSelfChecks()[key]||{};
+  const host=document.getElementById('selfcheck-'+key);
+  if(!host)return;
+  host.querySelectorAll('input[data-selfcheck]').forEach(input=>{
+    input.checked=!!state[input.dataset.selfcheck];
+  });
+  refreshLessonSelfCheckUI(key);
+}
+function updateLessonSelfCheck(key){
+  const host=document.getElementById('selfcheck-'+key);
+  if(!host)return;
+  const all=getLessonSelfChecks();
+  const state={};
+  host.querySelectorAll('input[data-selfcheck]').forEach(input=>state[input.dataset.selfcheck]=input.checked);
+  all[key]=state;
+  localStorage.setItem(lessonSelfCheckKey,JSON.stringify(all));
+  refreshLessonSelfCheckUI(key);
+}
+function refreshLessonSelfCheckUI(key){
+  const host=document.getElementById('selfcheck-'+key);
+  const status=document.getElementById('selfcheckStatus-'+key);
+  if(!host||!status)return;
+  const inputs=[...host.querySelectorAll('input[data-selfcheck]')];
+  const doneCount=inputs.filter(x=>x.checked).length;
+  host.classList.toggle('ready',doneCount===inputs.length);
+  status.textContent=doneCount===inputs.length
+    ? 'Pronto. Você entendeu, fez e conferiu — agora faz sentido seguir.'
+    : doneCount+' de '+inputs.length+' pontos conferidos. Não precisa correr.';
 }
 
 function completeFromReader(key,button){
