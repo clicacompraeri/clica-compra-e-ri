@@ -516,6 +516,23 @@ a{color:inherit;text-decoration:none}
 .active-review-actions button{border:0;border-radius:9px;padding:8px 10px;font-size:9.5px;font-weight:900;cursor:pointer}
 .active-review-actions .review-open{background:#111315;color:#fff}.active-review-actions .review-refresh{background:#fff1a8;color:#5d4800}
 @media(max-width:760px){.active-review-grid{grid-template-columns:1fr}.active-review-head{flex-direction:column}.active-review-actions{display:grid}.active-review-actions button{width:100%;min-height:40px}}
+
+.quick-start-kit{display:grid;grid-template-columns:1.1fr .9fr;gap:12px;align-items:stretch}
+.quick-start-main,.quick-start-side{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff}
+.quick-start-main{background:linear-gradient(135deg,#111315,#1e2226);color:#fff}
+.quick-start-main h3,.quick-start-side h3{margin:0 0 8px;font-size:15px}
+.quick-start-main p,.quick-start-side p{margin:0;font-size:10.5px;line-height:1.5;color:#c9cdd1}
+.quick-start-side p{color:var(--muted)}
+.quick-start-steps{display:grid;gap:8px;margin-top:12px}
+.quick-start-step{display:grid;grid-template-columns:26px 1fr;gap:9px;align-items:flex-start}
+.quick-start-step b{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#ffd21c;color:#111;font-size:10px}
+.quick-start-step strong{display:block;font-size:10.5px;margin-bottom:2px}.quick-start-step span{font-size:9.7px;line-height:1.45;color:#d7dade}
+.quick-start-side .quick-start-step span{color:#666d73}
+.quick-start-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.quick-start-actions button{border:0;border-radius:9px;padding:8px 10px;font-size:9.5px;font-weight:900;cursor:pointer}
+.quick-start-main .quick-start-actions button{background:#ffd21c;color:#111}
+.quick-start-side .quick-start-actions button{background:#111315;color:#fff}
+@media(max-width:760px){.quick-start-kit{grid-template-columns:1fr}.quick-start-actions{display:grid}.quick-start-actions button{width:100%;min-height:40px}}
 </style>
 </head>
 <body>
@@ -596,6 +613,44 @@ a{color:inherit;text-decoration:none}
           <div class="milestone" data-outcome="vitrine-encontravel"><b>3</b><strong>Vitrine encontrável</strong><span>Fim do Módulo 8</span><button class="milestone-action" type="button">Marcar como conquistado</button></div>
           <div class="milestone" data-outcome="sistema-medido"><b>4</b><strong>Sistema medido</strong><span>Fim do Módulo 12</span><button class="milestone-action" type="button">Marcar como conquistado</button></div>
           <div class="milestone" data-outcome="operacao-propria"><b>5</b><strong>Operação própria</strong><span>Fim do Módulo 14</span><button class="milestone-action" type="button">Marcar como conquistado</button></div>
+        </div>
+      </section>
+
+      <section class="panel" id="inicio-rapido">
+        <div class="panel-head">
+          <div>
+            <div class="eyebrow">Início rápido</div>
+            <h2>Se você quer começar hoje, faça só estas 5 coisas</h2>
+            <p>Um caminho curto para evitar excesso de informação. Depois disso, volte ao curso completo com mais contexto.</p>
+          </div>
+        </div>
+        <div class="quick-start-kit">
+          <div class="quick-start-main">
+            <h3>Primeiros 30 minutos</h3>
+            <p>O objetivo aqui não é aprender tudo. É sair com direção, organização e um primeiro movimento real.</p>
+            <div class="quick-start-steps">
+              <div class="quick-start-step"><b>1</b><div><strong>Escolha um projeto</strong><span>Defina o que você quer construir agora, mesmo que seja provisório.</span></div></div>
+              <div class="quick-start-step"><b>2</b><div><strong>Defina para quem ele existe</strong><span>Uma pessoa, problema ou situação específica já é suficiente para começar.</span></div></div>
+              <div class="quick-start-step"><b>3</b><div><strong>Organize seus arquivos</strong><span>Crie um lugar único para decisões, links, versões e materiais do projeto.</span></div></div>
+              <div class="quick-start-step"><b>4</b><div><strong>Faça uma primeira versão</strong><span>Pequena, imperfeita e testável. O importante é sair do campo da ideia.</span></div></div>
+              <div class="quick-start-step"><b>5</b><div><strong>Defina o próximo marco</strong><span>Escolha uma evidência concreta para buscar antes de avançar.</span></div></div>
+            </div>
+            <div class="quick-start-actions">
+              <button type="button" onclick="openModule(0);setTimeout(()=>openLesson(0,0),40)">Começar pela aula 0.1</button>
+            </div>
+          </div>
+          <div class="quick-start-side">
+            <h3>Quando terminar</h3>
+            <p>Você já terá o suficiente para seguir sem ficar pulando entre ferramentas ou tentando decidir tudo ao mesmo tempo.</p>
+            <div class="quick-start-steps">
+              <div class="quick-start-step"><b>✓</b><div><strong>Projeto escolhido</strong><span>Você sabe o que está tentando construir.</span></div></div>
+              <div class="quick-start-step"><b>✓</b><div><strong>Público inicial</strong><span>Você sabe para quem a primeira versão precisa fazer sentido.</span></div></div>
+              <div class="quick-start-step"><b>✓</b><div><strong>Próximo passo</strong><span>Você sabe o que fazer depois, sem depender de adivinhação.</span></div></div>
+            </div>
+            <div class="quick-start-actions">
+              <button type="button" onclick="document.getElementById('projetos-guiados')?.scrollIntoView({behavior:'smooth',block:'start'})">Ir para projetos guiados</button>
+            </div>
+          </div>
         </div>
       </section>
 
