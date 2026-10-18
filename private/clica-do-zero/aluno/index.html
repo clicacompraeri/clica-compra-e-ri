@@ -109,6 +109,14 @@ a{color:inherit;text-decoration:none}
 .lesson-index{width:34px;height:34px;border-radius:9px;background:#f2f3f4;display:grid;place-items:center;font-size:11px;font-weight:900}
 .lesson strong{font-size:13px;display:block}
 .lesson small{font-size:11px;color:var(--muted)}
+.lesson-open{border:0;background:transparent;padding:0;text-align:left;cursor:pointer;color:inherit;width:100%}
+.lesson-open:hover strong{text-decoration:underline}
+.lesson-reader{display:grid;gap:14px}
+.lesson-back{border:0;background:#f2f3f4;border-radius:10px;padding:9px 11px;font-size:11px;font-weight:900;cursor:pointer;width:max-content}
+.lesson-meta-row{display:flex;gap:8px;flex-wrap:wrap}.lesson-pill{background:#f2f3f4;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:850;color:#555b62}
+.lesson-block{border:1px solid var(--line);border-radius:15px;padding:16px;background:#fff}.lesson-block h3{font-size:14px;margin:0 0 7px}.lesson-block p{font-size:13px;color:#555b62;line-height:1.65;margin:0}.lesson-block ul{margin:7px 0 0;padding-left:18px;color:#555b62;font-size:13px;line-height:1.6}
+.lesson-task{background:#fff9df;border-color:#f0d970}.lesson-result{background:#f4f7f5}.lesson-prompt{background:#111315;color:#f6f7f8;border-color:#111315}.lesson-prompt h3{color:#ffd21c}.lesson-prompt p{color:#e5e7ea;font-family:Consolas,Monaco,monospace;white-space:pre-wrap}
+.lesson-complete{border:0;background:var(--yellow);border-radius:12px;padding:12px 15px;font-weight:900;cursor:pointer}
 .check{width:24px;height:24px;border-radius:50%;border:1px solid #cfd3d7;background:#fff;cursor:pointer;font-weight:900}
 .check.done{background:var(--yellow);border-color:var(--yellow)}
 .overlay{position:fixed;inset:0;background:rgba(17,19,21,.4);z-index:20;opacity:0;visibility:hidden;transition:.2s}
@@ -554,22 +562,67 @@ Depois → abrir URL pública e validar a mudança</div>
 
 <script>
 const modules = [
-  {n:0,title:'Saindo do zero',desc:'Defina o projeto, as ferramentas e as regras para trabalhar com IA.',types:['Aula','Workbook','Checklist'],lessons:['O que você vai construir','O modelo que vamos usar','As ferramentas','IA sem destruir o projeto — Método PAV','Errou? Não entre em pânico','Dinheiro e segurança','Seu primeiro compromisso']},
-  {n:1,title:'Entendendo o negócio',desc:'Transforme uma ideia em uma proposta clara e útil.',types:['Aula','Workbook'],lessons:['Problema, público e proposta','O que você realmente vende','Primeira validação da ideia']},
-  {n:2,title:'Criando a marca',desc:'Nome, identidade e posicionamento sem complicação.',types:['Aula','Workbook'],lessons:['Nome e posicionamento','Identidade visual básica','Tom de voz e consistência']},
-  {n:3,title:'Criando o site',desc:'Estrutura, páginas e experiência para tirar o projeto do papel.',types:['Aula','Checklist'],lessons:['Estrutura do site','Página inicial','Seções e navegação','Revisão antes de publicar']},
-  {n:4,title:'Colocando no ar',desc:'Publicação, domínio, hospedagem e validação do projeto.',types:['Aula','Checklist'],lessons:['Preparação para publicar','Hospedagem e deploy','Conferência da versão publicada']},
-  {n:5,title:'Vitrine que vende',desc:'Organize produtos e ofertas para facilitar a decisão.',types:['Aula','Workbook'],lessons:['Hierarquia da vitrine','Cards de produto','Categorias e destaques']},
-  {n:6,title:'Produtos e links',desc:'Produtos, afiliados, links e cuidados com a experiência.',types:['Aula','Checklist'],lessons:['Escolhendo produtos','Links de afiliado','Preço e disponibilidade']},
-  {n:7,title:'Página de produto',desc:'Detalhes, confiança e estrutura para aumentar conversão.',types:['Aula','Checklist'],lessons:['Estrutura da página','Prova e confiança','CTA e saída para compra']},
-  {n:8,title:'SEO do zero',desc:'Prepare páginas para serem encontradas nos buscadores.',types:['Aula','Checklist'],lessons:['SEO básico','Títulos e descrições','Indexação e Search Console']},
-  {n:9,title:'Conteúdo',desc:'Crie conteúdo útil para atrair atenção e gerar interesse.',types:['Aula','Workbook'],lessons:['Pilares de conteúdo','Ideias e calendário','Conteúdo que leva para a oferta']},
-  {n:10,title:'Criativos com IA',desc:'Use criatividade e IA para criar imagens, textos e anúncios.',types:['Aula','Workbook'],lessons:['Criatividade com IA','Prompts e direção','Criativos para redes e anúncios']},
-  {n:11,title:'Métricas',desc:'Entenda o que as pessoas fazem e onde melhorar.',types:['Aula','Checklist'],lessons:['O que medir','Cliques e comportamento','Decisões com dados']},
-  {n:12,title:'Anúncios pagos',desc:'Comece pequeno, teste e evite gastar sem aprender.',types:['Aula','Checklist'],lessons:['Objetivo da campanha','Orçamento e criativo','Leitura de resultados']},
-  {n:13,title:'Produto próprio',desc:'Transforme conhecimento e experiência em uma oferta.',types:['Aula','Workbook'],lessons:['Ideia do produto','Estrutura da oferta','Página e entrega']},
-  {n:14,title:'Escala e operação',desc:'Organize o projeto para continuar crescendo com controle.',types:['Aula','Checklist'],lessons:['Rotina de melhoria','Automação e operação','Próximos ciclos do projeto']}
-];
+{n:0,title:'Saindo do zero',desc:'Prepare projeto, ferramentas, segurança e método de trabalho.',types:['Aula','Workbook','Checklist'],lessons:[['O que você vai construir','6–8 min'],['O modelo que vamos usar','8–10 min'],['As ferramentas','10–12 min'],['IA sem destruir seu projeto','10–12 min'],['Errou? Não entre em pânico','8–10 min'],['Dinheiro e segurança','8–10 min'],['Seu primeiro compromisso','4–6 min']]},
+{n:1,title:'Entendendo o negócio',desc:'Entenda como valor, oferta, validação e receita se conectam.',types:['Aula','Workbook'],lessons:[['Como o dinheiro realmente entra','8–10 min'],['As métricas que importam','12–15 min'],['Produto físico, digital ou serviço','10–12 min'],['Escolhendo um nicho sem se prender','12–15 min'],['Score de oferta','12–14 min'],['Validação antes de anúncio','10–12 min'],['O primeiro mapa de receita','9–11 min'],['Checkpoint do negócio','6–8 min']]},
+{n:2,title:'Criando a marca',desc:'Construa uma marca simples, clara, reconhecível e confiável.',types:['Aula','Workbook'],lessons:[['Posicionamento antes do nome','10–12 min'],['Nome com critérios','12–15 min'],['Promessa e proposta de valor','9–11 min'],['Identidade visual MVP','12–14 min'],['Tom de voz e linguagem','10–12 min'],['Confiança e transparência','10–12 min'],['Checkpoint da marca','6–8 min']]},
+{n:3,title:'Criando o site',desc:'Transforme a ideia em arquivos, páginas e uma primeira versão controlável.',types:['Aula','Checklist'],lessons:[['Como a web funciona sem tecnicês','10–12 min'],['Estrutura de arquivos','10–12 min'],['Criando o repositório no GitHub','12–15 min'],['Primeira personalização','15–20 min'],['PAV aplicado ao código','12–15 min'],['Commits que salvam projeto','8–10 min'],['Funcionalidades do template','15–18 min'],['QA antes de deploy','10–12 min']]},
+{n:4,title:'Colocando no ar',desc:'Publique, leia logs, valide produção e atualize sem medo.',types:['Aula','Checklist'],lessons:[['Hospedagem, domínio e deploy','9–11 min'],['Primeiro deploy a partir do GitHub','15–20 min'],['Lendo build e logs','12–15 min'],['Porta, health check e serviço','10–12 min'],['Validação de produção','12–15 min'],['Atualizações sem medo','9–11 min'],['Domínio próprio quando fizer sentido','10–12 min'],['Checkpoint: seu projeto está público','6–8 min']]},
+{n:5,title:'Vitrine que vende',desc:'Organize a homepage para orientar, transmitir confiança e facilitar decisão.',types:['Aula','Workbook'],lessons:[['A primeira tela decide se a pessoa continua','10–12 min'],['Arquitetura de confiança','10–12 min'],['Cards que ajudam a decidir','12–14 min'],['Busca e categorias sem complicação','10–12 min'],['Mobile, acessibilidade e velocidade','12–15 min'],['QA de vitrine antes de divulgar','8–10 min']]},
+{n:6,title:'Produtos e links de afiliado',desc:'Trabalhe com catálogo, fonte, disponibilidade e links sem inventar informação.',types:['Aula','Checklist'],lessons:[['Escolha de produto com evidência','12–15 min'],['Validação de preço, disponibilidade e fonte','10–12 min'],['Link de afiliado: preserve exatamente','9–11 min'],['Catálogo como dados, não como HTML repetido','12–14 min'],['Padrões por loja sem bagunçar o site','10–12 min'],['Rotina de manutenção do catálogo','8–10 min']]},
+{n:7,title:'Página de produto que converte',desc:'Construa páginas que respondem dúvidas e levam ao próximo passo.',types:['Aula','Checklist'],lessons:[['A página começa pela intenção','10–12 min'],['Galeria e prova visual','10–12 min'],['Benefício sem propaganda vazia','12–14 min'],['Avaliações, prova social e transparência','9–11 min'],['CTA e rastreamento de clique','12–14 min'],['Objeções, FAQ e comparação','10–12 min'],['Checklist CRO sem superstição','9–11 min']]},
+{n:8,title:'SEO do zero',desc:'Ajude buscadores a descobrir, entender e relacionar suas páginas.',types:['Aula','Checklist'],lessons:[['Como o Google encontra e entende páginas','12–14 min'],['URL, title, H1, description e canonical','12–15 min'],['Links internos e hubs','10–12 min'],['robots.txt e sitemap','10–12 min'],['Dados estruturados sem inventar estoque','12–14 min'],['Search Console e estados de indexação','12–15 min'],['Conteúdo em clusters','12–15 min'],['SEO técnico e soft 404','10–12 min']]},
+{n:9,title:'Conteúdo que atrai pessoas',desc:'Crie conteúdo que gera descoberta, interesse e uma próxima ação.',types:['Aula','Workbook'],lessons:[['Conteúdo antes de tráfego pago','10–12 min'],['Três motores de conteúdo','12–14 min'],['Gancho sem sensacionalismo','10–12 min'],['CTA que combina com a etapa','9–11 min'],['Reaproveitar sem copiar e colar','12–14 min'],['Calendário editorial enxuto','10–12 min'],['Biblioteca de aprendizados','9–11 min']]},
+{n:10,title:'Criativos com IA',desc:'Use IA para acelerar criativos sem perder direção, fidelidade e qualidade.',types:['Aula','Workbook'],lessons:[['Foto real, IA ou mistura?','11–13 min'],['9:16 de verdade','12–14 min'],['Roteiro de 15 segundos','12–14 min'],['Voz, texto e ritmo','10–12 min'],['Prompt visual com trava de fidelidade','12–14 min'],['Checklist de qualidade criativa','9–11 min'],['Biblioteca de criativos vencedores','9–11 min']]},
+{n:11,title:'Métricas e rastreamento',desc:'Transforme cliques e comportamento em perguntas e decisões.',types:['Aula','Checklist'],lessons:[['O funil mínimo','11–13 min'],['Eventos que valem a pena','12–14 min'],['UTM e origem de tráfego','10–12 min'],['Dashboard que leva a decisão','12–14 min'],['Atribuição e suas limitações','10–12 min'],['Revisão semanal','9–11 min'],['Quando o dado ainda é pouco','9–11 min']]},
+{n:12,title:'Anúncios pagos sem queimar dinheiro',desc:'Teste tráfego pago com limite, matemática e critérios de decisão.',types:['Aula','Checklist'],lessons:[['Antes de anunciar: economia da venda','12–15 min'],['Checklist de prontidão para tráfego pago','10–12 min'],['Orçamento de teste e limite de perda','10–12 min'],['Estrutura de campanha sem decorar botões','12–14 min'],['Teste de criativo pago','10–12 min'],['Regras de pausar, iterar e escalar','11–13 min'],['Cobrança, saldo e segurança financeira','10–12 min'],['Pós-teste e decisão de negócio','10–12 min']]},
+{n:13,title:'Do afiliado ao produto próprio',desc:'Transforme conhecimento, processo ou habilidade em uma oferta própria.',types:['Aula','Workbook'],lessons:[['Por que ter um produto próprio','11–13 min'],['Encontrando uma dor que merece produto','12–15 min'],['Escolhendo o formato certo','11–13 min'],['Escopo da primeira versão','12–14 min'],['Arquitetura da oferta','13–16 min'],['Preço e matemática da entrega','12–15 min'],['Checkout, entrega e pós-venda','12–14 min'],['Validando antes de escalar','11–13 min']]},
+{n:14,title:'Escala e operação',desc:'Crie uma rotina repetível para crescer sem perder qualidade e controle.',types:['Aula','Checklist'],lessons:[['O sistema operacional semanal','11–13 min'],['Conteúdo em lote sem perder qualidade','11–13 min'],['Clusters de SEO e ativos compostos','12–14 min'],['Construindo uma audiência própria','11–13 min'],['Automação com controles','12–14 min'],['Escada de produtos e recorrência','11–13 min'],['Quando delegar','10–12 min'],['Painel de operação e revisão mensal','12–14 min'],['Plano de 90 dias','13–16 min']]}
+].map(m=>({...m,lessons:m.lessons.map(([t,d])=>({t,d}))}));
+
+const modulePlaybooks={
+0:{goal:'sair da ansiedade técnica e terminar com um projeto definido o suficiente para começar',practice:'registre objetivo, público, modelo inicial e o próximo marco do projeto',error:'tentar decidir tudo antes de construir a primeira versão',result:'uma decisão escrita e um próximo passo claro'},
+1:{goal:'entender a lógica econômica do projeto antes de perseguir tráfego ou ferramentas',practice:'transforme a ideia em hipótese: público, oferta, origem da receita e métrica que comprova interesse',error:'confundir clique, faturamento potencial ou comissão anunciada com resultado garantido',result:'um mapa simples de como valor pode virar receita'},
+2:{goal:'dar ao projeto uma identidade coerente antes de decorar páginas',practice:'registre posicionamento, promessa, nome provisório, linguagem e elementos visuais mínimos',error:'escolher nome e visual sem saber o que a marca quer representar',result:'uma marca MVP que pode ser usada com consistência'},
+3:{goal:'entender e controlar a estrutura do site em vez de depender de alterações cegas',practice:'faça uma mudança pequena, salve a versão e valide exatamente o que mudou',error:'pedir uma reconstrução ampla quando o problema está em um bloco específico',result:'uma versão funcional, versionada e compreensível do projeto'},
+4:{goal:'publicar com consciência e saber diferenciar código enviado de versão realmente disponível',practice:'acompanhe build, deploy e URL pública até confirmar que a mudança chegou à produção',error:'considerar a tarefa concluída antes do status e da página publicada confirmarem',result:'uma versão pública validada em desktop e celular'},
+5:{goal:'transformar a homepage em uma vitrine que reduz dúvida e orienta a próxima ação',practice:'faça o teste de cinco segundos: o que existe aqui, para quem serve e o que faço agora?',error:'usar decoração, banners e excesso de informação para compensar falta de clareza',result:'uma vitrine que comunica valor e próximo passo rapidamente'},
+6:{goal:'tratar catálogo como informação verificável e mantida, não como enfeite',practice:'valide produto, imagem, preço, disponibilidade, fonte e destino do link antes de publicar',error:'publicar dado bonito porém desatualizado ou link que não leva ao item específico',result:'um catálogo confiável e mais fácil de manter'},
+7:{goal:'criar uma página que responda às dúvidas certas antes do clique de compra',practice:'revise intenção, prova visual, benefício, objeções, CTA e rastreamento',error:'encher a página de argumentos sem facilitar a decisão principal',result:'uma página clara, verificável e com próximo passo mensurável'},
+8:{goal:'construir uma estrutura que buscadores consigam descobrir e interpretar',practice:'revise URL, título, heading, descrição, canonical, links internos e indexação',error:'produzir volume de páginas sem arquitetura, utilidade ou validação técnica',result:'uma base de SEO rastreável e organizada'},
+9:{goal:'transformar conteúdo em motor de descoberta e relacionamento, não em postagem aleatória',practice:'defina gancho, valor entregue, formato, CTA e métrica antes de publicar',error:'produzir muito sem saber qual etapa da jornada o conteúdo atende',result:'um calendário enxuto com intenção clara'},
+10:{goal:'usar IA como acelerador criativo mantendo fidelidade, formato e direção humana',practice:'especifique referência, enquadramento, duração, proporção, restrições e critério de qualidade',error:'aceitar a primeira geração ou permitir que a IA altere o produto/ideia sem controle',result:'um criativo que pode ser publicado e comparado com outros'},
+11:{goal:'medir somente o que ajuda a tomar uma decisão',practice:'ligue origem → visita → ação → resultado e escreva qual decisão cada métrica pode mudar',error:'colecionar números sem pergunta, contexto ou próximo passo',result:'um painel simples que termina em ação'},
+12:{goal:'comprar aprendizado de forma controlada, não gastar esperando sorte',practice:'defina orçamento de teste, limite de perda, hipótese, criativo e regra de pausa antes de publicar',error:'ativar campanha sem saber cobrança, ponto de equilíbrio e o que faria você interromper o teste',result:'um teste pequeno com risco conhecido e leitura definida'},
+13:{goal:'transformar um problema real em uma primeira oferta própria simples de entregar',practice:'defina dor, público, formato, escopo, preço de validação, entrega e suporte',error:'construir um produto grande antes de validar se a transformação é desejada',result:'uma oferta enxuta que pode ser testada com clientes reais'},
+14:{goal:'operar o projeto de forma repetível antes de tentar crescer em todas as direções',practice:'organize rotina semanal, indicadores, automações seguras, responsabilidades e plano de 90 dias',error:'automatizar caos ou aumentar volume antes de existir um padrão que funciona',result:'um sistema operacional simples com revisão e foco'}
+};
+
+const lessonOverrides={
+'O que você vai construir':{explain:'Ao longo do Clica do Zero você transforma uma ideia em um projeto publicado: marca, site, páginas, conteúdo, descoberta e métricas. Programação é meio; o objetivo é saber construir, entender e validar.',task:'Crie a pasta do projeto e responda em uma frase: o que vou construir, para quem e qual ação quero que a pessoa realize?',result:'Você consegue explicar o projeto em uma frase.'},
+'O modelo que vamos usar':{explain:'A vitrine de afiliados é usada como laboratório porque permite treinar página, oferta, tráfego, SEO, confiança e medição sem exigir estoque no início. O aprendizado depois pode ser aplicado a serviços, produtos próprios e outras plataformas.',task:'Escolha provisoriamente físico, digital, serviço ou híbrido e registre por quê.',result:'Modelo inicial escolhido sem travar em perfeccionismo.'},
+'As ferramentas':{explain:'GitHub guarda projeto e histórico; hospedagem publica; Search Console ajuda na presença no Google; IA auxilia planejamento, código, conteúdo e diagnóstico. Planos e limites mudam, então confirme condições atuais antes de pagar.',task:'Monte seu painel de ferramentas: já tenho, preciso criar, custo atual e finalidade.',result:'Você sabe qual papel cada ferramenta cumpre.'},
+'IA sem destruir seu projeto':{explain:'O Método PAV transforma pedidos vagos em mudanças controladas: Pedir exatamente, Alterar só o necessário e Validar antes de continuar.',task:'Escreva um prompt PAV para uma alteração real do seu projeto.',result:'Você produz uma instrução clara, limitada e verificável.',prompt:'Altere somente [ELEMENTO]. Preserve [O QUE JÁ FUNCIONA]. O resultado esperado é [RESULTADO]. Depois valide [DESKTOP/MOBILE/LINKS/COMPORTAMENTO] antes de continuar.'},
+'Errou? Não entre em pânico':{explain:'Versões e commits funcionam como pontos de salvamento. Quando algo quebra, isole a última mudança e compare com o último estado bom em vez de alterar várias áreas ao mesmo tempo.',task:'Defina sua regra de checkpoint: quando salvar antes e depois de mudanças.',result:'Você sabe como experimentar sem perder uma versão funcional.'},
+'Dinheiro e segurança':{explain:'Antes de qualquer anúncio ou ferramenta paga, conheça orçamento, forma de cobrança e limite de perda. Decisão financeira precisa ser consciente, não consequência acidental de um clique.',task:'Preencha seus três números: quanto posso gastar, quanto ganho por venda e quanto aceito perder no teste.',result:'Você sabe quando uma ação pode gerar cobrança e qual é seu limite.'},
+'Seu primeiro compromisso':{explain:'O projeto não precisa estar perfeito; precisa estar definido o suficiente para começar. Nome, nicho e modelo podem mudar depois que existir evidência real.',task:'Conclua objetivo, público provisório, modelo inicial, orçamento consciente e primeiro marco.',result:'Marco 0 concluído: o projeto está pronto para avançar.'},
+'A primeira tela decide se a pessoa continua':{explain:'A primeira dobra responde rapidamente: onde estou, isso tem a ver comigo e o que faço agora? Headline explica valor, subtítulo dá contexto e CTA define ação.',task:'Reescreva sua primeira dobra usando apenas 1 headline, 1 subtítulo e 1 CTA.',result:'Em cinco segundos outra pessoa entende o que sua página oferece.'},
+'Plano de 90 dias':{explain:'Nos dias 1–30 estabilize e valide. Nos 31–60 repita o que mostra sinal e corrija gargalos. Nos 61–90 amplie somente o que já possui processo e evidência.',task:'Defina três objetivos por mês e agende revisões nos dias 30, 60 e 90.',result:'Você termina com um plano executável e limites claros de foco.'}
+};
+
+function lessonContent(m,lesson){
+  const p=modulePlaybooks[m.n];
+  const o=lessonOverrides[lesson.t]||{};
+  const lower=lesson.t.charAt(0).toLowerCase()+lesson.t.slice(1);
+  return {
+    objective:o.objective||('Ao terminar esta aula, você terá clareza prática sobre '+lower+' e saberá como aplicar isso ao seu próprio projeto.'),
+    explain:o.explain||('Esta aula aprofunda “'+lesson.t+'” dentro do módulo '+m.n+'. O foco não é decorar uma ferramenta: é entender a decisão por trás dela, aplicar no seu projeto e produzir uma evidência observável. O objetivo do módulo é '+p.goal+'.'),
+    demo:o.demo||('Abra o seu projeto e localize onde este conceito aparece hoje. Compare o estado atual com o resultado que você gostaria de alcançar. Faça uma única mudança ou decisão por vez e registre o antes e o depois.'),
+    error:o.error||p.error,
+    task:o.task||('Aplique “'+lesson.t+'” ao seu projeto: '+p.practice+'. Registre o que decidiu e por que tomou essa decisão.'),
+    result:o.result||('Você termina esta aula com '+p.result+'.'),
+    prompt:o.prompt||('Estou trabalhando na etapa “'+lesson.t+'” do meu projeto. Analise meu contexto antes de propor mudanças. Ajude-me a definir o menor próximo passo útil, preserve o que já funciona, não invente dados e me diga como validar o resultado antes de avançar.')
+  };
+}
 
 const storageKey='clicaDoZeroProgressV1';
 let completed=JSON.parse(localStorage.getItem(storageKey)||'[]');
@@ -608,18 +661,49 @@ function openModule(n){
   if(!m)return;
   document.getElementById('drawerModule').textContent='Módulo '+m.n;
   document.getElementById('drawerTitle').textContent=m.title;
+  renderLessonList(m);
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('drawer').setAttribute('aria-hidden','false');
+}
+
+function renderLessonList(m){
   document.getElementById('lessonList').innerHTML=m.lessons.map((lesson,i)=>{
     const key=lessonKey(m.n,i);
     const isDone=completed.includes(key);
     return `<div class="lesson">
       <div class="lesson-index">${m.n}.${i+1}</div>
-      <div><strong>${lesson}</strong><small>Aula do módulo ${m.n}</small></div>
+      <button class="lesson-open" onclick="openLesson(${m.n},${i})"><strong>${lesson.t}</strong><small>${lesson.d} • Aula completa</small></button>
       <button class="check ${isDone?'done':''}" onclick="toggleLesson('${key}',this)" aria-label="Marcar como concluída">${isDone?'✓':''}</button>
     </div>`;
   }).join('');
-  document.getElementById('drawer').classList.add('open');
-  document.getElementById('overlay').classList.add('open');
-  document.getElementById('drawer').setAttribute('aria-hidden','false');
+}
+
+function openLesson(n,i){
+  const m=modules.find(x=>x.n===n); if(!m)return;
+  const lesson=m.lessons[i]; const data=lessonContent(m,lesson); const key=lessonKey(n,i); const done=completed.includes(key);
+  document.getElementById('drawerModule').textContent='Módulo '+m.n+' • Aula '+m.n+'.'+(i+1);
+  document.getElementById('drawerTitle').textContent=lesson.t;
+  document.getElementById('lessonList').innerHTML=`
+    <div class="lesson-reader">
+      <button class="lesson-back" onclick="renderLessonList(modules.find(x=>x.n===${n}));document.getElementById('drawerTitle').textContent=modules.find(x=>x.n===${n}).title;document.getElementById('drawerModule').textContent='Módulo '+${n};">← Voltar às aulas</button>
+      <div class="lesson-meta-row"><span class="lesson-pill">${lesson.d}</span><span class="lesson-pill">Aplicação prática</span><span class="lesson-pill">Método PAV</span></div>
+      <div class="lesson-block"><h3>Objetivo</h3><p>${data.objective}</p></div>
+      <div class="lesson-block"><h3>Entenda de verdade</h3><p>${data.explain}</p></div>
+      <div class="lesson-block"><h3>Demonstração no seu projeto</h3><p>${data.demo}</p></div>
+      <div class="lesson-block"><h3>Erro comum</h3><p>${data.error}</p></div>
+      <div class="lesson-block lesson-task"><h3>Sua tarefa agora</h3><p>${data.task}</p></div>
+      <div class="lesson-block lesson-result"><h3>Como saber que concluiu</h3><p>${data.result}</p></div>
+      <div class="lesson-block lesson-prompt"><h3>Prompt para usar nesta aula</h3><p>${data.prompt}</p></div>
+      <button class="lesson-complete" onclick="completeFromReader('${key}',this)">${done?'Aula concluída ✓':'Marcar aula como concluída'}</button>
+    </div>`;
+}
+
+function completeFromReader(key,button){
+  if(!completed.includes(key)) completed.push(key);
+  localStorage.setItem(storageKey,JSON.stringify(completed));
+  button.textContent='Aula concluída ✓';
+  renderModules(); updateProgress();
 }
 
 function closeDrawer(){
@@ -651,8 +735,8 @@ function updateProgress(){
     }
   }
   document.getElementById('continueTitle').textContent='Módulo '+next.m.n+' — '+next.m.title;
-  document.getElementById('continueText').textContent=next.m.lessons[next.i];
-  document.getElementById('continueBtn').onclick=()=>openModule(next.m.n);
+  document.getElementById('continueText').textContent=next.m.lessons[next.i].t;
+  document.getElementById('continueBtn').onclick=()=>{openModule(next.m.n);setTimeout(()=>openLesson(next.m.n,next.i),40);};
 }
 
 document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{
