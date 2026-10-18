@@ -58,7 +58,9 @@ a{color:inherit;text-decoration:none}
 .start-card.dark p{color:#c7cbd0}.start-card h3{margin:5px 0 8px;font-size:20px}.start-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
 .start-check{display:grid;gap:8px;margin-top:14px}.start-check div{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#555b62}.start-check div::before{content:"";width:14px;height:14px;border:2px solid #d2a400;border-radius:4px;flex:0 0 14px;margin-top:2px}
 .start-card.dark .start-check div{color:#d7dade}
-.milestones{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:14px}.milestone{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fafbfc}.milestone b{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:#111315;color:#ffd21c;font-size:11px;margin-bottom:8px}.milestone strong{display:block;font-size:12px}.milestone span{font-size:10.5px;color:var(--muted)}
+.milestones{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:14px}.milestone{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fafbfc;transition:.16s}.milestone b{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:#111315;color:#ffd21c;font-size:11px;margin-bottom:8px}.milestone strong{display:block;font-size:12px}.milestone span{font-size:10.5px;color:var(--muted)}
+.milestone.done{background:#f7fbf5;border-color:#cbdcc4}.milestone.done b{background:#47743c;color:#fff}.milestone-action{margin-top:10px;border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 9px;font-size:9.5px;font-weight:900;cursor:pointer}.milestone.done .milestone-action{background:#eef6ea;border-color:#c6d9be;color:#355b2a}
+.outcome-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px}.outcome-head span{font-size:10.5px;color:var(--muted)}.outcome-count{display:inline-flex;align-items:center;justify-content:center;min-width:54px;height:30px;border-radius:999px;background:#111315;color:#ffd21c;font-size:11px;font-weight:950}
 .panel{padding:24px;margin-top:18px}
 .panel-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:18px}
 .panel h2{margin:0;font-size:23px;letter-spacing:-.5px}
@@ -495,12 +497,16 @@ a{color:inherit;text-decoration:none}
           </div>
         </div>
 
+        <div class="outcome-head">
+          <span>Marque uma conquista somente quando ela existir no seu projeto real.</span>
+          <div class="outcome-count" id="outcomeCount">0/5</div>
+        </div>
         <div class="milestones">
-          <div class="milestone"><b>1</b><strong>Projeto definido</strong><span>Fim do Módulo 0</span></div>
-          <div class="milestone"><b>2</b><strong>Projeto público</strong><span>Fim do Módulo 4</span></div>
-          <div class="milestone"><b>3</b><strong>Vitrine encontrável</strong><span>Fim do Módulo 8</span></div>
-          <div class="milestone"><b>4</b><strong>Sistema medido</strong><span>Fim do Módulo 12</span></div>
-          <div class="milestone"><b>5</b><strong>Operação própria</strong><span>Fim do Módulo 14</span></div>
+          <div class="milestone" data-outcome="projeto-definido"><b>1</b><strong>Projeto definido</strong><span>Fim do Módulo 0</span><button class="milestone-action" type="button">Marcar como conquistado</button></div>
+          <div class="milestone" data-outcome="projeto-publico"><b>2</b><strong>Projeto público</strong><span>Fim do Módulo 4</span><button class="milestone-action" type="button">Marcar como conquistado</button></div>
+          <div class="milestone" data-outcome="vitrine-encontravel"><b>3</b><strong>Vitrine encontrável</strong><span>Fim do Módulo 8</span><button class="milestone-action" type="button">Marcar como conquistado</button></div>
+          <div class="milestone" data-outcome="sistema-medido"><b>4</b><strong>Sistema medido</strong><span>Fim do Módulo 12</span><button class="milestone-action" type="button">Marcar como conquistado</button></div>
+          <div class="milestone" data-outcome="operacao-propria"><b>5</b><strong>Operação própria</strong><span>Fim do Módulo 14</span><button class="milestone-action" type="button">Marcar como conquistado</button></div>
         </div>
       </section>
 
@@ -1444,15 +1450,44 @@ const moduleChecklists={
 };
 
 const storageKey='clicaDoZeroProgressV1';
+const outcomeKey='clicaDoZeroOutcomesV1';
 const reviewKey='clicaDoZeroReviewV1';
 const notesKey='clicaDoZeroNotesV1';
 const lastLessonKey='clicaDoZeroLastLessonV1';
 let completed=JSON.parse(localStorage.getItem(storageKey)||'[]');
+let outcomes=JSON.parse(localStorage.getItem(outcomeKey)||'[]');
 let reviewLater=JSON.parse(localStorage.getItem(reviewKey)||'[]');
 let lessonNotes=JSON.parse(localStorage.getItem(notesKey)||'{}');
 let activeFilter='Todos';
 
 function lessonKey(moduleNumber,index){ return moduleNumber+'-'+index; }
+
+function renderOutcomes(){
+  const cards=[...document.querySelectorAll('.milestone[data-outcome]')];
+  cards.forEach(card=>{
+    const key=card.dataset.outcome;
+    const done=outcomes.includes(key);
+    card.classList.toggle('done',done);
+    const btn=card.querySelector('.milestone-action');
+    if(btn)btn.textContent=done?'Conquistado ✓':'Marcar como conquistado';
+  });
+  const count=document.getElementById('outcomeCount');
+  if(count)count.textContent=outcomes.length+'/5';
+}
+
+function initOutcomes(){
+  document.querySelectorAll('.milestone[data-outcome] .milestone-action').forEach(btn=>{
+    btn.onclick=()=>{
+      const card=btn.closest('.milestone');
+      const key=card.dataset.outcome;
+      if(outcomes.includes(key)) outcomes=outcomes.filter(x=>x!==key);
+      else outcomes.push(key);
+      localStorage.setItem(outcomeKey,JSON.stringify(outcomes));
+      renderOutcomes();
+    };
+  });
+  renderOutcomes();
+}
 
 function renderNav(){
   document.getElementById('moduleNav').innerHTML=modules.map(m=>`
@@ -2148,6 +2183,7 @@ renderModules();
 updateProgress();
 renderReviewCenter();
 initNotesCenter();
+initOutcomes();
 addPathAccessGuides();
 initInteractiveRouteNavigator();
 initGoalLearningPaths();
