@@ -122,6 +122,10 @@ a{color:inherit;text-decoration:none}
 .knowledge[open] summary::after{content:"−"}
 .knowledge-body{padding:0 18px 18px;border-top:1px solid #f0f1f2}
 .knowledge-body h4{font-size:14px;margin:16px 0 7px}
+.thought-tip{position:relative;display:inline-block;cursor:help;outline:none;border-bottom:1px dotted #c7a000}
+.thought-tip::after{content:attr(data-thought);position:absolute;left:0;bottom:calc(100% + 9px);width:min(280px,72vw);padding:9px 11px;border-radius:10px;background:#111315;color:#fff;font-size:11px;font-weight:700;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.16);opacity:0;visibility:hidden;transform:translateY(4px);transition:.16s;z-index:40;pointer-events:none}
+.thought-tip::before{content:"";position:absolute;left:16px;bottom:calc(100% + 3px);border:6px solid transparent;border-top-color:#111315;opacity:0;visibility:hidden;transition:.16s;z-index:40}
+.thought-tip:hover::after,.thought-tip:hover::before,.thought-tip:focus::after,.thought-tip:focus::before{opacity:1;visibility:visible;transform:translateY(0)}
 .knowledge-body p,.knowledge-body li{font-size:12.5px;color:#555b62;line-height:1.6}
 .knowledge-body ul{margin:8px 0 0;padding-left:18px}
 .prompt-box,.code-box{margin-top:10px;background:#111315;color:#f6f7f8;border-radius:12px;padding:13px 14px;font:12px/1.55 Consolas,Monaco,monospace;white-space:pre-wrap;overflow:auto}
@@ -339,11 +343,11 @@ a{color:inherit;text-decoration:none}
           <details class="knowledge" open>
             <summary>Método PAV: a regra que evitou quebrar o que já funcionava</summary>
             <div class="knowledge-body">
-              <h4>P — Pedir exatamente</h4>
+              <h4 class="thought-tip" tabindex="0" data-thought="Se você pede só “melhore”, a IA precisa adivinhar. Se pede “aumente apenas a foto e preserve o restante”, você transforma intenção em direção.">P — Pedir exatamente</h4>
               <p>Antes de qualquer alteração, descreva o resultado desejado e também o que não pode ser mexido. Em projetos reais, dizer apenas “melhore” abre espaço para mudanças desnecessárias.</p>
-              <h4>A — Alterar só o necessário</h4>
+              <h4 class="thought-tip" tabindex="0" data-thought="Se o carrinho está errado, conserte o carrinho. Mudar o cabeçalho inteiro pode criar três problemas para resolver apenas um.">A — Alterar só o necessário</h4>
               <p>Uma correção pequena deve continuar pequena. Se o problema está na imagem do carrinho, não é motivo para reconstruir o cabeçalho inteiro.</p>
-              <h4>V — Validar antes de continuar</h4>
+              <h4 class="thought-tip" tabindex="0" data-thought="Código salvo não é resultado pronto. O resultado existe quando você abre, testa e vê funcionando como imaginou.">V — Validar antes de continuar</h4>
               <p>Não confie apenas no código. Depois da alteração, valide a versão publicada, navegue pelo fluxo e confirme que o que estava funcionando continua funcionando.</p>
               <span class="prompt-label">Prompt pronto</span>
               <div class="prompt-box">Altere somente [ELEMENTO]. Preserve todo o restante exatamente como está. Não remova funcionalidades existentes. Depois da alteração, valide a versão publicada e me informe apenas o que foi alterado e o resultado da validação.</div>
