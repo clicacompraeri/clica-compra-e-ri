@@ -94,6 +94,11 @@ a{color:inherit;text-decoration:none}
 .lesson-map .mini{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fafbfc}
 .lesson-map .mini strong{display:block;font-size:12px}
 .lesson-map .mini span{font-size:11px;color:var(--muted)}
+.creative-lab{display:grid;grid-template-columns:1fr .9fr;gap:16px;align-items:stretch}
+.lab-feature{background:linear-gradient(135deg,#111315,#262b31);color:#fff;border-radius:20px;padding:24px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between}
+.lab-feature .eyebrow{color:#ffd21c}.lab-feature h3{font-size:28px;line-height:1.05;margin:8px 0 10px}.lab-feature p{color:#c8ccd1;margin:0}
+.lab-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.lab-btn{border:0;border-radius:12px;padding:11px 14px;font-weight:900;cursor:pointer}.lab-btn.primary-lab{background:var(--yellow);color:#111}.lab-btn.secondary-lab{background:#fff;color:#111}
+.idea-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.idea-card{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fafbfc}.idea-card strong{display:block;font-size:13px;margin-bottom:4px}.idea-card span{font-size:11px;color:var(--muted)}
 .lesson-drawer{position:fixed;inset:0 0 0 auto;width:min(560px,100%);background:#fff;z-index:30;box-shadow:-20px 0 60px rgba(0,0,0,.18);transform:translateX(105%);transition:.25s;display:flex;flex-direction:column}
 .lesson-drawer.open{transform:translateX(0)}
 .drawer-head{padding:22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
@@ -118,6 +123,7 @@ a{color:inherit;text-decoration:none}
   .resources{grid-template-columns:repeat(2,1fr)}
   .knowledge-grid{grid-template-columns:1fr}
   .lesson-map{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .creative-lab{grid-template-columns:1fr}
 }
 @media(max-width:620px){
   .main{padding:16px}
@@ -125,6 +131,7 @@ a{color:inherit;text-decoration:none}
   .modules-grid{grid-template-columns:1fr}
   .resources{grid-template-columns:1fr}
   .lesson-map{grid-template-columns:1fr}
+  .idea-grid{grid-template-columns:1fr}
   .module-nav{grid-template-columns:repeat(5,minmax(0,1fr))}
 }
 </style>
@@ -478,6 +485,44 @@ Depois → abrir URL pública e validar a mudança</div>
       <section class="panel">
         <div class="panel-head">
           <div>
+            <div class="eyebrow">Laboratório de criatividade</div>
+            <h2>Não copie uma ideia. Descubra a sua.</h2>
+            <p>Use estes desafios para treinar a mente a enxergar produtos, plataformas e experiências que ainda não existem do jeito que você imaginou.</p>
+          </div>
+        </div>
+
+        <div class="creative-lab">
+          <div class="lab-feature">
+            <div>
+              <div class="eyebrow">Desafio de curiosidade</div>
+              <h3 id="ideaChallengeTitle">E se existisse uma rede social só para aprender fazendo?</h3>
+              <p id="ideaChallengeText">Imagine perfis baseados em projetos reais, feed de progresso, desafios semanais e pessoas acompanhando a evolução umas das outras. O exercício é pensar no que faria alguém voltar amanhã.</p>
+            </div>
+            <div class="lab-actions">
+              <button class="lab-btn primary-lab" id="surpriseIdeaBtn">Me surpreenda com outra ideia</button>
+              <button class="lab-btn secondary-lab" id="copyIdeaPromptBtn">Copiar prompt de criação</button>
+            </div>
+          </div>
+
+          <div class="idea-grid">
+            <div class="idea-card"><strong>Streaming de nicho</strong><span>Uma experiência de mídia para um assunto específico, com catálogo, descoberta e continuidade.</span></div>
+            <div class="idea-card"><strong>Rede social diferente</strong><span>Perfis e feed organizados por uma ação, hobby, profissão, cidade ou objetivo.</span></div>
+            <div class="idea-card"><strong>Explorador de curiosidades</strong><span>Um site em que cada clique abre uma nova descoberta, história, comparação ou caminho.</span></div>
+            <div class="idea-card"><strong>Ferramenta que resolve uma tarefa</strong><span>Calculadora, gerador, organizador, comparador, painel ou assistente especializado.</span></div>
+            <div class="idea-card"><strong>Experiência interativa</strong><span>Quiz, jornada, mapa, simulador ou história em que o usuário escolhe o próximo passo.</span></div>
+            <div class="idea-card"><strong>Comunidade com missão</strong><span>Pessoas reunidas não apenas para postar, mas para construir, competir, colaborar ou evoluir.</span></div>
+          </div>
+        </div>
+
+        <div class="field-note">
+          <strong>Pergunta que destrava ideias:</strong>
+          <p>“O que faria alguém abrir este projeto sem precisar comprar nada naquele momento, apenas porque ficou curioso para ver o que aconteceu, descobrir algo novo ou continuar uma experiência?”</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
             <h2>Mapa do que construímos na prática</h2>
             <p>Uma visão rápida da jornada que deu origem aos ensinamentos do curso.</p>
           </div>
@@ -618,6 +663,32 @@ document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',(
 }));
 document.getElementById('closeDrawer').onclick=closeDrawer;
 document.getElementById('overlay').onclick=closeDrawer;
+
+const ideaChallenges=[
+  {title:'E se existisse uma rede social só para aprender fazendo?',text:'Imagine perfis baseados em projetos reais, feed de progresso, desafios semanais e pessoas acompanhando a evolução umas das outras. O exercício é pensar no que faria alguém voltar amanhã.'},
+  {title:'E se um streaming fosse construído para um único tipo de paixão?',text:'Pode ser cinema independente, receitas, histórias locais, esportes amadores, aulas ou qualquer nicho. Pense em catálogo, descoberta, favoritos, continuar assistindo e sensação de coleção.'},
+  {title:'E se cada clique revelasse uma nova curiosidade?',text:'Crie uma experiência em que o usuário nunca sabe exatamente qual será a próxima descoberta, mas entende por que vale a pena continuar explorando.'},
+  {title:'E se um site funcionasse como uma jornada?',text:'Em vez de páginas soltas, imagine etapas, escolhas, conquistas e caminhos diferentes. Cada ação do usuário modifica o que ele vê depois.'},
+  {title:'E se uma comunidade tivesse uma missão, não apenas um feed?',text:'Pense em pessoas que entram para concluir desafios, construir algo juntas, comparar progresso e desbloquear novos níveis de participação.'},
+  {title:'E se você transformasse uma tarefa chata em uma ferramenta prazerosa?',text:'Escolha algo repetitivo e imagine um painel, gerador, calculadora ou fluxo interativo que torne a tarefa simples e até interessante de usar.'}
+];
+
+function randomIdea(){
+  const item=ideaChallenges[Math.floor(Math.random()*ideaChallenges.length)];
+  document.getElementById('ideaChallengeTitle').textContent=item.title;
+  document.getElementById('ideaChallengeText').textContent=item.text;
+}
+document.getElementById('surpriseIdeaBtn').onclick=randomIdea;
+document.getElementById('copyIdeaPromptBtn').onclick=async()=>{
+  const prompt='Quero criar um projeto digital que desperte curiosidade e vontade de voltar. Minha ideia inicial é: [IDEIA]. Ajude a transformar isso em uma experiência original. Defina público, motivo para entrar, motivo para continuar explorando, mecânica principal, páginas ou telas essenciais, elemento de surpresa, forma de criar recorrência e um MVP simples para publicar e testar. Não copie uma plataforma existente; use referências apenas para entender padrões de experiência.';
+  try{
+    await navigator.clipboard.writeText(prompt);
+    const b=document.getElementById('copyIdeaPromptBtn');
+    const old=b.textContent;b.textContent='Prompt copiado';setTimeout(()=>b.textContent=old,1600);
+  }catch(e){
+    document.getElementById('copyIdeaPromptBtn').textContent='Selecione o prompt na biblioteca';
+  }
+};
 
 renderNav();
 renderModules();
