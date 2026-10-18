@@ -578,6 +578,13 @@ a{color:inherit;text-decoration:none}
 .lesson-selfcheck-status{margin-top:9px;font-size:9.8px;color:#6b7278}
 .lesson-selfcheck.ready{background:#f8fcf6;border-color:#cfe0c8}
 .lesson-selfcheck.ready .lesson-selfcheck-status{color:#37652e;font-weight:850}
+
+.lesson-five-minute{margin:12px 0;border:1px solid #f0dc77;border-radius:15px;padding:14px;background:#fffdf3}
+.lesson-five-minute-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px}
+.lesson-five-minute-head h3{margin:0;font-size:13px}.lesson-five-minute-head span{font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.5px;color:#6f5400;background:#fff1a8;border-radius:999px;padding:5px 8px;white-space:nowrap}
+.lesson-five-minute p{margin:0;font-size:10.5px;line-height:1.55;color:#555b62}
+.lesson-five-minute strong{color:#262a2e}
+@media(max-width:620px){.lesson-five-minute-head{flex-direction:column}}
 </style>
 </head>
 <body>
@@ -2252,6 +2259,13 @@ function openLesson(n,i){
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="O conceito fica mais claro quando você consegue enxergá-lo acontecendo em algo que é seu.">Demonstração no seu projeto</h3><p>${data.demo}</p></div>
       <div class="lesson-block" id="relatedLessonBlock-${key}"></div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Conhecer um erro antes de cometê-lo pode economizar horas de correção depois.">Erro comum</h3><p>${data.error}</p></div>
+      <div class="lesson-five-minute">
+        <div class="lesson-five-minute-head">
+          <h3>Faça agora em 5 minutos</h3>
+          <span>Menor passo possível</span>
+        </div>
+        <p><strong>Sem tentar terminar tudo:</strong> ${fiveMinuteActionFor(m.n,data)}</p>
+      </div>
       <div class="lesson-block lesson-task"><h3 class="thought-tip" tabindex="0" data-thought="Uma tarefa pequena concluída vale mais para o aprendizado do que dez ideias deixadas para depois.">Sua tarefa agora</h3><p>${data.task}</p></div>
       <div class="lesson-block lesson-result"><h3 class="thought-tip" tabindex="0" data-thought="Quando existe um resultado observável, você não precisa adivinhar se aprendeu: você consegue conferir.">Como saber que concluiu</h3><p>${data.result}</p></div>
       <div class="lesson-block lesson-prompt"><h3 class="thought-tip" tabindex="0" data-thought="Um bom prompt não pensa por você; ele ajuda você a transformar uma intenção clara em um próximo passo melhor.">Prompt para usar nesta aula</h3><p>${data.prompt}</p></div>
@@ -2293,6 +2307,28 @@ function openLesson(n,i){
 }
 
 
+
+
+const fiveMinuteActions={
+  0:'escreva em uma frase o que você quer construir e para quem.',
+  1:'anote de onde pode vir a receita e qual número mostraria interesse real.',
+  2:'escreva três palavras que devem combinar com a personalidade da sua marca.',
+  3:'escolha uma única parte do projeto que você consegue alterar e conferir sem tocar no resto.',
+  4:'abra o ambiente publicado e confirme se a última versão realmente está no ar.',
+  5:'olhe sua página por cinco segundos e diga em voz alta o que ela oferece e qual botão você clicaria.',
+  6:'pegue um produto e confira nome, imagem, preço e link.',
+  7:'leia sua página como comprador e escreva a principal dúvida que ainda ficaria.',
+  8:'confira o título e o H1 de uma página e veja se ambos deixam o assunto claro.',
+  9:'escreva um gancho, uma ideia útil e um CTA para um único conteúdo.',
+  10:'escreva um prompt com objetivo, referência, formato e uma restrição importante.',
+  11:'escolha uma métrica e complete: “se este número mudar, eu vou...”.',
+  12:'defina quanto você aceita gastar em um teste antes de precisar parar e analisar.',
+  13:'escreva a dor, o público e o resultado da sua primeira oferta em três linhas.',
+  14:'escolha uma tarefa repetitiva desta semana e defina quando ela será feita novamente.'
+};
+function fiveMinuteActionFor(n,data){
+  return fiveMinuteActions[n]||data.task;
+}
 
 const everydayExamples={
   0:'Pense em alguém que quer começar a correr. Antes de comprar tênis, relógio e aplicativo, ela decide apenas: “vou caminhar 20 minutos três vezes por semana”. No projeto digital, começar pequeno funciona do mesmo jeito.',
