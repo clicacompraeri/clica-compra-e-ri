@@ -6,6 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const publicPath = path.join(__dirname, "public");
 const privateCoursePath = path.join(__dirname, "private", "clica-do-zero", "aluno", "index.html");
+const privateSupportPath = path.join(__dirname, "private", "clica-do-zero", "suporte", "index.html");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -14,6 +15,8 @@ const HOTMART_PRODUCT_ID = 8746722;
 const HOTMART_GRANT_EVENTS = new Set(["PURCHASE_APPROVED","PURCHASE_COMPLETE"]);
 const HOTMART_REVOKE_EVENTS = new Set(["PURCHASE_REFUNDED","PURCHASE_CHARGEBACK","PURCHASE_CANCELED","PURCHASE_EXPIRED"]);
 const STUDENT_SYNC_URL = "https://yahsrfgftsjioqgqmigk.supabase.co/functions/v1/clica-student-sync";
+const SUPPORT_URL = "https://yahsrfgftsjioqgqmigk.supabase.co/functions/v1/clica-support";
+const supportRate = new Map();
 
 async function syncStudentAccess(payload){
   const secret = process.env.CLICA_STUDENT_ACCESS_SECRET;
@@ -30,6 +33,28 @@ async function syncStudentAccess(payload){
   });
 
   if(!response.ok) throw new Error("Student sync failed");
+}
+
+async function supportRequest(payload){
+  const secret = process.env.CLICA_STUDENT_ACCESS_SECRET;
+  if(!secret) throw new Error("Support secret missing");
+
+  const response = await fetch(SUPPORT_URL, {
+    method:"POST",
+    headers:{
+      "content-type":"application/json",
+      "x-clica-internal":secret
+    },
+    body:JSON.stringify(payload),
+    signal:AbortSignal.timeout(5000)
+  });
+
+  if(!response.ok){
+    const error = new Error("Support request failed");
+    error.status = response.status;
+    throw error;
+  }
+  return await response.json();
 }
 
 app.post("/api/hotmart/webhook", async (req, res) => {
@@ -139,6 +164,76 @@ async function isAllowedStudent(email){
     return false;
   }
 }
+
+app.post("/api/suporte", async (req, res) => {
+  const name = String(req.body.name || "").trim();
+  const email = String(req.body.email || "").trim().toLowerCase();
+  const message = String(req.body.message || "").trim();
+  const website = String(req.body.website || "").trim();
+
+  if(website) return res.redirect("/clica-do-zero/aluno-login.html?suporte=enviado#suporte");
+
+  const key = req.ip || "unknown";
+  const now = Date.now();
+  const last = supportRate.get(key) || 0;
+  if(now - last < 60000) return res.redirect("/clica-do-zero/aluno-login.html?suporte=aguarde#suporte");
+
+  if(!email || !email.includes("@") || message.length < 5){
+    return res.redirect("/clica-do-zero/aluno-login.html?suporte=erro#suporte");
+  }
+
+  try{
+    await supportRequest({action:"create", name, email, message});
+    supportRate.set(key, now);
+    return res.redirect("/clica-do-zero/aluno-login.html?suporte=enviado#suporte");
+  }catch(error){
+    console.error("Support submit error:", error.message);
+    return res.redirect("/clica-do-zero/aluno-login.html?suporte=erro#suporte");
+  }
+});
+
+app.get("/clica-do-zero/suporte/", async (req, res) => {
+  const email = verifySession(parseCookies(req).clica_aluno);
+  if(!email) return res.redirect("/clica-do-zero/aluno-login.html");
+
+  try{
+    await supportRequest({action:"list", viewer_email:email});
+    res.set("Cache-Control","no-store");
+    return res.sendFile(privateSupportPath);
+  }catch(error){
+    return res.status(error.status === 403 ? 403 : 500).send(error.status === 403 ? "Acesso restrito." : "Não foi possível abrir o suporte.");
+  }
+});
+
+app.get("/api/suporte/mensagens", async (req, res) => {
+  const email = verifySession(parseCookies(req).clica_aluno);
+  if(!email) return res.status(401).json({ok:false});
+
+  try{
+    const data = await supportRequest({action:"list", viewer_email:email});
+    res.set("Cache-Control","no-store");
+    return res.json(data);
+  }catch(error){
+    return res.status(error.status === 403 ? 403 : 500).json({ok:false});
+  }
+});
+
+app.post("/api/suporte/status", async (req, res) => {
+  const email = verifySession(parseCookies(req).clica_aluno);
+  if(!email) return res.status(401).json({ok:false});
+
+  try{
+    await supportRequest({
+      action:"status",
+      viewer_email:email,
+      id:String(req.body.id || ""),
+      status:String(req.body.status || "")
+    });
+    return res.json({ok:true});
+  }catch(error){
+    return res.status(error.status === 403 ? 403 : 500).json({ok:false});
+  }
+});
 
 app.post("/api/aluno/login", async (req, res) => {
   if(!process.env.CLICA_SESSION_SECRET) return res.redirect("/clica-do-zero/aluno-login.html?erro=config");
