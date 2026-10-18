@@ -108,6 +108,11 @@ a{color:inherit;text-decoration:none}
 .access-card{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fafbfc;display:flex;flex-direction:column;min-height:170px}
 .access-card b{font-size:13px;margin-bottom:6px}.access-card p{font-size:11px;color:var(--muted);line-height:1.5;margin:0 0 9px}.access-route{font-size:10.5px;line-height:1.5;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px;margin-top:auto}
 .access-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.access-actions button{border:0;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:900;cursor:pointer}.access-actions .learn{background:#111315;color:#fff}.access-actions .route{background:#fff1a8;color:#5d4800}
+.route-navigator{margin-top:18px;border:1px solid var(--line);border-radius:18px;padding:18px;background:#fff}
+.route-navigator h3{margin:0 0 6px;font-size:18px}.route-navigator>p{margin:0 0 13px;color:var(--muted);font-size:12px}
+.route-options{display:flex;gap:7px;flex-wrap:wrap}.route-choice{border:1px solid var(--line);background:#fafbfc;border-radius:999px;padding:8px 11px;font-size:10.5px;font-weight:900;cursor:pointer}.route-choice.active{background:#111315;color:#fff;border-color:#111315}
+.route-result{display:none;margin-top:14px;border:1px solid #ecd66e;background:#fffbea;border-radius:15px;padding:15px}.route-result.open{display:block}.route-result h4{margin:0 0 6px;font-size:14px}.route-result p{margin:0 0 9px;font-size:12px;color:#555b62;line-height:1.55}.route-result ol{margin:0 0 10px;padding-left:18px}.route-result li{font-size:11.5px;color:#555b62;line-height:1.55;margin:3px 0}.route-result .access-actions{margin-top:10px}
+.lesson-map .mini.interactive{cursor:pointer;transition:.16s}.lesson-map .mini.interactive:hover{transform:translateY(-2px);box-shadow:0 9px 20px rgba(0,0,0,.06);border-color:#d8dadd}.lesson-map .mini.interactive small{display:block;margin-top:8px;font-size:9.5px;font-weight:900;color:#8a6800}
 .path-access{margin-top:10px}.path-access button{border:1px solid #e5d06f;background:#fff8d5;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:900;cursor:pointer}.path-access-box{display:none;margin-top:8px;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fafbfc;font-size:10.5px;line-height:1.55;color:#555b62}.path-access-box.open{display:block}
 .field-note{margin-top:18px;padding:18px;border:1px dashed #d6a900;border-radius:16px;background:#fffdf3}
 .field-note strong{display:block;margin-bottom:5px}
@@ -355,6 +360,22 @@ a{color:inherit;text-decoration:none}
             <div class="access-card"><b>Google Search Console</b><p>Indexação, páginas encontradas pelo Google e problemas de busca.</p><div class="access-route">Search Console → propriedade do site → Indexação/Páginas ou Desempenho → identificar o problema antes de mexer no site.</div><div class="access-actions"><button class="learn" onclick="openModule(8);setTimeout(()=>openLesson(8,5),40)">Aprender no curso</button><button class="route" onclick="openModule(8)">Ver módulo 8</button></div></div>
             <div class="access-card"><b>Meta Ads</b><p>Campanhas, orçamento, criativos e análise antes de escalar.</p><div class="access-route">Gerenciador de Anúncios → campanha → conjunto → anúncio → conferir orçamento, destino e status antes de publicar.</div><div class="access-actions"><button class="learn" onclick="openModule(12);setTimeout(()=>openLesson(12,3),40)">Aprender no curso</button><button class="route" onclick="openModule(12)">Ver módulo 12</button></div></div>
             <div class="access-card"><b>Programas de afiliados</b><p>Amazon, Shopee, Mercado Livre e outras lojas usadas no catálogo.</p><div class="access-route">Área de afiliado → produto específico → validar disponibilidade → gerar/preservar link → testar destino antes de publicar.</div><div class="access-actions"><button class="learn" onclick="openModule(6);setTimeout(()=>openLesson(6,2),40)">Aprender no curso</button><button class="route" onclick="openModule(6)">Ver módulo 6</button></div></div>
+          </div>
+
+          <div class="route-navigator">
+            <h3>O que você precisa fazer agora?</h3>
+            <p>Escolha uma situação real. O curso mostra o caminho, a ordem e a aula que ajuda naquele momento.</p>
+            <div class="route-options" id="routeOptions">
+              <button class="route-choice" data-route="publicar">Quero publicar meu projeto</button>
+              <button class="route-choice" data-route="erro">Meu deploy deu erro</button>
+              <button class="route-choice" data-route="produto">Quero adicionar um produto</button>
+              <button class="route-choice" data-route="vender">Quero melhorar vendas</button>
+              <button class="route-choice" data-route="seo">Quero aparecer no Google</button>
+              <button class="route-choice" data-route="aluno">Quero liberar acesso ao aluno</button>
+              <button class="route-choice" data-route="conteudo">Quero criar conteúdo</button>
+              <button class="route-choice" data-route="ideia">Tenho uma ideia e não sei por onde começar</button>
+            </div>
+            <div class="route-result" id="routeResult"></div>
           </div>
         </div>
         <div class="field-note">
@@ -820,13 +841,13 @@ Depois → abrir URL pública e validar a mudança</div>
         </div>
 
         <div class="lesson-map">
-          <div class="mini"><strong>Loja e vitrine</strong><span>E-commerce, catálogo, afiliados, produtos físicos ou digitais.</span></div>
-          <div class="mini"><strong>Negócio local</strong><span>Pet shop, oficina, salão, restaurante, clínica ou prestação de serviços.</span></div>
-          <div class="mini"><strong>Profissionais</strong><span>Portfólio, página de serviços, currículo, consultoria ou captação de clientes.</span></div>
-          <div class="mini"><strong>Conteúdo</strong><span>Blog, portal, guias, reviews, comparadores e projetos editoriais.</span></div>
-          <div class="mini"><strong>Comunidade e rede social</strong><span>Perfis, feeds, grupos, fóruns, diretórios, comunidades e plataformas de conexão entre pessoas.</span></div>
-          <div class="mini"><strong>Streaming e mídia</strong><span>Catálogos de vídeos, áudio, podcasts, aulas, transmissões e experiências inspiradas em plataformas de streaming.</span></div>
-          <div class="mini"><strong>Produto próprio</strong><span>Curso, ferramenta, SaaS, produto digital, landing page ou MVP de uma startup.</span></div>
+          <div class="mini interactive" onclick="openModule(5)"><strong>Loja e vitrine</strong><span>E-commerce, catálogo, afiliados, produtos físicos ou digitais.</span><small>Abrir caminho recomendado →</small></div>
+          <div class="mini interactive" onclick="openModule(2)"><strong>Negócio local</strong><span>Pet shop, oficina, salão, restaurante, clínica ou prestação de serviços.</span><small>Começar por posicionamento →</small></div>
+          <div class="mini interactive" onclick="openModule(2)"><strong>Profissionais</strong><span>Portfólio, página de serviços, currículo, consultoria ou captação de clientes.</span><small>Começar por proposta de valor →</small></div>
+          <div class="mini interactive" onclick="openModule(9)"><strong>Conteúdo</strong><span>Blog, portal, guias, reviews, comparadores e projetos editoriais.</span><small>Abrir módulo de conteúdo →</small></div>
+          <div class="mini interactive" onclick="openModule(0)"><strong>Comunidade e rede social</strong><span>Perfis, feeds, grupos, fóruns, diretórios, comunidades e plataformas de conexão entre pessoas.</span><small>Transformar ideia em projeto →</small></div>
+          <div class="mini interactive" onclick="openModule(0)"><strong>Streaming e mídia</strong><span>Catálogos de vídeos, áudio, podcasts, aulas, transmissões e experiências inspiradas em plataformas de streaming.</span><small>Planejar primeiro MVP →</small></div>
+          <div class="mini interactive" onclick="openModule(13)"><strong>Produto próprio</strong><span>Curso, ferramenta, SaaS, produto digital, landing page ou MVP de uma startup.</span><small>Abrir caminho de produto próprio →</small></div>
         </div>
 
         <div class="field-note">
@@ -1214,6 +1235,72 @@ const resourceRoutes={
   }
 };
 
+const interactiveRoutes={
+  publicar:{
+    title:'Publicar seu projeto com segurança',
+    intro:'Não comece pelo botão de deploy. Primeiro confirme que o projeto está pronto para ser publicado.',
+    steps:['Conferir arquivos e mudança atual','Salvar/commitar uma versão recuperável','Abrir Railway e iniciar/acompanhar o deploy','Esperar o status SUCCESS','Abrir o domínio público','Testar o fluxo real no desktop e no celular'],
+    n:4,i:1,label:'Abrir aula de primeiro deploy'
+  },
+  erro:{
+    title:'Resolver um deploy que deu erro',
+    intro:'O caminho mais curto costuma começar pelo log, não por mudar vários arquivos ao mesmo tempo.',
+    steps:['Abrir o deployment com falha','Ler a primeira mensagem de erro útil','Identificar arquivo, porta, rota ou dependência citada','Corrigir somente a causa provável','Novo commit/deploy','Comparar o novo log com o anterior'],
+    n:4,i:2,label:'Abrir aula de build e logs'
+  },
+  produto:{
+    title:'Adicionar um produto sem criar problema depois',
+    intro:'Produto bom no site começa com dados confiáveis.',
+    steps:['Escolher um produto específico','Confirmar que está disponível','Conferir preço e imagem atuais','Gerar/preservar o link de afiliado','Testar o destino do link','Cadastrar no padrão da loja','Validar a página publicada'],
+    n:6,i:1,label:'Abrir aula de validação do produto'
+  },
+  vender:{
+    title:'Melhorar vendas sem sair mudando tudo',
+    intro:'Antes de redesenhar a página, descubra onde a decisão do visitante está travando.',
+    steps:['Conferir primeira tela e promessa','Ver se produto e benefício estão claros','Revisar prova, avaliações e objeções','Conferir CTA e destino','Medir cliques/comportamento','Alterar um ponto por vez e comparar'],
+    n:7,i:0,label:'Abrir módulo de conversão'
+  },
+  seo:{
+    title:'Preparar o projeto para aparecer no Google',
+    intro:'SEO fica mais simples quando você separa estrutura, publicação e validação.',
+    steps:['Conferir URL, title, H1 e description','Criar links internos coerentes','Validar robots.txt e sitemap','Publicar','Abrir Search Console','Conferir indexação e corrigir o que estiver bloqueando'],
+    n:8,i:0,label:'Abrir módulo de SEO'
+  },
+  aluno:{
+    title:'Liberar acesso ao aluno',
+    intro:'Acesso confiável precisa atravessar compra, registro e validação.',
+    steps:['Confirmar produto/checkout','Configurar evento de compra aprovado','Receber evento no servidor','Registrar acesso no banco','Testar login com e-mail autorizado','Testar também bloqueio/revogação'],
+    n:13,i:6,label:'Abrir aula de checkout e entrega'
+  },
+  conteudo:{
+    title:'Criar conteúdo que tenha destino',
+    intro:'Comece pela ação que você quer provocar, não pelo formato do post.',
+    steps:['Definir público e objetivo','Escolher uma dor, curiosidade ou transformação','Criar gancho','Entregar valor real','Usar CTA coerente','Levar para o destino certo','Medir resposta e reaproveitar o aprendizado'],
+    n:9,i:0,label:'Abrir módulo de conteúdo'
+  },
+  ideia:{
+    title:'Transformar uma ideia solta em primeiro projeto',
+    intro:'Você não precisa definir tudo. Precisa transformar a ideia em uma primeira versão testável.',
+    steps:['Escrever a ideia em uma frase','Definir para quem ela existe','Escolher a ação principal do usuário','Listar só as telas essenciais','Escolher o maior risco a validar','Montar um MVP pequeno','Publicar e observar o que acontece'],
+    n:0,i:0,label:'Começar pelo módulo 0'
+  }
+};
+
+function initInteractiveRouteNavigator(){
+  const box=document.getElementById('routeResult');
+  document.querySelectorAll('.route-choice').forEach(btn=>{
+    btn.onclick=()=>{
+      document.querySelectorAll('.route-choice').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const r=interactiveRoutes[btn.dataset.route];
+      if(!r||!box)return;
+      box.innerHTML='<h4>'+r.title+'</h4><p>'+r.intro+'</p><ol>'+r.steps.map(s=>'<li>'+s+'</li>').join('')+'</ol><div class="access-actions"><button class="learn" onclick="openModule('+r.n+');setTimeout(()=>openLesson('+r.n+','+r.i+'),40)">'+r.label+'</button><button class="route" onclick="openModule('+r.n+')">Ver módulo completo</button></div>';
+      box.classList.add('open');
+      box.scrollIntoView({behavior:'smooth',block:'nearest'});
+    };
+  });
+}
+
 const pathAccessGuides={
 'Corrigir sem destruir o que já estava bom':'Abra primeiro o lugar onde o problema realmente está. Identifique o arquivo ou componente responsável, faça a menor alteração possível, salve uma versão recuperável e só depois valide em produção.',
 'GitHub até produção':'GitHub → repositório → arquivo/commit → Railway → projeto → serviço → Deployments → aguardar SUCCESS → abrir o domínio público e testar.',
@@ -1489,6 +1576,7 @@ renderModules();
 updateProgress();
 renderReviewCenter();
 addPathAccessGuides();
+initInteractiveRouteNavigator();
 </script>
 </body>
 </html>
