@@ -144,6 +144,13 @@ a{color:inherit;text-decoration:none}
 .lesson-map .mini{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fafbfc}
 .lesson-map .mini strong{display:block;font-size:12px}
 .lesson-map .mini span{font-size:11px;color:var(--muted)}
+.learning-bridge{margin-top:10px;padding-top:9px;border-top:1px dashed #ddd;font-size:10.5px}
+.learning-bridge strong{display:block;font-size:10px;margin-bottom:6px;color:#6f5600;text-transform:uppercase;letter-spacing:.4px}
+.learning-bridge-actions{display:flex;gap:6px;flex-wrap:wrap}
+.learning-bridge-actions button{border:0;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:900;cursor:pointer}
+.learning-bridge-actions .lb-start{background:#111315;color:#fff}
+.learning-bridge-actions .lb-module{background:#fff1a8;color:#5d4800}
+.learning-bridge-note{margin-top:6px;color:var(--muted);font-size:9.5px;line-height:1.45}
 .creative-lab{display:grid;grid-template-columns:1fr .9fr;gap:16px;align-items:stretch}
 .lab-feature{background:linear-gradient(135deg,#111315,#262b31);color:#fff;border-radius:20px;padding:24px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between}
 .lab-feature .eyebrow{color:#ffd21c}.lab-feature h3{font-size:28px;line-height:1.05;margin:8px 0 10px}.lab-feature p{color:#c8ccd1;margin:0}
@@ -1592,6 +1599,62 @@ document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',(
 document.getElementById('closeDrawer').onclick=closeDrawer;
 document.getElementById('overlay').onclick=closeDrawer;
 
+const learningPathMap=[
+  {keys:['deploy','railway','build','produção','publicar','hospedagem','domínio'],n:4,i:0,label:'Publicação e deploy'},
+  {keys:['github','repositório','commit','código','arquivo','html','estrutura'],n:3,i:0,label:'Código e GitHub'},
+  {keys:['produto afiliado','afiliado','amazon','shopee','mercado livre','preço','disponibilidade','catálogo'],n:6,i:0,label:'Produtos afiliados'},
+  {keys:['conversão','cta','venda','objeção','avaliação','prova social','página de produto'],n:7,i:0,label:'Conversão e páginas'},
+  {keys:['seo','google','search console','indexação','sitemap','robots'],n:8,i:0,label:'SEO e indexação'},
+  {keys:['conteúdo','post','reels','calendário editorial','gancho'],n:9,i:0,label:'Conteúdo'},
+  {keys:['criativo','imagem','vídeo','roteiro','voz','fidelidade visual'],n:10,i:0,label:'Criativos'},
+  {keys:['métrica','utm','dashboard','funil','atribuição','clique'],n:11,i:0,label:'Métricas e funil'},
+  {keys:['anúncio','meta ads','tráfego pago','orçamento','campanha'],n:12,i:0,label:'Tráfego pago'},
+  {keys:['produto próprio','curso','saas','mvp','checkout','entrega'],n:13,i:0,label:'Produto próprio'},
+  {keys:['rotina','90 dias','delegar','recorrência','sistema operacional'],n:14,i:0,label:'Operação e crescimento'},
+  {keys:['marca','posicionamento','nome','identidade','tom de voz','confiança'],n:2,i:0,label:'Marca e posicionamento'},
+  {keys:['nicho','receita','oferta','validação','negócio'],n:1,i:0,label:'Negócio e oferta'},
+  {keys:['mobile','vitrine','busca','categorias','experiência','primeira tela'],n:5,i:0,label:'Vitrine e experiência'},
+  {keys:['ideia','começar','projeto','criatividade','streaming','rede social','comunidade','ferramenta','curiosidade'],n:0,i:0,label:'Começar e transformar ideia em projeto'}
+];
+
+function findLearningPathForText(text){
+  const normalized=String(text||'').toLowerCase();
+  for(const item of learningPathMap){
+    if(item.keys.some(k=>normalized.includes(k))) return item;
+  }
+  return {n:0,i:0,label:'Fundamentos do projeto'};
+}
+
+function addLearningBridge(el,path){
+  if(!el||el.querySelector?.('.learning-bridge')) return;
+  const bridge=document.createElement('div');
+  bridge.className='learning-bridge';
+  bridge.innerHTML='<strong>Conecte este assunto ao aprendizado</strong><div class="learning-bridge-actions"><button class="lb-start" type="button">Abrir aula relacionada</button><button class="lb-module" type="button">Ver módulo completo</button></div><div class="learning-bridge-note">'+path.label+' — use o conteúdo acima como contexto e siga para a prática no módulo.</div>';
+  const [a,b]=bridge.querySelectorAll('button');
+  a.onclick=(e)=>{e.stopPropagation();openModule(path.n);setTimeout(()=>openLesson(path.n,path.i),40);};
+  b.onclick=(e)=>{e.stopPropagation();openModule(path.n);};
+  el.appendChild(bridge);
+}
+
+function connectLearningPaths(){
+  const selectors=[
+    '.knowledge',
+    '.path-card',
+    '.idea-card',
+    '.lesson-map .mini',
+    '.milestone',
+    '.start-card',
+    '.field-note'
+  ];
+  document.querySelectorAll(selectors.join(',')).forEach(el=>{
+    // Preserve elements that already have a clear learning action.
+    if(el.closest('.module-card'))return;
+    if(el.querySelector('.resource-link,.open-module,.mini-action,.path-access,.access-actions,.learning-bridge'))return;
+    const path=findLearningPathForText(el.innerText);
+    addLearningBridge(el,path);
+  });
+}
+
 const ideaChallenges=[
   {title:'E se existisse uma rede social só para aprender fazendo?',text:'Imagine perfis baseados em projetos reais, feed de progresso, desafios semanais e pessoas acompanhando a evolução umas das outras. O exercício é pensar no que faria alguém voltar amanhã.'},
   {title:'E se um streaming fosse construído para um único tipo de paixão?',text:'Pode ser cinema independente, receitas, histórias locais, esportes amadores, aulas ou qualquer nicho. Pense em catálogo, descoberta, favoritos, continuar assistindo e sensação de coleção.'},
@@ -1625,6 +1688,7 @@ updateProgress();
 renderReviewCenter();
 addPathAccessGuides();
 initInteractiveRouteNavigator();
+connectLearningPaths();
 </script>
 </body>
 </html>
