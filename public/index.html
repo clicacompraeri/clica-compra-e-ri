@@ -1682,6 +1682,25 @@ footer{
 .digital-benefits span:hover{
   transform:scale(1.06);
 }
+.item-category-chip{
+  display:inline-flex;
+  align-items:center;
+  align-self:flex-start;
+  width:max-content;
+  max-width:100%;
+  font-size:11px;
+  line-height:1;
+  font-weight:800;
+  background:#f4f5f7;
+  color:#363a3f;
+  border-radius:999px;
+  padding:7px 9px;
+  margin-bottom:8px;
+  transition:transform .18s ease;
+}
+.item-category-chip:hover{
+  transform:scale(1.06);
+}
 .digital-card .digital-cta{
   margin-top:0;
   display:flex;
@@ -2511,7 +2530,7 @@ fbq('track','PageView');
         <span class="kindle-corner-mark" aria-label="Edição Kindle">Kindle</span>
       </div>
       <div class="book-card-body">
-        <div class="book-card-kicker">Finanças e comportamento</div>
+        <div class="book-card-kicker item-category-chip">Finanças e comportamento</div>
         <h3>A Psicologia Financeira</h3>
         <div class="book-author">Morgan Housel</div>
         <p>Lições sobre comportamento, dinheiro, fortuna, ganância e felicidade apresentadas de forma acessível e prática.</p>
@@ -2535,7 +2554,7 @@ fbq('track','PageView');
         <span class="kindle-corner-mark" aria-label="Edição Kindle">Kindle</span>
       </div>
       <div class="book-card-body">
-        <div class="book-card-kicker">Hábitos e produtividade</div>
+        <div class="book-card-kicker item-category-chip">Hábitos e produtividade</div>
         <h3>Hábitos Atômicos</h3>
         <div class="book-author">James Clear</div>
         <p>Um método prático para criar bons hábitos, abandonar os maus e transformar pequenas mudanças em resultados consistentes.</p>
@@ -2559,7 +2578,7 @@ fbq('track','PageView');
         <span class="kindle-corner-mark" aria-label="Edição Kindle">Kindle</span>
       </div>
       <div class="book-card-body">
-        <div class="book-card-kicker">Comunicação e relacionamentos</div>
+        <div class="book-card-kicker item-category-chip">Comunicação e relacionamentos</div>
         <h3>Como Fazer Amigos e Influenciar Pessoas</h3>
         <div class="book-author">Dale Carnegie</div>
         <p>Um clássico sobre comunicação, relações humanas e princípios práticos para criar conexões melhores na vida pessoal e profissional.</p>
@@ -2583,7 +2602,7 @@ fbq('track','PageView');
         <span class="kindle-corner-mark" aria-label="Edição Kindle">Kindle</span>
       </div>
       <div class="book-card-body">
-        <div class="book-card-kicker">Literatura brasileira</div>
+        <div class="book-card-kicker item-category-chip">Literatura brasileira</div>
         <h3>Tudo é Rio</h3>
         <div class="book-author">Carla Madeira</div>
         <p>Um romance brasileiro intenso e envolvente sobre amor, perda, ciúme e as consequências das escolhas humanas.</p>
@@ -2607,7 +2626,7 @@ fbq('track','PageView');
         <span class="kindle-corner-mark" aria-label="Edição Kindle">Kindle</span>
       </div>
       <div class="book-card-body">
-        <div class="book-card-kicker">Ficção e romance</div>
+        <div class="book-card-kicker item-category-chip">Ficção e romance</div>
         <h3>Os Sete Maridos de Evelyn Hugo</h3>
         <div class="book-author">Taylor Jenkins Reid</div>
         <p>Uma história envolvente sobre fama, amor, segredos e as escolhas de uma lendária estrela de Hollywood ao longo de sua vida.</p>
@@ -2631,7 +2650,7 @@ fbq('track','PageView');
         <span class="kindle-corner-mark" aria-label="Edição Kindle">Kindle</span>
       </div>
       <div class="book-card-body">
-        <div class="book-card-kicker">Finanças pessoais</div>
+        <div class="book-card-kicker item-category-chip">Finanças pessoais</div>
         <h3>O Homem Mais Rico da Babilônia</h3>
         <div class="book-author">George S. Clason</div>
         <p>Um clássico de finanças pessoais que apresenta, por meio de parábolas, princípios simples sobre poupar, investir e construir prosperidade.</p>
@@ -3108,6 +3127,7 @@ function renderProducts(containerId, items = products) {
         ${containerId === 'offersGrid' ? '<span class="badge">OFERTA</span>' : (product.badge ? `<span class="badge">${product.badge}</span>` : '')}
       </div>
       <div class="product-info">
+        <div class="item-category-chip">${product.category}</div>
         <div class="product-name">${product.name}</div>
         <div class="product-desc">${product.description}</div>
       ${product.rating ? `<div class="rating-line" aria-label="Avaliação ${product.rating} de 5 estrelas"><span class="rating-stars" aria-hidden="true">★★★★★</span><span class="rating-value">${product.rating}</span><span class="rating-count">(${product.reviews})</span></div>` : ""}
