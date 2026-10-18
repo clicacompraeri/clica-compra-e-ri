@@ -147,15 +147,17 @@ a{color:inherit;text-decoration:none}
 .learning-bridge{margin-top:10px;padding-top:9px;border-top:1px dashed #ddd;font-size:10.5px}
 .learning-bridge strong{display:block;font-size:10px;margin-bottom:6px;color:#6f5600;text-transform:uppercase;letter-spacing:.4px}
 .learning-bridge-actions{display:flex;gap:6px;flex-wrap:wrap}
-.learning-bridge-actions button{border:0;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:900;cursor:pointer}
-.learning-bridge-actions .lb-start{background:#111315;color:#fff}
-.learning-bridge-actions .lb-module{background:#fff1a8;color:#5d4800}
+.learning-bridge-actions button{border:1px solid transparent;border-radius:999px;padding:8px 11px;font-size:10px;font-weight:900;cursor:pointer;transition:.18s;display:inline-flex;align-items:center;gap:5px}.learning-bridge-actions button:hover{transform:translateY(-1px);box-shadow:0 5px 12px rgba(0,0,0,.08)}
+.learning-bridge-actions .lb-start{background:#111315;color:#fff}.learning-bridge-actions .lb-start::after{content:"→"}
+.learning-bridge-actions .lb-module{background:#fff;border-color:#e3c84e;color:#5d4800}.learning-bridge-actions .lb-module::after{content:"↗"}
 .learning-bridge-note{margin-top:6px;color:var(--muted);font-size:9.5px;line-height:1.45}
-.creative-lab{display:grid;grid-template-columns:1fr .9fr;gap:16px;align-items:stretch}
-.lab-feature{background:linear-gradient(135deg,#111315,#262b31);color:#fff;border-radius:20px;padding:24px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between}
+.creative-lab{display:grid;grid-template-columns:1fr .9fr;gap:16px;align-items:start}
+.lab-feature{background:linear-gradient(135deg,#111315,#262b31);color:#fff;border-radius:20px;padding:24px;min-height:0;display:flex;flex-direction:column;gap:18px}
 .lab-feature .eyebrow{color:#ffd21c}.lab-feature h3{font-size:28px;line-height:1.05;margin:8px 0 10px}.lab-feature p{color:#c8ccd1;margin:0}
-.lab-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.lab-btn{border:0;border-radius:12px;padding:11px 14px;font-weight:900;cursor:pointer}.lab-btn.primary-lab{background:var(--yellow);color:#111}.lab-btn.secondary-lab{background:#fff;color:#111}
-.idea-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.idea-card{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fafbfc}.idea-card strong{display:block;font-size:13px;margin-bottom:4px}.idea-card span{font-size:11px;color:var(--muted)}
+.lab-actions{display:flex;gap:9px;flex-wrap:wrap}.lab-btn{border:0;border-radius:999px;padding:11px 16px;font-weight:900;cursor:pointer;transition:.18s;display:inline-flex;align-items:center;gap:8px}.lab-btn:hover{transform:translateY(-1px)}.lab-btn.primary-lab{background:var(--yellow);color:#111}.lab-btn.secondary-lab{background:#fff;color:#111}.lab-btn.dark-lab{background:#30343a;color:#fff;border:1px solid rgba(255,255,255,.14)}
+.idea-builder{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.idea-step{border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.05);border-radius:13px;padding:11px}.idea-step small{display:block;color:#ffd21c;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}.idea-step span{display:block;color:#eef0f2;font-size:11px;line-height:1.45}
+.idea-path-note{border-left:3px solid #ffd21c;padding:9px 11px;background:rgba(255,210,28,.07);border-radius:0 10px 10px 0;color:#e5e7e9;font-size:11px;line-height:1.5}
+.idea-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.idea-card{position:relative;border:1px solid var(--line);border-radius:15px;padding:14px 42px 14px 14px;background:#fafbfc;text-align:left;cursor:pointer;transition:.18s;min-height:116px}.idea-card:hover,.idea-card.active{transform:translateY(-2px);border-color:#d8bc3b;box-shadow:0 10px 24px rgba(0,0,0,.06);background:#fffdf4}.idea-card strong{display:block;font-size:13px;margin-bottom:4px}.idea-card span{font-size:11px;color:var(--muted);line-height:1.5}.idea-card::after{content:"→";position:absolute;right:13px;top:13px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#111315;color:#ffd21c;font-size:12px;font-weight:950}.idea-card small{display:block;margin-top:9px;font-size:9.5px;font-weight:900;color:#8a6800}
 .lesson-drawer{position:fixed;inset:0 0 0 auto;width:min(560px,100%);background:#fff;z-index:30;box-shadow:-20px 0 60px rgba(0,0,0,.18);transform:translateX(105%);transition:.25s;display:flex;flex-direction:column}
 .lesson-drawer.open{transform:translateX(0)}
 .drawer-head{padding:22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
@@ -892,19 +894,30 @@ Depois → abrir URL pública e validar a mudança</div>
               <h3 id="ideaChallengeTitle">E se existisse uma rede social só para aprender fazendo?</h3>
               <p id="ideaChallengeText">Imagine perfis baseados em projetos reais, feed de progresso, desafios semanais e pessoas acompanhando a evolução umas das outras. O exercício é pensar no que faria alguém voltar amanhã.</p>
             </div>
+
+            <div class="idea-builder" id="ideaBuilder">
+              <div class="idea-step"><small>1. Público</small><span id="ideaAudience">Pessoas que querem aprender construindo algo real.</span></div>
+              <div class="idea-step"><small>2. Ação principal</small><span id="ideaAction">Publicar progresso e concluir desafios.</span></div>
+              <div class="idea-step"><small>3. Motivo para voltar</small><span id="ideaReturn">Acompanhar evolução, respostas e novos desafios.</span></div>
+              <div class="idea-step"><small>4. Primeiro MVP</small><span id="ideaMvp">Perfil + projeto + desafio + progresso.</span></div>
+            </div>
+
+            <div class="idea-path-note" id="ideaPathNote">Este desafio se conecta ao Módulo 0 para transformar a ideia em projeto e ao módulo indicado quando você escolher um dos cards ao lado.</div>
+
             <div class="lab-actions">
-              <button class="lab-btn primary-lab" id="surpriseIdeaBtn">Me surpreenda com outra ideia</button>
-              <button class="lab-btn secondary-lab" id="copyIdeaPromptBtn">Copiar prompt de criação</button>
+              <button class="lab-btn primary-lab" id="ideaStartPathBtn">Começar caminho <span>→</span></button>
+              <button class="lab-btn dark-lab" id="surpriseIdeaBtn">Outra ideia</button>
+              <button class="lab-btn secondary-lab" id="copyIdeaPromptBtn">Copiar prompt</button>
             </div>
           </div>
 
           <div class="idea-grid">
-            <div class="idea-card"><strong>Streaming de nicho</strong><span>Uma experiência de mídia para um assunto específico, com catálogo, descoberta e continuidade.</span></div>
-            <div class="idea-card"><strong>Rede social diferente</strong><span>Perfis e feed organizados por uma ação, hobby, profissão, cidade ou objetivo.</span></div>
-            <div class="idea-card"><strong>Explorador de curiosidades</strong><span>Um site em que cada clique abre uma nova descoberta, história, comparação ou caminho.</span></div>
-            <div class="idea-card"><strong>Ferramenta que resolve uma tarefa</strong><span>Calculadora, gerador, organizador, comparador, painel ou assistente especializado.</span></div>
-            <div class="idea-card"><strong>Experiência interativa</strong><span>Quiz, jornada, mapa, simulador ou história em que o usuário escolhe o próximo passo.</span></div>
-            <div class="idea-card"><strong>Comunidade com missão</strong><span>Pessoas reunidas não apenas para postar, mas para construir, competir, colaborar ou evoluir.</span></div>
+            <button class="idea-card" type="button" data-idea="streaming"><strong>Streaming de nicho</strong><span>Uma experiência de mídia para um assunto específico, com catálogo, descoberta e continuidade.</span><small>Explorar caminho de criação</small></button>
+            <button class="idea-card" type="button" data-idea="social"><strong>Rede social diferente</strong><span>Perfis e feed organizados por uma ação, hobby, profissão, cidade ou objetivo.</span><small>Explorar caminho de criação</small></button>
+            <button class="idea-card" type="button" data-idea="curiosidade"><strong>Explorador de curiosidades</strong><span>Um site em que cada clique abre uma nova descoberta, história, comparação ou caminho.</span><small>Explorar caminho de criação</small></button>
+            <button class="idea-card" type="button" data-idea="ferramenta"><strong>Ferramenta que resolve uma tarefa</strong><span>Calculadora, gerador, organizador, comparador, painel ou assistente especializado.</span><small>Explorar caminho de criação</small></button>
+            <button class="idea-card" type="button" data-idea="interativa"><strong>Experiência interativa</strong><span>Quiz, jornada, mapa, simulador ou história em que o usuário escolhe o próximo passo.</span><small>Explorar caminho de criação</small></button>
+            <button class="idea-card" type="button" data-idea="comunidade"><strong>Comunidade com missão</strong><span>Pessoas reunidas não apenas para postar, mas para construir, competir, colaborar ou evoluir.</span><small>Explorar caminho de criação</small></button>
           </div>
         </div>
 
@@ -1640,7 +1653,6 @@ function connectLearningPaths(){
   const selectors=[
     '.knowledge',
     '.path-card',
-    '.idea-card',
     '.lesson-map .mini',
     '.milestone',
     '.start-card',
@@ -1655,6 +1667,33 @@ function connectLearningPaths(){
   });
 }
 
+const ideaProfiles={
+  streaming:{title:'E se um streaming fosse construído para um único tipo de paixão?',text:'Pense em uma experiência que ajude alguém a descobrir, salvar e continuar conteúdos dentro de um nicho muito específico.',audience:'Pessoas apaixonadas por um tema ou coleção.',action:'Descobrir, salvar e continuar conteúdos.',back:'Novos conteúdos, favoritos e continuidade.',mvp:'Catálogo + detalhe + favoritos + continuar.',n:0,i:0,path:'Comece pelo Módulo 0 para desenhar o MVP e use o Módulo 5 para pensar a experiência da vitrine.'},
+  social:{title:'E se uma rede social fosse organizada por progresso, não por postagem?',text:'Imagine perfis que mostram projetos, etapas, desafios e evolução em vez de apenas um feed cronológico.',audience:'Pessoas com um objetivo, hobby ou projeto em comum.',action:'Registrar progresso e interagir com evoluções.',back:'Respostas, progresso e novos desafios.',mvp:'Perfil + projeto + atualização + reação.',n:0,i:0,path:'Comece pelo Módulo 0 para estruturar a ideia e depois use marca, experiência e métricas para evoluir.'},
+  curiosidade:{title:'E se cada clique abrisse uma nova descoberta?',text:'Transforme conteúdo em exploração: uma descoberta leva a outra e cada escolha muda o próximo caminho.',audience:'Pessoas curiosas que gostam de descobrir algo novo.',action:'Escolher uma descoberta e seguir conexões.',back:'Novos caminhos, histórias e comparações.',mvp:'Página inicial + descoberta + conexões + histórico.',n:9,i:0,path:'Use o Módulo 9 para aprender a criar conteúdo que gera curiosidade e continuidade.'},
+  ferramenta:{title:'E se uma tarefa chata virasse uma ferramenta simples?',text:'Escolha um problema repetitivo e transforme-o em calculadora, gerador, organizador, comparador ou painel.',audience:'Quem repete uma tarefa e quer economizar tempo.',action:'Inserir dados e receber um resultado útil.',back:'Histórico, novos usos e resultados melhores.',mvp:'Entrada + processamento + resultado + salvar.',n:13,i:0,path:'Use o Módulo 13 para transformar a utilidade em produto próprio e validar a primeira versão.'},
+  interativa:{title:'E se o usuário escolhesse o próximo passo?',text:'Crie uma experiência em que decisões mudam o que aparece depois: quiz, jornada, simulador, mapa ou história.',audience:'Pessoas que aprendem ou exploram melhor fazendo escolhas.',action:'Escolher, receber consequência e continuar.',back:'Novos caminhos e resultados diferentes.',mvp:'Pergunta + escolha + resposta + próximo passo.',n:0,i:0,path:'Comece pelo Módulo 0 para definir o fluxo e avance para o Módulo 5 quando for desenhar a experiência.'},
+  comunidade:{title:'E se uma comunidade tivesse uma missão real?',text:'Em vez de reunir pessoas só para postar, dê a elas algo para construir, comparar, colaborar ou concluir juntas.',audience:'Pessoas unidas por uma missão ou evolução comum.',action:'Participar de uma missão e mostrar avanço.',back:'Progresso coletivo, reconhecimento e próxima missão.',mvp:'Perfil + missão + progresso + espaço de colaboração.',n:14,i:0,path:'Comece estruturando o projeto no Módulo 0 e use o Módulo 14 para pensar continuidade e operação.'}
+};
+let activeIdeaProfile=ideaProfiles.social;
+
+function selectIdeaProfile(key){
+  const p=ideaProfiles[key]; if(!p)return;
+  activeIdeaProfile=p;
+  document.querySelectorAll('.idea-card').forEach(card=>card.classList.toggle('active',card.dataset.idea===key));
+  document.getElementById('ideaChallengeTitle').textContent=p.title;
+  document.getElementById('ideaChallengeText').textContent=p.text;
+  document.getElementById('ideaAudience').textContent=p.audience;
+  document.getElementById('ideaAction').textContent=p.action;
+  document.getElementById('ideaReturn').textContent=p.back;
+  document.getElementById('ideaMvp').textContent=p.mvp;
+  document.getElementById('ideaPathNote').textContent=p.path;
+}
+
+document.querySelectorAll('.idea-card[data-idea]').forEach(card=>card.addEventListener('click',()=>selectIdeaProfile(card.dataset.idea)));
+document.getElementById('ideaStartPathBtn').onclick=()=>{openModule(activeIdeaProfile.n);setTimeout(()=>openLesson(activeIdeaProfile.n,activeIdeaProfile.i),40);};
+selectIdeaProfile('social');
+
 const ideaChallenges=[
   {title:'E se existisse uma rede social só para aprender fazendo?',text:'Imagine perfis baseados em projetos reais, feed de progresso, desafios semanais e pessoas acompanhando a evolução umas das outras. O exercício é pensar no que faria alguém voltar amanhã.'},
   {title:'E se um streaming fosse construído para um único tipo de paixão?',text:'Pode ser cinema independente, receitas, histórias locais, esportes amadores, aulas ou qualquer nicho. Pense em catálogo, descoberta, favoritos, continuar assistindo e sensação de coleção.'},
@@ -1665,9 +1704,9 @@ const ideaChallenges=[
 ];
 
 function randomIdea(){
-  const item=ideaChallenges[Math.floor(Math.random()*ideaChallenges.length)];
-  document.getElementById('ideaChallengeTitle').textContent=item.title;
-  document.getElementById('ideaChallengeText').textContent=item.text;
+  const keys=Object.keys(ideaProfiles);
+  const key=keys[Math.floor(Math.random()*keys.length)];
+  selectIdeaProfile(key);
 }
 document.getElementById('surpriseIdeaBtn').onclick=randomIdea;
 document.getElementById('copyIdeaPromptBtn').onclick=async()=>{
