@@ -17,6 +17,10 @@ header{border-bottom:1px solid #eceef0;background:#fff}.head{min-height:74px;dis
 h1{font-size:clamp(40px,6vw,68px);line-height:1.02;letter-spacing:-2.6px;margin:10px 0 18px}
 .lead{font-size:20px;color:#51565d;max-width:700px}.hero img{width:100%;border-radius:26px;box-shadow:0 28px 70px rgba(0,0,0,.15)}
 .cta{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 28px;border-radius:14px;background:var(--y);color:#111;text-decoration:none;font-weight:900;margin-top:20px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.hero-actions .cta{margin-top:0}
+.cta.secondary{background:#fff;border:1px solid #dfe2e5;color:#17191c}
+@media(max-width:620px){.hero-actions{display:grid}.hero-actions .cta{width:100%}}
 .note{font-size:12px;color:#7a7f85;margin-top:10px}
 section{padding:54px 0}.alt{background:#f7f8fa}.title{font-size:34px;line-height:1.1;margin:0 0 14px}.sub{color:var(--m);max-width:760px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}.card{border:1px solid #e5e7ea;border-radius:20px;padding:22px;background:#fff}.card h3{margin:0 0 8px}.card p{margin:0;color:#656a70}.student-access{border:1px solid #e5e7ea;border-radius:26px;padding:30px;background:linear-gradient(135deg,#111315,#24282d);color:#fff}.student-access .title{color:#fff}.student-access .sub{color:#c9cdd3}.student-access-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}.student-access-item{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:18px;padding:18px}.student-access-item strong{display:block;margin-bottom:6px}.student-access-item span{font-size:13px;color:#c9cdd3}
@@ -50,7 +54,11 @@ footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
     <div class="eyebrow">Clica do Zero — por Clica, Compra e Ri</div>
     <h1>Transforme uma ideia em um projeto digital real, com a IA como copiloto.</h1>
     <p class="lead">O Clica do Zero é um caminho prático para quem quer sair da ideia e chegar a páginas, ofertas, conteúdo e projetos publicados — mesmo sem começar dominando código ou ferramentas avançadas. Você também aprende a usar a criatividade junto com a IA para transformar ideias próprias em páginas, conteúdos, produtos e soluções digitais.</p>
-    <a class="cta" href="/clica-do-zero/previa.html">Acessar prévia gratuita</a>
+    <div class="hero-actions">
+      <a class="cta hotmart-fb hotmart__button-checkout" onclick="return false;" href="https://pay.hotmart.com/D108063505L?checkoutMode=2">Comprar agora</a>
+      <a class="cta secondary" href="/clica-do-zero/previa.html">Ver prévia gratuita</a>
+    </div>
+    <div class="note">A prévia gratuita começa pela página de cadastro para liberar o conteúdo completo.</div>
     <div class="note"><a href="/clica-do-zero/aluno-login.html" style="font-weight:900;color:#555b62;">Já é aluno? Entrar na área do aluno</a></div>
     <div class="note">Depois da compra aprovada, entre com o mesmo e-mail usado na Hotmart para acessar todo o conteúdo pela Área do Aluno.</div>
   </div>
