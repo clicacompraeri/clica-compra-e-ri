@@ -446,6 +446,17 @@ a{color:inherit;text-decoration:none}
 .guided-project-progress strong{font-size:12px}.guided-project-progress span{font-size:11px;color:var(--muted)}
 @media(max-width:980px){.guided-projects{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.guided-projects{grid-template-columns:1fr}.guided-project-actions{display:grid}.guided-project-actions button{width:100%;min-height:42px}.guided-project-progress{align-items:flex-start;flex-direction:column}}
+
+.lesson-audio{display:none;border:1px solid var(--line);border-radius:15px;padding:14px;background:linear-gradient(135deg,#fffdf4,#fff);margin:12px 0}
+.lesson-audio.available{display:block}
+.lesson-audio-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}
+.lesson-audio-head strong{font-size:12px}.lesson-audio-head span{font-size:9.5px;color:#8a6800;font-weight:900;text-transform:uppercase;letter-spacing:.5px}
+.lesson-audio audio{width:100%;height:42px}
+.lesson-audio-tools{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.lesson-audio-tools button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 9px;font-size:9.5px;font-weight:900;cursor:pointer}
+.lesson-audio-tools button.active{background:#111315;color:#fff;border-color:#111315}
+.lesson-audio-note{margin-top:8px;font-size:10px;color:var(--muted);line-height:1.45}
+@media(max-width:620px){.lesson-audio-head{align-items:flex-start;flex-direction:column}.lesson-audio-tools{display:grid;grid-template-columns:repeat(4,1fr);width:100%}.lesson-audio-tools button{width:100%}}
 </style>
 </head>
 <body>
@@ -1239,6 +1250,48 @@ Depois → abrir URL pública e validar a mudança</div>
 </aside>
 
 <script>
+
+const lessonAudioMap={
+  // Quando um MP3 aprovado estiver pronto, basta mapear a aula aqui.
+  // Exemplo: '0-0':'/assets/audio/clica-do-zero/m0-a01.mp3'
+};
+const lessonAudioProgressKey='clicaDoZeroAudioProgressV1';
+
+function initLessonAudio(n,i){
+  const key=n+'-'+i;
+  const src=lessonAudioMap[key];
+  const box=document.getElementById('lessonAudioBox');
+  const audio=document.getElementById('lessonAudio');
+  if(!box||!audio||!src)return;
+  box.classList.add('available');
+  audio.src=src;
+  let saved={};
+  try{saved=JSON.parse(localStorage.getItem(lessonAudioProgressKey)||'{}')}catch(e){}
+  if(saved[key]&&Number.isFinite(saved[key].time))audio.currentTime=saved[key].time;
+  if(saved[key]&&saved[key].speed)audio.playbackRate=saved[key].speed;
+  const speeds=[...document.querySelectorAll('#lessonAudioSpeeds button')];
+  const refresh=()=>speeds.forEach(b=>b.classList.toggle('active',Number(b.dataset.speed)===audio.playbackRate));
+  refresh();
+  speeds.forEach(btn=>btn.onclick=()=>{
+    audio.playbackRate=Number(btn.dataset.speed);refresh();
+    let state={};try{state=JSON.parse(localStorage.getItem(lessonAudioProgressKey)||'{}')}catch(e){}
+    state[key]={...(state[key]||{}),time:audio.currentTime,speed:audio.playbackRate};
+    localStorage.setItem(lessonAudioProgressKey,JSON.stringify(state));
+  });
+  let lastSave=0;
+  audio.addEventListener('timeupdate',()=>{
+    if(Date.now()-lastSave<2000)return;lastSave=Date.now();
+    let state={};try{state=JSON.parse(localStorage.getItem(lessonAudioProgressKey)||'{}')}catch(e){}
+    state[key]={time:audio.currentTime,speed:audio.playbackRate};
+    localStorage.setItem(lessonAudioProgressKey,JSON.stringify(state));
+  });
+  audio.addEventListener('ended',()=>{
+    let state={};try{state=JSON.parse(localStorage.getItem(lessonAudioProgressKey)||'{}')}catch(e){}
+    state[key]={time:0,speed:audio.playbackRate,finished:true};
+    localStorage.setItem(lessonAudioProgressKey,JSON.stringify(state));
+  });
+}
+
 const modules = [
 {n:0,title:'Saindo do zero',desc:'Prepare projeto, ferramentas, segurança e método de trabalho.',types:['Aula','Workbook','Checklist'],lessons:[['O que você vai construir','6–8 min'],['O modelo que vamos usar','8–10 min'],['As ferramentas','10–12 min'],['IA sem destruir seu projeto','10–12 min'],['Errou? Não entre em pânico','8–10 min'],['Dinheiro e segurança','8–10 min'],['Seu primeiro compromisso','4–6 min']]},
 {n:1,title:'Entendendo o negócio',desc:'Entenda como valor, oferta, validação e receita se conectam.',types:['Aula','Workbook'],lessons:[['Como o dinheiro realmente entra','8–10 min'],['As métricas que importam','12–15 min'],['Produto físico, digital ou serviço','10–12 min'],['Escolhendo um nicho sem se prender','12–15 min'],['Score de oferta','12–14 min'],['Validação antes de anúncio','10–12 min'],['O primeiro mapa de receita','9–11 min'],['Checkpoint do negócio','6–8 min']]},
@@ -1870,6 +1923,17 @@ function openLesson(n,i){
       <div class="lesson-cover" aria-hidden="true"><small>Módulo ${m.n} • Aula ${m.n}.${i+1}</small><strong>${lesson.t}</strong></div>
       <button class="lesson-back" onclick="renderLessonList(modules.find(x=>x.n===${n}));document.getElementById('drawerTitle').textContent=modules.find(x=>x.n===${n}).title;document.getElementById('drawerModule').textContent='Módulo '+${n};">← Voltar às aulas</button>
       <div class="lesson-meta-row"><span class="lesson-pill">${lesson.d}</span><span class="lesson-pill">Aplicação prática</span><span class="lesson-pill">Método PAV</span></div>
+      <div class="lesson-audio" id="lessonAudioBox">
+        <div class="lesson-audio-head"><strong>Ouvir esta aula</strong><span>Versão narrada</span></div>
+        <audio id="lessonAudio" controls preload="metadata"></audio>
+        <div class="lesson-audio-tools" id="lessonAudioSpeeds">
+          <button type="button" data-speed="0.75">0,75x</button>
+          <button type="button" data-speed="1" class="active">1x</button>
+          <button type="button" data-speed="1.25">1,25x</button>
+          <button type="button" data-speed="1.5">1,5x</button>
+        </div>
+        <div class="lesson-audio-note">A narração acompanha o conteúdo da aula com ritmo próprio para ouvir. O progresso do áudio fica salvo neste navegador.</div>
+      </div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Antes de estudar, saiba o que deve mudar em você ou no projeto ao terminar esta aula.">Objetivo</h3><p>${data.objective}</p></div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Se você consegue explicar com suas palavras, já começou a transformar informação em conhecimento.">Entenda de verdade</h3><p>${data.explain}</p></div>
       <div class="reflection-card">
@@ -1921,6 +1985,7 @@ function openLesson(n,i){
     addRelatedLearning(relatedHost);
     if(!relatedHost.querySelector('.related-learning')) relatedHost.style.display='none';
   }
+  initLessonAudio(n,i);
 }
 
 function escapeNote(value){
