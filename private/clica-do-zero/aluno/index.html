@@ -86,7 +86,14 @@ a{color:inherit;text-decoration:none}
 .module-card h3{font-size:17px;line-height:1.2;margin:10px 0 8px}
 .module-card p{font-size:12px;color:var(--muted);margin:0 0 14px}
 .module-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
-.chip{font-size:10px;font-weight:800;background:#f3f4f5;border-radius:999px;padding:6px 8px;color:#41454a}
+.chip{font-size:10px;font-weight:800;background:#f3f4f5;border:0;border-radius:999px;padding:6px 8px;color:#41454a;cursor:pointer}
+.chip:hover{background:#e9ebee}
+.card-detail-pop{display:none;margin-top:10px;border:1px solid var(--line);border-radius:13px;padding:10px;background:#fafbfc}
+.card-detail-pop.open{display:block}
+.card-detail-pop strong{display:block;font-size:11px;margin-bottom:6px}
+.card-detail-pop ul{margin:0;padding-left:17px}
+.card-detail-pop li{font-size:10.5px;color:var(--muted);line-height:1.5;margin:3px 0}
+.card-detail-pop .mini-action{margin-top:8px;border:0;background:#111315;color:#fff;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:900;cursor:pointer}
 .open-module{margin-top:13px;border:0;background:transparent;padding:0;text-align:left;font-weight:900;font-size:12px;cursor:pointer}
 .resources{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .resource{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fafbfc}
@@ -691,6 +698,25 @@ function lessonContent(m,lesson){
   };
 }
 
+
+const moduleChecklists={
+0:['Objetivo do projeto definido','Público provisório registrado','Modelo inicial escolhido','Limite de gasto consciente definido','Primeiro compromisso concluído'],
+1:['Origem da receita explicada','Métricas principais definidas','Oferta inicial comparada','Hipótese de nicho registrada','Mapa de receita preenchido'],
+2:['Posicionamento definido','Nome avaliado por critérios','Promessa clara','Identidade visual MVP pronta','Tom de voz registrado','Sinais de confiança revisados'],
+3:['Estrutura de arquivos compreendida','Repositório criado','Primeira personalização salva','Prompt PAV aplicado','Commit de segurança feito','QA realizado'],
+4:['Hospedagem preparada','Deploy concluído','Logs conferidos','Versão pública validada','Mobile revisado','Atualização testada'],
+5:['Primeira dobra clara','Sinais de confiança presentes','Cards consistentes','Busca/categorias funcionais','Mobile revisado','QA da vitrine concluído'],
+6:['Produto específico validado','Preço e disponibilidade conferidos','Link afiliado correto','Imagem corresponde ao item','Loja identificada','Rotina de atualização definida'],
+7:['Intenção da página clara','Galeria fiel ao produto','Benefícios objetivos','Prova social verificada','CTA funcionando','Objeções respondidas','Checklist CRO concluído'],
+8:['URLs e títulos revisados','H1 e descriptions conferidos','Links internos definidos','robots.txt e sitemap presentes','Search Console verificado','Indexação acompanhada'],
+9:['Pilares de conteúdo definidos','Ganchos preparados','CTA por etapa definido','Calendário enxuto pronto','Biblioteca de aprendizados criada'],
+10:['Formato definido','9:16 validado quando necessário','Roteiro curto pronto','Voz/texto/ritmo revisados','Fidelidade visual conferida','Criativo aprovado no checklist'],
+11:['Funil mínimo desenhado','Eventos essenciais definidos','UTMs padronizadas','Dashboard simples criado','Revisão semanal agendada'],
+12:['Economia da venda calculada','Prontidão para tráfego conferida','Orçamento de teste definido','Limite de perda definido','Regra de pausa definida','Cobrança revisada','Pós-teste planejado'],
+13:['Dor escolhida','Formato definido','Escopo da primeira versão fechado','Oferta estruturada','Preço de validação definido','Checkout e entrega mapeados','Plano de feedback pronto'],
+14:['Rotina semanal definida','Conteúdo em lote organizado','Cluster SEO planejado','Canal próprio pensado','Automações de baixo risco escolhidas','Painel mensal definido','Plano de 90 dias pronto']
+};
+
 const storageKey='clicaDoZeroProgressV1';
 let completed=JSON.parse(localStorage.getItem(storageKey)||'[]');
 let activeFilter='Todos';
@@ -721,12 +747,34 @@ function renderModules(){
       <h3>${m.title}</h3>
       <p>${m.desc}</p>
       <div class="module-meta">
-        <span class="chip">${m.lessons.length} aulas</span>
-        ${m.types.filter(t=>t!=='Aula').map(t=>`<span class="chip">${t}</span>`).join('')}
+        <button class="chip" onclick="toggleCardDetail(${m.n},'aulas',event)">${m.lessons.length} aulas</button>
+        ${m.types.filter(t=>t!=='Aula').map(t=>`<button class="chip" onclick="toggleCardDetail(${m.n},'${t.toLowerCase()}',event)">${t}</button>`).join('')}
       </div>
+      <div class="card-detail-pop" id="cardDetail-${m.n}"></div>
       <button class="open-module" onclick="openModule(${m.n})">Abrir módulo →</button>
     </article>`;
   }).join('');
+}
+
+function toggleCardDetail(n,type,event){
+  event.stopPropagation();
+  const m=modules.find(x=>x.n===n);
+  const box=document.getElementById('cardDetail-'+n);
+  if(!m||!box)return;
+  const same=box.dataset.type===type && box.classList.contains('open');
+  document.querySelectorAll('.card-detail-pop').forEach(el=>{el.classList.remove('open');el.innerHTML='';delete el.dataset.type;});
+  if(same)return;
+
+  if(type==='aulas'){
+    box.innerHTML='<strong>Aulas deste módulo</strong><ul>'+m.lessons.map((l,i)=>'<li>'+(m.n)+'.'+(i+1)+' — '+l.t+'</li>').join('')+'</ul><button class="mini-action" onclick="openModule('+n+')">Abrir todas as aulas</button>';
+  }else if(type==='checklist'){
+    const items=moduleChecklists[n]||[];
+    box.innerHTML='<strong>Checklist do módulo</strong><ul>'+items.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+  }else if(type==='workbook'){
+    box.innerHTML='<strong>Workbook do módulo</strong><ul><li>Exercícios práticos ligados às aulas</li><li>Decisões para registrar durante o módulo</li><li>Evidências para produzir antes de avançar</li></ul><button class="mini-action" onclick="openModule('+n+')">Ir para as aulas</button>';
+  }
+  box.dataset.type=type;
+  box.classList.add('open');
 }
 
 function openModule(n){
