@@ -102,6 +102,12 @@ a{color:inherit;text-decoration:none}
 .field-note{margin-top:18px;padding:18px;border:1px dashed #d6a900;border-radius:16px;background:#fffdf3}
 .field-note strong{display:block;margin-bottom:5px}
 .field-note p{margin:0;color:var(--muted);font-size:13px}
+.path-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.path-card{border:1px solid var(--line);border-radius:16px;padding:17px;background:#fff}
+.path-card h3{font-size:15px;margin:0 0 7px}.path-card p{font-size:12px;color:var(--muted);margin:0 0 10px;line-height:1.55}
+.path-flow{font:11px/1.55 Consolas,Monaco,monospace;background:#111315;color:#f5f6f7;border-radius:11px;padding:11px 12px;white-space:pre-wrap}
+.path-note{margin-top:9px;font-size:10.5px;color:#696e74}
+.path-status{display:inline-flex;margin-bottom:9px;border-radius:999px;padding:5px 8px;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.5px;background:#fff7d2;color:#7b6000}
 .knowledge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .knowledge{border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden}
 .knowledge[open]{box-shadow:0 12px 30px rgba(0,0,0,.06)}
@@ -160,6 +166,7 @@ a{color:inherit;text-decoration:none}
   .modules-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .resources{grid-template-columns:repeat(2,1fr)}
   .knowledge-grid{grid-template-columns:1fr}
+  .path-grid{grid-template-columns:1fr}
   .lesson-map{grid-template-columns:repeat(2,minmax(0,1fr))}
   .creative-lab{grid-template-columns:1fr}
   .start-grid{grid-template-columns:1fr}
@@ -526,6 +533,156 @@ Depois → abrir URL pública e validar a mudança</div>
               <p>O objetivo do Clica do Zero não é ensinar a “pedir qualquer coisa para a IA”. É ensinar a transformar intenção em projeto real, com checkpoints, validação e aprendizado acumulado.</p>
             </div>
           </details>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="eyebrow">Rotas comprovadas no projeto</div>
+            <h2>Os caminhos que funcionaram para chegarmos até aqui</h2>
+            <p>Não é teoria isolada. São sequências que usamos no Clica, Compra e Ri e no Clica do Zero para transformar problemas em versões funcionando, publicadas e verificáveis.</p>
+          </div>
+        </div>
+
+        <div class="path-grid">
+          <article class="path-card">
+            <span class="path-status">Funcionou repetidamente</span>
+            <h3>Corrigir sem destruir o que já estava bom</h3>
+            <p>O padrão que mais evitou retrabalho foi separar diagnóstico, mudança pequena e validação.</p>
+            <div class="path-flow">Problema específico
+→ diagnosticar sem alterar
+→ identificar menor mudança
+→ preservar o restante
+→ commit
+→ deploy
+→ validar versão publicada</div>
+          </article>
+
+          <article class="path-card">
+            <span class="path-status">Funcionou repetidamente</span>
+            <h3>GitHub até produção</h3>
+            <p>Enviar código não significou terminar. O resultado só passou a ser considerado pronto depois da produção responder corretamente.</p>
+            <div class="path-flow">Arquivo certo
+→ alteração controlada
+→ commit na main
+→ Railway inicia build
+→ status SUCCESS
+→ abrir versão pública
+→ conferir comportamento real</div>
+          </article>
+
+          <article class="path-card">
+            <span class="path-status">Funcionou na prática</span>
+            <h3>Adicionar produto de afiliado com segurança</h3>
+            <p>Os melhores resultados de organização vieram quando tratamos cada produto como um conjunto de dados verificáveis.</p>
+            <div class="path-flow">Escolher item específico
+→ conferir disponibilidade
+→ validar foto
+→ conferir preço
+→ preservar link afiliado
+→ identificar loja
+→ testar destino
+→ publicar</div>
+          </article>
+
+          <article class="path-card">
+            <span class="path-status">Funcionou na prática</span>
+            <h3>Melhorar página sem refazer tudo</h3>
+            <p>Zoom, cards, categorias e banners melhoraram quando mexemos somente no componente responsável pelo problema.</p>
+            <div class="path-flow">Definir resultado visual
+→ localizar componente
+→ proteger estilos existentes
+→ alterar só o necessário
+→ testar desktop
+→ testar celular
+→ manter ou reverter</div>
+          </article>
+
+          <article class="path-card">
+            <span class="path-status">Estrutura funcionando</span>
+            <h3>Prévia gratuita até oferta</h3>
+            <p>Separar captura, entrega da prévia e venda deixou o caminho mais compreensível para quem chega.</p>
+            <div class="path-flow">Página do curso
+→ prévia gratuita
+→ nome + e-mail
+→ prévia liberada
+→ conteúdo de valor
+→ voltar para oferta
+→ checkout Hotmart</div>
+          </article>
+
+          <article class="path-card">
+            <span class="path-status">Partes validadas</span>
+            <h3>Compra até Área do Aluno</h3>
+            <p>Webhook, login autorizado e revogação já foram testados separadamente. O teste final com uma compra real ainda deve ser feito antes de considerar o fluxo inteiro comprovado.</p>
+            <div class="path-flow">Compra aprovada
+→ Hotmart envia evento
+→ Railway valida evento
+→ Supabase registra acesso
+→ aluno entra com e-mail autorizado
+→ servidor confirma status
+→ Área do Aluno é entregue</div>
+            <div class="path-note">Regra do curso: nunca chamar um fluxo de “validado ponta a ponta” antes de testar a transação real completa.</div>
+          </article>
+
+          <article class="path-card">
+            <span class="path-status">Funcionou na prática</span>
+            <h3>SEO sem misturar com o visual</h3>
+            <p>A preparação para busca ficou separada do design da loja para preservar a experiência que já funcionava.</p>
+            <div class="path-flow">Title e description
+→ estrutura de headings
+→ links internos
+→ robots.txt
+→ sitemap
+→ Search Console
+→ acompanhar indexação
+→ corrigir páginas problemáticas</div>
+          </article>
+
+          <article class="path-card">
+            <span class="path-status">Método reutilizável</span>
+            <h3>Conteúdo e criativos com destino</h3>
+            <p>Atenção sozinha não basta. O conteúdo funciona melhor como parte de um caminho claro.</p>
+            <div class="path-flow">Gancho
+→ mostrar problema ou curiosidade
+→ apresentar valor/produto
+→ CTA coerente
+→ página de destino correta
+→ medir clique e comportamento
+→ reaproveitar aprendizado</div>
+          </article>
+
+          <article class="path-card">
+            <span class="path-status">Funcionou na construção do curso</span>
+            <h3>Transformar experiência real em aula</h3>
+            <p>O conteúdo ficou mais útil quando partiu de algo que realmente aconteceu no projeto.</p>
+            <div class="path-flow">Problema real
+→ tentativa
+→ erro
+→ correção
+→ princípio reutilizável
+→ demonstração
+→ tarefa do aluno
+→ critério de conclusão</div>
+          </article>
+
+          <article class="path-card">
+            <span class="path-status">Funcionando</span>
+            <h3>Suporte sem deixar o aluno perdido</h3>
+            <p>Quando o acesso falha, o pedido de ajuda fica no mesmo lugar onde o problema acontece.</p>
+            <div class="path-flow">Tentativa de login
+→ acesso não localizado
+→ formulário de suporte
+→ mensagem armazenada
+→ caixa interna do acesso mestre
+→ marcar lida/resolvida</div>
+          </article>
+        </div>
+
+        <div class="field-note">
+          <strong>A ideia mais importante:</strong>
+          <p>Não existe um único “botão certo”. O que nos trouxe resultado foi trabalhar em ciclos curtos: fazer uma mudança pequena, conferir o efeito real, guardar o aprendizado e só depois avançar. Esse processo pode ser reutilizado em praticamente qualquer projeto permitido na internet.</p>
         </div>
       </section>
 
