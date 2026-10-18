@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Suporte | Clica do Zero</title>
+<style>
+:root{--y:#ffd21c;--b:#111315;--m:#6f747a;--l:#e7e9ec}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f5f6f7;color:#17191c}
+.wrap{width:min(1100px,calc(100% - 32px));margin:32px auto}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}
+h1{margin:4px 0 0;font-size:34px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.8px;font-weight:900;color:#9a7200}
+a{color:inherit;text-decoration:none}.back{font-weight:900;font-size:13px}
+.panel{background:#fff;border:1px solid var(--l);border-radius:22px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.04)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.filter{border:1px solid var(--l);background:#fff;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:900;cursor:pointer}.filter.active{background:#111315;color:#fff}
+.list{display:grid;gap:12px}.card{border:1px solid var(--l);border-radius:16px;padding:16px;background:#fff}.card.new{border-color:#e0b400;background:#fffdf2}
+.meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.meta strong{font-size:14px}.meta span{font-size:11px;color:var(--m)}
+.email{font-size:12px;color:#555b62;margin-top:3px}.message{white-space:pre-wrap;margin:14px 0;line-height:1.55;color:#34383d}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:9px 11px;font-size:11px;font-weight:900;cursor:pointer}.read{background:#f1f2f3}.resolve{background:var(--y)}
+.empty{padding:34px;text-align:center;color:var(--m)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div><div class="eyebrow">Acesso mestre</div><h1>Mensagens de alunos</h1></div>
+    <a class="back" href="/clica-do-zero/aluno/">Voltar para a Área do Aluno</a>
+  </div>
+  <div class="panel">
+    <div class="filters">
+      <button class="filter active" data-filter="all">Todas</button>
+      <button class="filter" data-filter="new">Novas</button>
+      <button class="filter" data-filter="read">Lidas</button>
+      <button class="filter" data-filter="resolved">Resolvidas</button>
+    </div>
+    <div id="list" class="list"><div class="empty">Carregando mensagens...</div></div>
+  </div>
+</div>
+<script>
+let messages=[],active='all';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function render(){
+  const data=active==='all'?messages:messages.filter(m=>m.status===active);
+  const list=document.getElementById('list');
+  if(!data.length){list.innerHTML='<div class="empty">Nenhuma mensagem nesta categoria.</div>';return;}
+  list.innerHTML=data.map(m=>`
+    <article class="card ${m.status==='new'?'new':''}">
+      <div class="meta"><strong>${esc(m.name||'Sem nome')}</strong><span>${new Date(m.created_at).toLocaleString('pt-BR')}</span></div>
+      <div class="email">${esc(m.email)}</div>
+      <div class="message">${esc(m.message)}</div>
+      <div class="actions">
+        ${m.status==='new'?'<button class="btn read" onclick="setStatus(\''+m.id+'\',\'read\')">Marcar como lida</button>':''}
+        ${m.status!=='resolved'?'<button class="btn resolve" onclick="setStatus(\''+m.id+'\',\'resolved\')">Marcar como resolvida</button>':''}
+      </div>
+    </article>`).join('');
+}
+async function load(){
+  const r=await fetch('/api/suporte/mensagens',{cache:'no-store'});
+  if(!r.ok){document.getElementById('list').innerHTML='<div class="empty">Não foi possível carregar as mensagens.</div>';return;}
+  const d=await r.json();messages=d.messages||[];render();
+}
+async function setStatus(id,status){
+  const r=await fetch('/api/suporte/status',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({id,status})});
+  if(r.ok){const m=messages.find(x=>x.id===id);if(m)m.status=status;render();}
+}
+document.querySelectorAll('.filter').forEach(b=>b.onclick=()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');active=b.dataset.filter;render();});
+load();
+</script>
+</body>
+</html>
