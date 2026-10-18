@@ -19,12 +19,12 @@ h1{font-size:clamp(40px,6vw,68px);line-height:1.02;letter-spacing:-2.6px;margin:
 .cta{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 28px;border-radius:14px;background:var(--y);color:#111;text-decoration:none;font-weight:900;margin-top:20px}
 .note{font-size:12px;color:#7a7f85;margin-top:10px}
 section{padding:54px 0}.alt{background:#f7f8fa}.title{font-size:34px;line-height:1.1;margin:0 0 14px}.sub{color:var(--m);max-width:760px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}.card{border:1px solid #e5e7ea;border-radius:20px;padding:22px;background:#fff}.card h3{margin:0 0 8px}.card p{margin:0;color:#656a70}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}.card{border:1px solid #e5e7ea;border-radius:20px;padding:22px;background:#fff}.card h3{margin:0 0 8px}.card p{margin:0;color:#656a70}.student-access{border:1px solid #e5e7ea;border-radius:26px;padding:30px;background:linear-gradient(135deg,#111315,#24282d);color:#fff}.student-access .title{color:#fff}.student-access .sub{color:#c9cdd3}.student-access-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}.student-access-item{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:18px;padding:18px}.student-access-item strong{display:block;margin-bottom:6px}.student-access-item span{font-size:13px;color:#c9cdd3}
 .pav{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}.pav strong{font-size:42px;color:#d09b00;display:block}
 .modules{columns:2;column-gap:28px;margin-top:22px}.modules div{break-inside:avoid;padding:9px 0;border-bottom:1px solid #eceef0}.proof{display:grid;grid-template-columns:.82fr 1.18fr;gap:32px;align-items:center}.proof-copy .title{margin-bottom:12px}.proof-copy p{color:#5f646b;margin:0 0 12px}.proof-list{display:grid;gap:8px;margin-top:18px}.proof-list span{display:block;font-size:14px;font-weight:800;color:#30343a}.browser-shot{border:1px solid #dfe3e7;border-radius:22px;background:#fff;box-shadow:0 20px 55px rgba(0,0,0,.12);overflow:hidden}.browser-top{height:42px;display:flex;align-items:center;gap:7px;padding:0 14px;background:#f4f5f6;border-bottom:1px solid #e4e7ea}.browser-dot{width:9px;height:9px;border-radius:50%;background:#c7cbd0}.browser-url{margin-left:8px;flex:1;max-width:430px;background:#fff;border:1px solid #e2e5e8;border-radius:8px;padding:5px 10px;font-size:11px;color:#767b81;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.browser-view{position:relative;height:430px;background:#f7f8fa;overflow:hidden}.browser-view iframe{width:1440px;height:900px;border:0;transform:scale(.57);transform-origin:top left;pointer-events:none}.browser-overlay{position:absolute;inset:auto 12px 12px 12px;display:flex;justify-content:center}.browser-overlay a{background:rgba(17,19,21,.92);color:#fff;text-decoration:none;font-size:13px;font-weight:900;border-radius:999px;padding:10px 16px}
 .offer{border:1px solid #e5e7ea;border-radius:24px;padding:30px;background:#fff;box-shadow:0 12px 36px rgba(0,0,0,.06);text-align:center}.offer-old{color:#8a8f95;font-weight:800;text-decoration:line-through;font-size:18px}.offer-price{font-size:56px;line-height:1;font-weight:900;letter-spacing:-2px;margin:8px 0}.offer-note{color:#656a70;margin:0 auto;max-width:620px}.offer-points{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px}.offer-points span{background:#f4f5f7;border-radius:999px;padding:8px 11px;font-size:13px;font-weight:800}.trust-box{max-width:760px;margin:18px auto 0;padding:16px;border:1px solid #eceef0;border-radius:16px;background:#fafbfc}.trust-head{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;font-weight:900}.hotmart-mark{display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;background:#fff1eb;color:#f04e23;font-size:12px;font-weight:950;letter-spacing:.5px}.trust-items{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.trust-items div{font-size:12px;color:#62676d}.trust-items strong{display:block;color:#222;font-size:13px;margin-bottom:2px}@media(max-width:820px){.trust-items{grid-template-columns:1fr}}.final{background:#111315;color:#fff;text-align:center;border-radius:28px;padding:42px}.final p{color:#c9cdd3;max-width:720px;margin:10px auto}
 footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
-@media(max-width:820px){.hero{grid-template-columns:1fr}.grid,.pav{grid-template-columns:1fr}.modules{columns:1}.proof{grid-template-columns:1fr}.browser-view{height:300px}.browser-view iframe{transform:scale(.39)}}
+@media(max-width:820px){.hero{grid-template-columns:1fr}.grid,.pav,.student-access-grid{grid-template-columns:1fr}.modules{columns:1}.proof{grid-template-columns:1fr}.browser-view{height:300px}.browser-view iframe{transform:scale(.39)}}
 </style>
 </head>
 <body>
@@ -37,7 +37,7 @@ footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
     <p class="lead">O Clica do Zero é um caminho prático para quem quer sair da ideia e chegar a páginas, ofertas, conteúdo e projetos publicados — mesmo sem começar dominando código ou ferramentas avançadas. Você também aprende a usar a criatividade junto com a IA para transformar ideias próprias em páginas, conteúdos, produtos e soluções digitais.</p>
     <a class="cta" href="/clica-do-zero/previa.html">Acessar prévia gratuita</a>
     <div class="note"><a href="/clica-do-zero/aluno-login.html" style="font-weight:900;color:#555b62;">Já é aluno? Entrar na área do aluno</a></div>
-    <div class="note">A prévia é gratuita. O checkout do produto completo ainda não está ativo.</div>
+    <div class="note">Depois da compra aprovada, entre com o mesmo e-mail usado na Hotmart para acessar todo o conteúdo pela Área do Aluno.</div>
   </div>
   <img src="/assets/Clika%20do%20Zero_%20Projetos%20Reais%20com%20IA.png" alt="Clica do Zero — projetos digitais com IA">
 </div>
@@ -70,6 +70,20 @@ footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
     <div>6. Produtos e links de afiliado</div><div>7. Página de produto</div><div>8. SEO do zero</div>
     <div>9. Conteúdo</div><div>10. Criativos com IA</div><div>11. Métricas</div>
     <div>12. Anúncios pagos</div><div>13. Produto próprio</div><div>14. Escala e operação</div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="student-access">
+    <div class="eyebrow">Área do Aluno própria</div>
+    <h2 class="title">Todo o curso pode ser estudado direto no Clica do Zero, fazendo login.</h2>
+    <p class="sub">Depois da compra aprovada, você entra com o mesmo e-mail usado na Hotmart e acessa uma experiência própria de estudo, sem depender de ficar procurando arquivos em lugares diferentes.</p>
+    <div class="student-access-grid">
+      <div class="student-access-item"><strong>15 módulos e 111 aulas</strong><span>Conteúdo organizado em sequência prática, do zero à operação.</span></div>
+      <div class="student-access-item"><strong>Prompts, exemplos e aprendizados reais</strong><span>Comandos, erros, correções e decisões extraídos do desenvolvimento real do projeto.</span></div>
+      <div class="student-access-item"><strong>Progresso e continuidade</strong><span>Marque aulas concluídas e continue de onde parou dentro da própria área.</span></div>
+    </div>
+    <a class="cta" href="/clica-do-zero/aluno-login.html">Já sou aluno — fazer login</a>
   </div>
 </div></section>
 
