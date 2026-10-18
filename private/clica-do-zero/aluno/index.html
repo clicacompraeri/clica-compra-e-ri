@@ -217,6 +217,13 @@ a{color:inherit;text-decoration:none}
 .lesson-note:focus{border-color:#d6a900;box-shadow:0 0 0 3px rgba(255,210,28,.16)}
 .lesson-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px}.lesson-nav button{border:1px solid var(--line);background:#f7f8f9;border-radius:12px;padding:11px;font-size:11px;font-weight:900;cursor:pointer}.lesson-nav button:disabled{opacity:.45;cursor:not-allowed}
 .review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.review-item{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fafbfc}.review-item strong{display:block;font-size:12px}.review-item span{font-size:10.5px;color:var(--muted)}.review-item button{margin-top:8px;border:0;background:#111315;color:#fff;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:900;cursor:pointer}
+.notes-center{margin-top:18px;border:1px solid var(--line);border-radius:18px;padding:18px;background:#fff}
+.notes-center-head{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:12px}
+.notes-center-head h3{margin:0;font-size:18px}.notes-center-head p{margin:4px 0 0;font-size:11.5px;color:var(--muted)}
+.notes-count{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:32px;padding:0 10px;border-radius:999px;background:#111315;color:#ffd21c;font-size:12px;font-weight:950}
+.notes-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.notes-tools input{flex:1 1 220px;border:1px solid var(--line);border-radius:11px;padding:10px 11px;font:12px/1.4 Inter,Arial,sans-serif;outline:0}.notes-tools input:focus{border-color:#d6a900;box-shadow:0 0 0 3px rgba(255,210,28,.13)}
+.notes-list{display:grid;gap:9px}.note-item{border:1px solid var(--line);border-radius:13px;padding:12px;background:#fafbfc}.note-item-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.note-item strong{font-size:11.5px}.note-item small{display:block;color:var(--muted);font-size:9.5px;margin-top:2px}.note-item p{margin:8px 0 0;font-size:11.5px;line-height:1.55;color:#4f555b;white-space:pre-wrap}.note-item button{border:0;background:#111315;color:#fff;border-radius:9px;padding:7px 9px;font-size:9.5px;font-weight:900;cursor:pointer;white-space:nowrap}.notes-empty{border:1px dashed #d7d9dc;border-radius:13px;padding:14px;color:var(--muted);font-size:11.5px;background:#fafbfc}
+@media(max-width:620px){.notes-center-head{align-items:flex-start}.notes-count{min-width:38px}.note-item-top{flex-direction:column}.note-item button{width:max-content}}
 .check{width:24px;height:24px;border-radius:50%;border:1px solid #cfd3d7;background:#fff;cursor:pointer;font-weight:900}
 .check.done{background:var(--yellow);border-color:var(--yellow)}
 .overlay{position:fixed;inset:0;background:rgba(17,19,21,.4);z-index:20;opacity:0;visibility:hidden;transition:.2s}
@@ -477,6 +484,19 @@ a{color:inherit;text-decoration:none}
           </div>
         </div>
         <div class="review-grid" id="reviewGrid"></div>
+        <div class="notes-center">
+          <div class="notes-center-head">
+            <div>
+              <h3>Minhas anotações</h3>
+              <p>Acesse tudo o que você escreveu nas aulas e volte direto ao ponto onde fez cada anotação.</p>
+            </div>
+            <div class="notes-count" id="notesCount">0</div>
+          </div>
+          <div class="notes-tools">
+            <input id="notesSearch" type="search" placeholder="Buscar nas minhas anotações" aria-label="Buscar nas minhas anotações">
+          </div>
+          <div class="notes-list" id="notesList"></div>
+        </div>
         <div class="field-note">
           <strong class="thought-tip" tabindex="0" data-thought="Revisar não é voltar para trás. É fortalecer o que precisa ficar fácil quando você for aplicar.">Como usar esta área</strong>
           <p>Marque uma aula para revisar quando sentir que ainda não domina o assunto. Faça uma anotação curta com a sua própria linguagem e volte depois. Revisar o que já foi estudado faz parte do progresso.</p>
@@ -1793,11 +1813,49 @@ function escapeNote(value){
   return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+function noteEntries(){
+  return Object.entries(lessonNotes)
+    .map(([key,text])=>{
+      const found=findLessonByKey(key);
+      if(!found||!String(text||'').trim())return null;
+      return {key,text:String(text).trim(),m:found.m,i:found.i,lesson:found.lesson};
+    })
+    .filter(Boolean)
+    .sort((a,b)=>a.m.n-b.m.n||a.i-b.i);
+}
+
+function renderNotesCenter(filter=''){
+  const list=document.getElementById('notesList');
+  const count=document.getElementById('notesCount');
+  if(!list||!count)return;
+  const all=noteEntries();
+  count.textContent=all.length;
+  count.setAttribute('aria-label',all.length+' anotações');
+  const q=String(filter||'').trim().toLowerCase();
+  const shown=q?all.filter(x=>(x.lesson.t+' '+x.text+' módulo '+x.m.n).toLowerCase().includes(q)):all;
+  if(!shown.length){
+    list.innerHTML='<div class="notes-empty">'+(all.length?'Nenhuma anotação corresponde à busca.':'Você ainda não salvou nenhuma anotação. Ao escrever em uma aula, ela aparecerá aqui automaticamente.')+'</div>';
+    return;
+  }
+  list.innerHTML=shown.map(x=>'<article class="note-item"><div class="note-item-top"><div><strong>Aula '+x.m.n+'.'+(x.i+1)+' — '+x.lesson.t+'</strong><small>Módulo '+x.m.n+' • '+x.m.title+'</small></div><button type="button" data-note-key="'+x.key+'">Abrir aula</button></div><p>'+escapeNote(x.text)+'</p></article>').join('');
+  list.querySelectorAll('button[data-note-key]').forEach(btn=>btn.onclick=()=>{
+    const item=findLessonByKey(btn.dataset.noteKey);if(!item)return;
+    openModule(item.m.n);setTimeout(()=>openLesson(item.m.n,item.i),40);
+  });
+}
+
+function initNotesCenter(){
+  const search=document.getElementById('notesSearch');
+  if(search)search.addEventListener('input',()=>renderNotesCenter(search.value));
+  renderNotesCenter();
+}
+
 function saveLessonNote(key){
   const el=document.getElementById('note-'+key);
   if(!el)return;
   lessonNotes[key]=el.value.trim();
   localStorage.setItem(notesKey,JSON.stringify(lessonNotes));
+  renderNotesCenter(document.getElementById('notesSearch')?.value||'');
   const btn=el.parentElement.querySelector('.lesson-secondary');
   if(btn){const old=btn.textContent;btn.textContent='Anotação salva ✓';setTimeout(()=>btn.textContent=old,1300);}
 }
@@ -2044,6 +2102,7 @@ renderNav();
 renderModules();
 updateProgress();
 renderReviewCenter();
+initNotesCenter();
 addPathAccessGuides();
 initInteractiveRouteNavigator();
 initGoalLearningPaths();
