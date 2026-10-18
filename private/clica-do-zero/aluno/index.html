@@ -164,6 +164,8 @@ a{color:inherit;text-decoration:none}
 .reflection-card{border:1px solid #ecd66e;border-radius:15px;padding:16px;background:linear-gradient(135deg,#fffdf3,#fff8d8)}
 .reflection-label{display:inline-flex;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.7px;color:#7d6100;background:#fff1a8;border-radius:999px;padding:5px 8px;margin-bottom:8px}
 .reflection-card h3{font-size:15px;margin:0 0 7px}.reflection-card p{font-size:13px;color:#4f5358;line-height:1.65;margin:0}.reflection-question{margin-top:10px;font-weight:850;color:#222}
+.good-path{border:1px solid #dce7d9;border-radius:15px;padding:16px;background:#f6fbf4}
+.good-path .reflection-label{background:#e6f3df;color:#355b2a}.good-path h3{font-size:14px;margin:0 0 7px}.good-path p{font-size:13px;color:#4f5850;line-height:1.65;margin:0}
 .lesson-complete{border:0;background:var(--yellow);border-radius:12px;padding:12px 15px;font-weight:900;cursor:pointer}
 .lesson-actions{display:flex;gap:8px;flex-wrap:wrap}
 .lesson-secondary{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 13px;font-size:11px;font-weight:900;cursor:pointer}
@@ -1019,6 +1021,36 @@ function reflectionFor(m,lesson,i){
   return styles[(m.n*3+i)%styles.length]();
 }
 
+const moduleGoodPaths={
+0:'Escolha uma ideia simples o bastante para começar hoje e boa o bastante para você querer melhorá-la amanhã.',
+1:'Antes de decidir, procure uma evidência pequena e real que confirme se vale continuar nessa direção.',
+2:'Prefira clareza e coerência a tentar parecer maior do que o projeto realmente é.',
+3:'Faça uma mudança por vez, salve uma versão boa e aprenda com o efeito de cada alteração.',
+4:'Considere pronto apenas o que foi publicado, aberto e testado na versão real.',
+5:'Quando houver dúvida de design, escolha o caminho que reduz esforço para quem está usando.',
+6:'Publique apenas o que você consegue conferir: produto, preço, imagem, disponibilidade e destino do link.',
+7:'Ajude a pessoa a decidir com clareza antes de tentar convencê-la com mais elementos.',
+8:'Organize primeiro para pessoas entenderem; depois facilite para os buscadores encontrarem.',
+9:'Crie conteúdo que deixe uma ideia útil e uma próxima curiosidade na cabeça de quem viu.',
+10:'Use a IA para ampliar sua criatividade sem abrir mão da direção e da fidelidade ao que importa.',
+11:'Acompanhe poucas métricas, mas saiba exatamente qual decisão cada uma pode mudar.',
+12:'Teste pequeno, aprenda rápido e só aumente investimento quando souber por que está fazendo isso.',
+13:'Resolva bem uma dor específica antes de tentar construir um produto grande.',
+14:'Construa rotinas que mantenham o projeto avançando mesmo quando a motivação do dia variar.'
+};
+
+function goodPathFor(m,lesson,i){
+  const base=moduleGoodPaths[m.n]||moduleGoodPaths[0];
+  const endings=[
+    'Faça isso hoje em uma versão pequena e observável.',
+    'Registre o que decidiu para conseguir comparar depois.',
+    'Se funcionar, preserve; se não funcionar, ajuste sem destruir o restante.',
+    'Procure uma evidência antes de transformar a hipótese em certeza.',
+    'Escolha o próximo passo que aumenta clareza, não apenas movimento.'
+  ];
+  return base+' '+endings[(m.n+i)%endings.length];
+}
+
 const lessonOverrides={
 'O que você vai construir':{explain:'Ao longo do Clica do Zero você transforma uma ideia em um projeto publicado: marca, site, páginas, conteúdo, descoberta e métricas. Programação é meio; o objetivo é saber construir, entender e validar.',task:'Crie a pasta do projeto e responda em uma frase: o que vou construir, para quem e qual ação quero que a pessoa realize?',result:'Você consegue explicar o projeto em uma frase.'},
 'O modelo que vamos usar':{explain:'A vitrine de afiliados é usada como laboratório porque permite treinar página, oferta, tráfego, SEO, confiança e medição sem exigir estoque no início. O aprendizado depois pode ser aplicado a serviços, produtos próprios e outras plataformas.',task:'Escolha provisoriamente físico, digital, serviço ou híbrido e registre por quê.',result:'Modelo inicial escolhido sem travar em perfeccionismo.'},
@@ -1210,7 +1242,7 @@ function renderLessonList(m){
 
 function openLesson(n,i){
   const m=modules.find(x=>x.n===n); if(!m)return;
-  const lesson=m.lessons[i]; const data=lessonContent(m,lesson); const reflection=reflectionFor(m,lesson,i); const key=lessonKey(n,i); const done=completed.includes(key);
+  const lesson=m.lessons[i]; const data=lessonContent(m,lesson); const reflection=reflectionFor(m,lesson,i); const goodPath=goodPathFor(m,lesson,i); const key=lessonKey(n,i); const done=completed.includes(key);
   localStorage.setItem(lastLessonKey,JSON.stringify({n,i}));
   updateProgress();
   document.getElementById('drawerModule').textContent='Módulo '+m.n+' • Aula '+m.n+'.'+(i+1);
@@ -1227,6 +1259,11 @@ function openLesson(n,i){
         <h3>${lesson.t}</h3>
         <p>${reflection.text}</p>
         <p class="reflection-question">${reflection.question}</p>
+      </div>
+      <div class="good-path">
+        <span class="reflection-label">Um bom caminho</span>
+        <h3>Se você estiver em dúvida sobre como seguir</h3>
+        <p>${goodPath}</p>
       </div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="O conceito fica mais claro quando você consegue enxergá-lo acontecendo em algo que é seu.">Demonstração no seu projeto</h3><p>${data.demo}</p></div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Conhecer um erro antes de cometê-lo pode economizar horas de correção depois.">Erro comum</h3><p>${data.error}</p></div>
