@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Entrar | Clica do Zero</title>
+<style>
+:root{--y:#ffd21c;--b:#111315;--m:#6f747a;--l:#e7e9ec}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,Arial,sans-serif;background:#f5f6f7;color:#17191c}
+.box{width:min(440px,100%);background:#fff;border:1px solid var(--l);border-radius:24px;padding:28px;box-shadow:0 18px 50px rgba(0,0,0,.08)}
+.logo{width:82px;height:52px;object-fit:contain;display:block;margin-bottom:18px}
+small{font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:#9a7200}
+h1{font-size:32px;line-height:1.05;margin:8px 0 10px}
+p{color:var(--m);font-size:14px;line-height:1.5}
+label{display:block;font-size:12px;font-weight:900;margin:18px 0 7px}
+input{width:100%;height:48px;border:1px solid #dfe3e7;border-radius:12px;padding:0 13px;font:inherit;outline:0}
+input:focus{border-color:#d6a900;box-shadow:0 0 0 3px rgba(255,210,28,.18)}
+button{width:100%;height:48px;border:0;border-radius:12px;background:var(--y);font-weight:900;margin-top:12px;cursor:pointer}
+.msg{font-size:12px;margin-top:12px;color:#8a3b2f;min-height:18px}
+.back{display:block;text-align:center;margin-top:18px;font-size:12px;font-weight:800;color:#555b62}
+</style>
+</head>
+<body>
+<main class="box">
+  <a href="/clica-do-zero/"><img class="logo" src="/logo.png" alt="Clica, Compra e Ri"></a>
+  <small>Área do aluno</small>
+  <h1>Entrar no Clica do Zero</h1>
+  <p>Use o mesmo e-mail utilizado na compra. O conteúdo do curso só é liberado para alunos autorizados.</p>
+  <form method="post" action="/api/aluno/login">
+    <label for="email">E-mail da compra</label>
+    <input id="email" name="email" type="email" autocomplete="email" required placeholder="seuemail@exemplo.com">
+    <button type="submit">Entrar na área do aluno</button>
+  </form>
+  <div class="msg" id="msg"></div>
+  <a class="back" href="/clica-do-zero/">Voltar para o Clica do Zero</a>
+</main>
+<script>
+const p=new URLSearchParams(location.search);
+if(p.get('erro')==='acesso') document.getElementById('msg').textContent='Este e-mail ainda não possui acesso liberado.';
+if(p.get('erro')==='config') document.getElementById('msg').textContent='A área do aluno está sendo configurada. Tente novamente mais tarde.';
+</script>
+</body>
+</html>
