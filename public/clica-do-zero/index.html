@@ -25,6 +25,21 @@ section{padding:54px 0}.alt{background:#f7f8fa}.title{font-size:34px;line-height
 .offer{border:1px solid #e5e7ea;border-radius:24px;padding:30px;background:#fff;box-shadow:0 12px 36px rgba(0,0,0,.06);text-align:center}.offer-old{color:#8a8f95;font-weight:800;text-decoration:line-through;font-size:18px}.offer-price{font-size:56px;line-height:1;font-weight:900;letter-spacing:-2px;margin:8px 0}.offer-note{color:#656a70;margin:0 auto;max-width:620px}.offer-points{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px}.offer-points span{background:#f4f5f7;border-radius:999px;padding:8px 11px;font-size:13px;font-weight:800}.trust-box{max-width:760px;margin:18px auto 0;padding:16px;border:1px solid #eceef0;border-radius:16px;background:#fafbfc}.trust-head{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;font-weight:900}.hotmart-mark{display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;background:#fff1eb;color:#f04e23;font-size:12px;font-weight:950;letter-spacing:.5px}.trust-items{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.trust-items div{font-size:12px;color:#62676d}.trust-items strong{display:block;color:#222;font-size:13px;margin-bottom:2px}@media(max-width:820px){.trust-items{grid-template-columns:1fr}}.final{background:#111315;color:#fff;text-align:center;border-radius:28px;padding:42px}.final p{color:#c9cdd3;max-width:720px;margin:10px auto}
 footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
 @media(max-width:820px){.hero{grid-template-columns:1fr}.grid,.pav,.student-access-grid{grid-template-columns:1fr}.modules{columns:1}.proof{grid-template-columns:1fr}.browser-view{height:300px}.browser-view iframe{transform:scale(.39)}}
+
+.student-peek{margin-top:24px}
+.student-peek-head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:18px}
+.student-peek-copy{max-width:690px}
+.student-peek-copy p{margin:7px 0 0;color:#666b72}
+.student-peek-badge{flex:0 0 auto;background:#111315;color:#ffd21c;border-radius:999px;padding:8px 11px;font-size:11px;font-weight:900}
+.student-peek-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.student-peek-card{position:relative;overflow:hidden;border:1px solid #e6e8eb;border-radius:20px;background:#111315;min-height:300px;box-shadow:0 14px 34px rgba(17,19,21,.08)}
+.student-peek-card img{width:100%;height:100%;display:block;object-fit:cover;object-position:top center;filter:saturate(.92)}
+.student-peek-card::after{content:"";position:absolute;inset:auto 0 0;height:38%;background:linear-gradient(transparent,rgba(17,19,21,.92));pointer-events:none}
+.student-peek-caption{position:absolute;left:16px;right:16px;bottom:15px;z-index:2;color:#fff}
+.student-peek-caption strong{display:block;font-size:14px}
+.student-peek-caption span{display:block;margin-top:3px;color:#d6d9dd;font-size:11px;line-height:1.45}
+.student-peek-note{margin-top:12px;padding:13px 14px;border-left:3px solid #ffd21c;background:#fff9df;border-radius:0 12px 12px 0;color:#555b62;font-size:12px}
+@media(max-width:820px){.student-peek-head{align-items:flex-start;flex-direction:column}.student-peek-grid{grid-template-columns:1fr}.student-peek-card{min-height:250px}.student-peek-badge{align-self:flex-start}}
 </style>
 </head>
 <body>
@@ -109,6 +124,30 @@ footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
       <iframe src="/" title="Prévia do projeto Clica, Compra e Ri" loading="lazy" tabindex="-1"></iframe>
       <div class="browser-overlay"><a href="/" target="_blank" rel="noopener">Ver projeto real</a></div>
     </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="student-peek">
+    <div class="student-peek-head">
+      <div class="student-peek-copy">
+        <div class="eyebrow">Um pouco do que existe por dentro</div>
+        <h2 class="title">Você não recebe só aulas. Recebe uma área feita para continuar aprendendo.</h2>
+        <p>Mostramos apenas alguns recortes da Área do Aluno. O suficiente para você perceber que existe uma experiência própria com progresso, caminhos, anotações, desafios e conexões entre assuntos — sem entregar tudo antes da hora.</p>
+      </div>
+      <div class="student-peek-badge">Prévia discreta</div>
+    </div>
+    <div class="student-peek-grid">
+      <figure class="student-peek-card">
+        <img src="/assets/clica-area-preview-1.webp" alt="Recorte da Área do Aluno do Clica do Zero" loading="lazy">
+        <figcaption class="student-peek-caption"><strong>Uma jornada que continua de onde você parou</strong><span>Progresso, próximos passos e caminhos de aprendizado ficam reunidos no mesmo lugar.</span></figcaption>
+      </figure>
+      <figure class="student-peek-card">
+        <img src="/assets/clica-area-preview-2.webp" alt="Outro recorte da Área do Aluno do Clica do Zero" loading="lazy">
+        <figcaption class="student-peek-caption"><strong>Mais do que assistir: aplicar, revisar e conectar</strong><span>A área foi pensada para provocar decisões, registrar anotações e transformar conteúdo em prática.</span></figcaption>
+      </figure>
+    </div>
+    <div class="student-peek-note">Algumas partes foram propositalmente ocultadas ou suavizadas. A ideia é mostrar que a Área do Aluno existe e despertar curiosidade, sem revelar a experiência completa antes do acesso.</div>
   </div>
 </div></section>
 
