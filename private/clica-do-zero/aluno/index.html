@@ -457,6 +457,23 @@ a{color:inherit;text-decoration:none}
 .lesson-audio-tools button.active{background:#111315;color:#fff;border-color:#111315}
 .lesson-audio-note{margin-top:8px;font-size:10px;color:var(--muted);line-height:1.45}
 @media(max-width:620px){.lesson-audio-head{align-items:flex-start;flex-direction:column}.lesson-audio-tools{display:grid;grid-template-columns:repeat(4,1fr);width:100%}.lesson-audio-tools button{width:100%}}
+
+.quick-challenges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.quick-challenge{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fafbfc;display:flex;flex-direction:column;gap:8px;min-height:185px}
+.quick-challenge.done{background:#f7fbf5;border-color:#cbdcc4}
+.quick-challenge-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.quick-challenge-time{font-size:9px;font-weight:950;color:#8a6800;background:#fff8d5;border-radius:999px;padding:5px 8px;white-space:nowrap}
+.quick-challenge h3{margin:0;font-size:13px;line-height:1.3}.quick-challenge p{margin:0;font-size:10.5px;line-height:1.5;color:var(--muted)}
+.quick-challenge-result{font-size:10px;line-height:1.45;color:#555b62;border-left:3px solid #ffd21c;padding-left:9px}
+.quick-challenge-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:auto}
+.quick-challenge-actions button{border:0;border-radius:9px;padding:8px 9px;font-size:9.5px;font-weight:900;cursor:pointer}
+.quick-challenge-actions .go{background:#111315;color:#fff}.quick-challenge-actions .done-btn{background:#fff1a8;color:#5d4800}
+.quick-challenge.done .done-btn{background:#eef6ea;color:#355b2a}
+.quick-challenge-headline{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}
+.quick-challenge-headline span{font-size:11px;color:var(--muted)}
+.quick-challenge-count{display:inline-flex;align-items:center;justify-content:center;min-width:58px;height:30px;border-radius:999px;background:#111315;color:#ffd21c;font-size:11px;font-weight:950}
+@media(max-width:980px){.quick-challenges{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.quick-challenges{grid-template-columns:1fr}.quick-challenge-actions{display:grid}.quick-challenge-actions button{width:100%;min-height:40px}.quick-challenge-headline{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
@@ -554,6 +571,21 @@ a{color:inherit;text-decoration:none}
           </div>
         </div>
         <div class="modules-grid" id="modulesGrid"></div>
+      </section>
+
+      <section class="panel" id="desafios-rapidos">
+        <div class="panel-head">
+          <div>
+            <div class="eyebrow">Desafios rápidos</div>
+            <h2>15 minutos para sair da teoria e fazer algo acontecer</h2>
+            <p>Quando estiver sem tempo, escolha um desafio curto. A meta é terminar com uma evidência real, não apenas consumir conteúdo.</p>
+          </div>
+        </div>
+        <div class="quick-challenge-headline">
+          <span>Use estes desafios entre aulas ou quando quiser recuperar ritmo.</span>
+          <div class="quick-challenge-count" id="quickChallengeCount">0/6</div>
+        </div>
+        <div class="quick-challenges" id="quickChallenges"></div>
       </section>
 
       <section class="panel" id="projetos-guiados">
@@ -2277,6 +2309,42 @@ document.getElementById('copyIdeaPromptBtn').onclick=async()=>{
 };
 
 
+
+const quickChallengesKey='clicaDoZeroQuickChallengesV1';
+const quickChallenges=[
+  {id:'ideia',time:'10 min',title:'Explique sua ideia em uma frase',desc:'Escreva o que você quer criar sem citar ferramenta, tecnologia ou plataforma.',result:'Evidência: uma frase que diz para quem é, o que resolve e por que importa.',n:0,i:0},
+  {id:'cta',time:'10 min',title:'Melhore um CTA real',desc:'Escolha um botão do seu projeto e reescreva pensando na ação e no benefício.',result:'Evidência: um CTA mais claro publicado ou pronto para testar.',n:5,i:2},
+  {id:'produto',time:'15 min',title:'Valide um produto de ponta a ponta',desc:'Confira imagem, preço, disponibilidade e destino do link antes de publicar.',result:'Evidência: um produto validado sem dado provisório ou link errado.',n:6,i:2},
+  {id:'mobile',time:'15 min',title:'Faça um teste rápido no celular',desc:'Abra uma página importante, toque nos botões e procure cortes, excesso ou dificuldade de leitura.',result:'Evidência: uma lista curta do que está bom e do que precisa ser corrigido.',n:5,i:4},
+  {id:'seo',time:'15 min',title:'Arrume uma página para busca',desc:'Revise título, heading, descrição e ligação com outras páginas.',result:'Evidência: uma página com estrutura mais fácil de entender e indexar.',n:8,i:0},
+  {id:'medir',time:'15 min',title:'Defina uma métrica que muda decisão',desc:'Escolha um número e escreva o que você fará se ele subir, cair ou não mudar.',result:'Evidência: uma métrica ligada a uma decisão concreta.',n:11,i:0}
+];
+function quickDone(){
+  try{return JSON.parse(localStorage.getItem(quickChallengesKey)||'[]')}catch(e){return[]}
+}
+function renderQuickChallenges(){
+  const done=quickDone();
+  const wrap=document.getElementById('quickChallenges'); if(!wrap)return;
+  wrap.innerHTML=quickChallenges.map(x=>`
+    <article class="quick-challenge ${done.includes(x.id)?'done':''}">
+      <div class="quick-challenge-top"><h3>${x.title}</h3><span class="quick-challenge-time">${x.time}</span></div>
+      <p>${x.desc}</p>
+      <div class="quick-challenge-result">${x.result}</div>
+      <div class="quick-challenge-actions">
+        <button class="go" onclick="openModule(${x.n});setTimeout(()=>openLesson(${x.n},${x.i}),40)">Abrir aula relacionada</button>
+        <button class="done-btn" onclick="toggleQuickChallenge('${x.id}')">${done.includes(x.id)?'Feito ✓':'Marcar como feito'}</button>
+      </div>
+    </article>`).join('');
+  const count=document.getElementById('quickChallengeCount');
+  if(count)count.textContent=done.length+'/'+quickChallenges.length;
+}
+function toggleQuickChallenge(id){
+  let done=quickDone();
+  done=done.includes(id)?done.filter(x=>x!==id):[...done,id];
+  localStorage.setItem(quickChallengesKey,JSON.stringify(done));
+  renderQuickChallenges();
+}
+
 const guidedProjectsKey='clicaDoZeroGuidedProjectsV1';
 const guidedProjects=[
   {id:'mapa',badge:'Começo',title:'Da ideia ao mapa do projeto',desc:'Transforme uma ideia solta em objetivo, público, proposta e primeiro plano de execução.',result:'Resultado observável: uma página de projeto com objetivo, público, proposta de valor e próximo passo definidos.',steps:['Defina o problema ou oportunidade que você quer explorar.','Escolha para quem o projeto existe.','Escreva a promessa principal em uma frase.','Decida qual é a menor versão que pode ser testada.'],n:0,i:0},
@@ -2324,6 +2392,7 @@ function toggleGuidedProjectDone(id){
 fetch('/api/suporte/mensagens',{cache:'no-store'}).then(r=>{if(r.ok)document.getElementById('masterSupportLink').style.display='inline';}).catch(()=>{});
 renderNav();
 renderModules();
+renderQuickChallenges();
 renderGuidedProjects();
 updateProgress();
 renderReviewCenter();
