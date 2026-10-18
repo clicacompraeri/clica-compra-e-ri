@@ -504,6 +504,18 @@ a{color:inherit;text-decoration:none}
 .prompt-card-actions button{border:0;border-radius:9px;padding:8px 10px;font-size:9.5px;font-weight:900;cursor:pointer}
 .prompt-copy-btn{background:#111315;color:#fff}.prompt-open-btn{background:#fff1a8;color:#5d4800}
 @media(max-width:760px){.prompt-grid{grid-template-columns:1fr}.prompt-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.prompt-filter{width:100%}.prompt-card-actions{display:grid}.prompt-card-actions button{width:100%;min-height:40px}}
+
+.active-review{margin-top:14px;border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff}
+.active-review-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.active-review-head h3{margin:0 0 4px;font-size:15px}.active-review-head p{margin:0;font-size:10.5px;color:var(--muted);line-height:1.5}
+.active-review-badge{font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.55px;color:#8a6800;background:#fff8d5;border-radius:999px;padding:6px 8px;white-space:nowrap}
+.active-review-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.active-review-card{border:1px solid var(--line);border-radius:12px;padding:11px;background:#fafbfc}
+.active-review-card strong{display:block;font-size:10.5px;margin-bottom:5px}.active-review-card p{margin:0;font-size:10px;line-height:1.48;color:#555b62}
+.active-review-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.active-review-actions button{border:0;border-radius:9px;padding:8px 10px;font-size:9.5px;font-weight:900;cursor:pointer}
+.active-review-actions .review-open{background:#111315;color:#fff}.active-review-actions .review-refresh{background:#fff1a8;color:#5d4800}
+@media(max-width:760px){.active-review-grid{grid-template-columns:1fr}.active-review-head{flex-direction:column}.active-review-actions{display:grid}.active-review-actions button{width:100%;min-height:40px}}
 </style>
 </head>
 <body>
@@ -708,6 +720,20 @@ a{color:inherit;text-decoration:none}
           </div>
         </div>
         <div class="review-grid" id="reviewGrid"></div>
+        <div class="active-review" id="activeReview">
+          <div class="active-review-head">
+            <div>
+              <h3>Revisão ativa</h3>
+              <p>Responda mentalmente sem olhar a aula. Se travar, volte ao ponto certo e revise só o necessário.</p>
+            </div>
+            <span class="active-review-badge">3 perguntas</span>
+          </div>
+          <div class="active-review-grid" id="activeReviewGrid"></div>
+          <div class="active-review-actions">
+            <button class="review-open" id="activeReviewOpenBtn" type="button">Abrir aula relacionada</button>
+            <button class="review-refresh" id="activeReviewRefreshBtn" type="button">Trocar perguntas</button>
+          </div>
+        </div>
         <div class="notes-center">
           <div class="notes-center-head">
             <div>
@@ -2240,6 +2266,7 @@ function updateProgress(){
   document.getElementById('progressNumber').textContent=percent+'%';
   document.getElementById('progressFill').style.width=percent+'%';
   document.getElementById('progressText').textContent=completed.length+' de '+total+' aulas marcadas como concluídas.';
+  renderActiveReview();
   let next={m:modules[0],i:0};
   const last=JSON.parse(localStorage.getItem(lastLessonKey)||'null');
   if(last){
@@ -2407,6 +2434,51 @@ document.getElementById('copyIdeaPromptBtn').onclick=async()=>{
 
 
 
+
+const activeReviewSets={
+  0:['Qual problema seu projeto resolve e para quem?','Qual é a menor versão que você consegue colocar no mundo?','Qual próximo passo você consegue provar que fez?'],
+  3:['Por que uma mudança pequena é mais segura que uma refatoração ampla?','O que precisa estar salvo antes de alterar código?','Como você confirma que mexeu somente no que pretendia?'],
+  4:['Qual a diferença entre código enviado e versão publicada?','Que sinais confirmam um deploy realmente concluído?','O que você precisa conferir no celular depois de publicar?'],
+  6:['Quais quatro dados você deve validar antes de divulgar um produto?','Por que um link de busca pode ser pior que um link de produto específico?','O que fazer quando preço ou disponibilidade não podem ser confirmados?'],
+  8:['O que torna uma página mais fácil de encontrar e interpretar?','Por que links internos ajudam além da navegação?','Como você confirma se uma página está sendo indexada?'],
+  11:['Qual métrica realmente mudaria uma decisão sua?','Qual a diferença entre dado, hipótese e decisão?','Por que um número isolado pode enganar?'],
+  12:['Qual é seu limite de perda antes de ativar uma campanha?','O que precisa estar definido antes de pagar por tráfego?','Qual regra faria você pausar, iterar ou escalar?'],
+  13:['Qual dor específica sua oferta resolve?','Qual é o menor formato que entrega valor de verdade?','O que precisa ser validado antes de escalar um produto próprio?'],
+  14:['O que deve entrar na sua rotina semanal de operação?','O que vale automatizar e o que ainda precisa de supervisão?','Qual resultado você quer conseguir nos próximos 90 dias?']
+};
+let activeReviewModule=0;
+function bestReviewModule(){
+  const completedModules=modules.map(m=>({
+    n:m.n,
+    done:m.lessons.filter((_,i)=>completed.includes(lessonKey(m.n,i))).length
+  })).filter(x=>x.done>0);
+  if(!completedModules.length)return 0;
+  completedModules.sort((a,b)=>b.n-a.n||b.done-a.done);
+  const n=completedModules[0].n;
+  const keys=Object.keys(activeReviewSets).map(Number).sort((a,b)=>a-b);
+  return keys.reduce((best,k)=>k<=n?k:best,0);
+}
+function renderActiveReview(forceNext=false){
+  const grid=document.getElementById('activeReviewGrid');
+  const open=document.getElementById('activeReviewOpenBtn');
+  if(!grid||!open)return;
+  const keys=Object.keys(activeReviewSets).map(Number).sort((a,b)=>a-b);
+  if(forceNext){
+    const currentIndex=Math.max(0,keys.indexOf(activeReviewModule));
+    activeReviewModule=keys[(currentIndex+1)%keys.length];
+  }else{
+    activeReviewModule=bestReviewModule();
+  }
+  const qs=activeReviewSets[activeReviewModule]||activeReviewSets[0];
+  grid.innerHTML=qs.map((q,i)=>'<div class="active-review-card"><strong>Pergunta '+(i+1)+'</strong><p>'+q+'</p></div>').join('');
+  open.onclick=()=>{openModule(activeReviewModule);setTimeout(()=>openLesson(activeReviewModule,0),40);};
+}
+function initActiveReview(){
+  const refresh=document.getElementById('activeReviewRefreshBtn');
+  if(refresh)refresh.onclick=()=>renderActiveReview(true);
+  renderActiveReview();
+}
+
 const promptLibrary=[
   {id:'criar-projeto',cat:'Criar',title:'Transformar uma ideia em projeto',desc:'Para sair da ideia solta e chegar a uma primeira versão publicável.',prompt:'Quero transformar esta ideia em um projeto real: [IDEIA]. Defina objetivo, público, problema, ação principal do usuário, páginas essenciais, funcionalidades mínimas e o primeiro MVP. Faça uma etapa por vez e mantenha o escopo pequeno o suficiente para publicar e testar.',n:0,i:0},
   {id:'corrigir-sem-quebrar',cat:'Corrigir',title:'Corrigir sem destruir o que funciona',desc:'Use quando existe um problema específico em uma parte do projeto.',prompt:'Corrija somente [PROBLEMA/COMPONENTE]. Preserve todo o restante exatamente como está. Antes de alterar, identifique a causa provável. Faça a menor mudança possível, valide o resultado no ambiente publicado e confirme que nenhuma função existente foi afetada.',n:3,i:4},
@@ -2534,6 +2606,7 @@ renderModules();
 initPromptLibrary();
 renderQuickChallenges();
 renderGuidedProjects();
+initActiveReview();
 updateProgress();
 renderReviewCenter();
 initNotesCenter();
