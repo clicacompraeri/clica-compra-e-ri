@@ -104,6 +104,11 @@ a{color:inherit;text-decoration:none}
 .resource-hub{margin-top:14px;border:1px solid var(--line);border-radius:16px;padding:16px;background:#fafbfc;display:none}
 .resource-hub.open{display:block}.resource-hub h3{margin:0 0 6px;font-size:16px}.resource-hub p{margin:0 0 12px;color:var(--muted);font-size:12px}
 .resource-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.resource-link{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px;text-align:left;cursor:pointer}.resource-link strong{font-size:11px;display:block}.resource-link span{font-size:10px;color:var(--muted)}
+.access-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.access-card{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fafbfc;display:flex;flex-direction:column;min-height:170px}
+.access-card b{font-size:13px;margin-bottom:6px}.access-card p{font-size:11px;color:var(--muted);line-height:1.5;margin:0 0 9px}.access-route{font-size:10.5px;line-height:1.5;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px;margin-top:auto}
+.access-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.access-actions button{border:0;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:900;cursor:pointer}.access-actions .learn{background:#111315;color:#fff}.access-actions .route{background:#fff1a8;color:#5d4800}
+.path-access{margin-top:10px}.path-access button{border:1px solid #e5d06f;background:#fff8d5;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:900;cursor:pointer}.path-access-box{display:none;margin-top:8px;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fafbfc;font-size:10.5px;line-height:1.55;color:#555b62}.path-access-box.open{display:block}
 .field-note{margin-top:18px;padding:18px;border:1px dashed #d6a900;border-radius:16px;background:#fffdf3}
 .field-note strong{display:block;margin-bottom:5px}
 .field-note p{margin:0;color:var(--muted);font-size:13px}
@@ -186,6 +191,7 @@ a{color:inherit;text-decoration:none}
   .hero{grid-template-columns:1fr}
   .modules-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .resources{grid-template-columns:repeat(2,1fr)}
+  .access-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .knowledge-grid{grid-template-columns:1fr}
   .path-grid{grid-template-columns:1fr}
   .lesson-map{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -198,6 +204,7 @@ a{color:inherit;text-decoration:none}
   .topbar{align-items:flex-start}.student{display:none}
   .modules-grid{grid-template-columns:1fr}
   .resources{grid-template-columns:1fr}
+  .access-grid{grid-template-columns:1fr}
   .resource-links{grid-template-columns:1fr}
   .lesson-map{grid-template-columns:1fr}
   .idea-grid{grid-template-columns:1fr}
@@ -330,6 +337,26 @@ a{color:inherit;text-decoration:none}
           <button class="resource" onclick="openResourceHub('templates')"><strong>Planilhas e templates</strong><span>Arquivos práticos para aplicar no projeto.</span><small>Ver onde usar e o que aprender →</small></button>
         </div>
         <div class="resource-hub" id="resourceHub"></div>
+
+        <div style="margin-top:20px">
+          <div class="panel-head" style="margin-bottom:12px">
+            <div>
+              <div class="eyebrow">Acesso rápido por assunto</div>
+              <h2 style="font-size:20px">Onde entrar e qual caminho seguir</h2>
+              <p>Quando uma aula citar uma ferramenta ou etapa, use estes atalhos para saber onde começar sem ficar procurando.</p>
+            </div>
+          </div>
+          <div class="access-grid">
+            <div class="access-card"><b>GitHub</b><p>Arquivos, histórico de mudanças, commits e repositório do projeto.</p><div class="access-route">GitHub → seu repositório → arquivo certo → editar → commit → conferir alteração.</div><div class="access-actions"><button class="learn" onclick="openModule(3);setTimeout(()=>openLesson(3,2),40)">Aprender no curso</button><button class="route" onclick="openModule(3)">Ver módulo 3</button></div></div>
+            <div class="access-card"><b>Railway</b><p>Deploy, build, logs, domínio e validação da versão publicada.</p><div class="access-route">Railway → projeto → serviço → Deployments/Logs → esperar SUCCESS → abrir domínio público.</div><div class="access-actions"><button class="learn" onclick="openModule(4);setTimeout(()=>openLesson(4,1),40)">Aprender no curso</button><button class="route" onclick="openModule(4)">Ver módulo 4</button></div></div>
+            <div class="access-card"><b>Hotmart</b><p>Produto, checkout, afiliados, webhooks e entrega do curso.</p><div class="access-route">Hotmart → Produtos → produto escolhido → ferramentas/configurações → acessar a função necessária.</div><div class="access-actions"><button class="learn" onclick="openModule(13);setTimeout(()=>openLesson(13,6),40)">Checkout e entrega</button><button class="route" onclick="openModule(13)">Ver módulo 13</button></div></div>
+            <div class="access-card"><b>Supabase</b><p>Banco de dados, acessos do aluno, tabelas e funções do sistema.</p><div class="access-route">Supabase → projeto → Table Editor / SQL / Edge Functions → conferir ambiente antes de alterar.</div><div class="access-actions"><button class="learn" onclick="openModule(3);setTimeout(()=>openLesson(3,0),40)">Entender estrutura</button><button class="route" onclick="openModule(4)">Publicar com segurança</button></div></div>
+            <div class="access-card"><b>Klaviyo</b><p>Lista de leads, formulário da prévia e automações de e-mail.</p><div class="access-route">Klaviyo → Lists & Segments ou Sign-up Forms → localizar o ativo certo → editar/testar sem contratar plano.</div><div class="access-actions"><button class="learn" onclick="openModule(11);setTimeout(()=>openLesson(11,0),40)">Entender o funil</button><button class="route" onclick="openModule(9)">Conteúdo e captura</button></div></div>
+            <div class="access-card"><b>Google Search Console</b><p>Indexação, páginas encontradas pelo Google e problemas de busca.</p><div class="access-route">Search Console → propriedade do site → Indexação/Páginas ou Desempenho → identificar o problema antes de mexer no site.</div><div class="access-actions"><button class="learn" onclick="openModule(8);setTimeout(()=>openLesson(8,5),40)">Aprender no curso</button><button class="route" onclick="openModule(8)">Ver módulo 8</button></div></div>
+            <div class="access-card"><b>Meta Ads</b><p>Campanhas, orçamento, criativos e análise antes de escalar.</p><div class="access-route">Gerenciador de Anúncios → campanha → conjunto → anúncio → conferir orçamento, destino e status antes de publicar.</div><div class="access-actions"><button class="learn" onclick="openModule(12);setTimeout(()=>openLesson(12,3),40)">Aprender no curso</button><button class="route" onclick="openModule(12)">Ver módulo 12</button></div></div>
+            <div class="access-card"><b>Programas de afiliados</b><p>Amazon, Shopee, Mercado Livre e outras lojas usadas no catálogo.</p><div class="access-route">Área de afiliado → produto específico → validar disponibilidade → gerar/preservar link → testar destino antes de publicar.</div><div class="access-actions"><button class="learn" onclick="openModule(6);setTimeout(()=>openLesson(6,2),40)">Aprender no curso</button><button class="route" onclick="openModule(6)">Ver módulo 6</button></div></div>
+          </div>
+        </div>
         <div class="field-note">
           <strong class="thought-tip" tabindex="0" data-thought="Aprendizado real fica mais forte quando nasce de decisões, erros, testes e resultados que realmente aconteceram.">O diferencial desta área</strong>
           <p>Os exemplos abaixo nasceram do desenvolvimento real do Clica, Compra e Ri e do próprio Clica do Zero: decisões que funcionaram, erros que exigiram correção, prompts usados para preservar o que já estava bom e integrações que só ficaram confiáveis depois de testar ponta a ponta. Quando uma conversa real é transformada em material didático, o português é revisado para facilitar a leitura, sem mudar a intenção original.</p>
@@ -1187,6 +1214,33 @@ const resourceRoutes={
   }
 };
 
+const pathAccessGuides={
+'Corrigir sem destruir o que já estava bom':'Abra primeiro o lugar onde o problema realmente está. Identifique o arquivo ou componente responsável, faça a menor alteração possível, salve uma versão recuperável e só depois valide em produção.',
+'GitHub até produção':'GitHub → repositório → arquivo/commit → Railway → projeto → serviço → Deployments → aguardar SUCCESS → abrir o domínio público e testar.',
+'Adicionar produto de afiliado com segurança':'Área do afiliado da loja → localizar um produto específico → conferir disponibilidade/preço → gerar ou copiar o link correto → testar o destino → só então cadastrar no site.',
+'Melhorar página sem refazer tudo':'Abra a página real → identifique o componente → localize o arquivo correspondente no GitHub → altere somente esse componente → deploy → teste desktop e celular.',
+'Prévia gratuita até oferta':'Página pública do curso → formulário da prévia → lista/formulário no Klaviyo → página liberada → CTA de retorno à oferta → checkout Hotmart.',
+'Compra até Área do Aluno':'Hotmart → configuração do produto/webhook → endpoint no Railway → registro de acesso no Supabase → login do aluno → validação do status no servidor.',
+'SEO sem misturar com o visual':'GitHub/site para title, headings, robots e sitemap → publicar → Google Search Console → propriedade → Indexação/Páginas → validar o que o Google encontrou.',
+'Conteúdo e criativos com destino':'Escolha o destino primeiro → crie o conteúdo/gancho → defina CTA → publique → acompanhe clique/origem → use o resultado para a próxima criação.',
+'Transformar experiência real em aula':'Recupere o problema real → anote tentativa, erro e solução → extraia a regra reutilizável → transforme em demonstração, tarefa e critério de conclusão.',
+'Suporte sem deixar o aluno perdido':'Tela onde o problema aparece → formulário de suporte → mensagem salva → caixa interna do responsável → marcar como lida/resolvida e retornar ao aluno.'
+};
+
+function addPathAccessGuides(){
+  document.querySelectorAll('.path-card').forEach(card=>{
+    const title=card.querySelector('h3')?.textContent.trim();
+    const guide=pathAccessGuides[title];
+    if(!guide||card.querySelector('.path-access'))return;
+    const wrap=document.createElement('div');
+    wrap.className='path-access';
+    wrap.innerHTML='<button type="button">Como acessar este caminho ↓</button><div class="path-access-box">'+guide+'</div>';
+    const btn=wrap.querySelector('button'),box=wrap.querySelector('.path-access-box');
+    btn.onclick=()=>{box.classList.toggle('open');btn.textContent=box.classList.contains('open')?'Fechar caminho ↑':'Como acessar este caminho ↓';};
+    card.appendChild(wrap);
+  });
+}
+
 function openResourceHub(type){
   const data=resourceRoutes[type];
   const hub=document.getElementById('resourceHub');
@@ -1434,6 +1488,7 @@ renderNav();
 renderModules();
 updateProgress();
 renderReviewCenter();
+addPathAccessGuides();
 </script>
 </body>
 </html>
