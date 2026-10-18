@@ -161,6 +161,9 @@ a{color:inherit;text-decoration:none}
 .lesson-meta-row{display:flex;gap:8px;flex-wrap:wrap}.lesson-pill{background:#f2f3f4;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:850;color:#555b62}
 .lesson-block{border:1px solid var(--line);border-radius:15px;padding:16px;background:#fff}.lesson-block h3{font-size:14px;margin:0 0 7px}.lesson-block p{font-size:13px;color:#555b62;line-height:1.65;margin:0}.lesson-block ul{margin:7px 0 0;padding-left:18px;color:#555b62;font-size:13px;line-height:1.6}
 .lesson-task{background:#fff9df;border-color:#f0d970}.lesson-result{background:#f4f7f5}.lesson-prompt{background:#111315;color:#f6f7f8;border-color:#111315}.lesson-prompt h3{color:#ffd21c}.lesson-prompt p{color:#e5e7ea;font-family:Consolas,Monaco,monospace;white-space:pre-wrap}
+.reflection-card{border:1px solid #ecd66e;border-radius:15px;padding:16px;background:linear-gradient(135deg,#fffdf3,#fff8d8)}
+.reflection-label{display:inline-flex;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.7px;color:#7d6100;background:#fff1a8;border-radius:999px;padding:5px 8px;margin-bottom:8px}
+.reflection-card h3{font-size:15px;margin:0 0 7px}.reflection-card p{font-size:13px;color:#4f5358;line-height:1.65;margin:0}.reflection-question{margin-top:10px;font-weight:850;color:#222}
 .lesson-complete{border:0;background:var(--yellow);border-radius:12px;padding:12px 15px;font-weight:900;cursor:pointer}
 .lesson-actions{display:flex;gap:8px;flex-wrap:wrap}
 .lesson-secondary{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 13px;font-size:11px;font-weight:900;cursor:pointer}
@@ -920,6 +923,102 @@ const modulePlaybooks={
 14:{goal:'operar o projeto de forma repetível antes de tentar crescer em todas as direções',practice:'organize rotina semanal, indicadores, automações seguras, responsabilidades e plano de 90 dias',error:'automatizar caos ou aumentar volume antes de existir um padrão que funciona',result:'um sistema operacional simples com revisão e foco'}
 };
 
+const reflectionLabels=['Pense nisso','Decisão real','E se...','Olhe por outro ângulo','Pequeno passo, grande efeito','Cenário real','Pergunta que muda o rumo','Teste sua ideia'];
+
+const moduleReflections={
+0:[
+'Grandes projetos começam quando uma ideia deixa de ser apenas vontade e ganha um próximo passo concreto.',
+'Você não precisa enxergar o caminho inteiro hoje. Precisa enxergar bem o próximo passo.',
+'Começar pequeno não diminui a ambição. Dá a ela uma base real.'
+],
+1:[
+'Uma boa oportunidade não é só a que parece interessante; é a que continua fazendo sentido quando você olha os números.',
+'Decisões melhores aparecem quando entusiasmo e evidência trabalham juntos.',
+'Antes de perguntar quanto pode ganhar, descubra por que alguém escolheria comprar.'
+],
+2:[
+'Uma marca forte não nasce de parecer grande. Nasce de ser clara, coerente e lembrada pelo motivo certo.',
+'Se você não consegue explicar por que sua marca existe, o público provavelmente também não conseguirá.',
+'Escolher o que não representar também faz parte de construir identidade.'
+],
+3:[
+'Entender a estrutura do seu projeto dá liberdade para criar sem depender de sorte.',
+'Cada pequena mudança que você compreende aumenta sua autonomia.',
+'Código não precisa ser misterioso quando você aprende a observar causa e efeito.'
+],
+4:[
+'Publicar muda a natureza do projeto: ele deixa de existir só para você e passa a existir para o mundo.',
+'Um deploy bem-sucedido não é o fim; é o começo da validação real.',
+'Problemas em produção assustam menos quando você sabe onde olhar primeiro.'
+],
+5:[
+'Uma boa experiência não precisa impressionar em tudo; precisa facilitar a decisão certa.',
+'Se a pessoa precisa pensar demais para entender sua página, parte da clareza ainda está faltando.',
+'Design útil faz o visitante sentir que sabe o que fazer a seguir.'
+],
+6:[
+'Confiança cresce quando o que você publica continua verdadeiro depois do clique.',
+'Um produto certo com informação errada ainda é uma experiência ruim.',
+'Organizar dados hoje evita dezenas de correções amanhã.'
+],
+7:[
+'Conversão melhora quando a página ajuda a pessoa a decidir, não quando tenta pressioná-la.',
+'Responder uma dúvida real pode valer mais do que adicionar mais um argumento de venda.',
+'Um bom CTA aparece quando o próximo passo já faz sentido para a pessoa.'
+],
+8:[
+'SEO começa antes do Google: começa quando seu conteúdo é organizado para pessoas e máquinas entenderem.',
+'Ser encontrado é consequência de deixar claro o que existe em cada página.',
+'Uma página útil e bem conectada tende a envelhecer melhor do que uma página feita só para palavras-chave.'
+],
+9:[
+'Conteúdo forte não é o que fala mais; é o que deixa uma ideia útil na cabeça de alguém.',
+'Você não precisa publicar tudo. Precisa descobrir o que merece ser repetido e aprofundado.',
+'Uma boa peça de conteúdo abre uma próxima curiosidade em vez de encerrar a conversa.'
+],
+10:[
+'Criatividade com direção costuma superar criatividade sem limites.',
+'Uma referência serve para orientar, não para substituir sua própria ideia.',
+'Quando você define o que precisa permanecer fiel, a IA ganha espaço para criar melhor no restante.'
+],
+11:[
+'Medir é transformar impressão em decisão.',
+'Uma métrica só ganha valor quando você sabe o que fará se ela subir, cair ou ficar igual.',
+'Poucos dados bem entendidos podem orientar mais do que um painel cheio de números.'
+],
+12:[
+'Controle financeiro não limita crescimento; ele permite testar sem colocar o projeto em risco.',
+'Antes de aumentar orçamento, descubra o que exatamente você aprendeu com o orçamento menor.',
+'Escalar algo confuso só faz o problema crescer mais rápido.'
+],
+13:[
+'Um produto próprio começa quando você escolhe resolver uma dor específica bem.',
+'Escopo menor pode aumentar a qualidade da primeira entrega.',
+'Validar cedo transforma opinião em aprendizado.'
+],
+14:[
+'Fazer coisas grandes exige sistemas que funcionem mesmo nos dias comuns.',
+'Consistência não é repetir tudo igual; é preservar o que funciona enquanto você melhora o restante.',
+'Crescer fica mais saudável quando cada nova camada se apoia em uma base que já foi validada.'
+]
+};
+
+function reflectionFor(m,lesson,i){
+  const base=(moduleReflections[m.n]||moduleReflections[0]);
+  const thought=base[i%base.length];
+  const styles=[
+    ()=>({label:'Pense nisso',text:thought,question:'O que mudaria no seu projeto se você levasse essa ideia a sério hoje?'}),
+    ()=>({label:'Decisão real',text:thought,question:'Qual decisão pequena você pode tomar agora para tornar isso concreto?'}),
+    ()=>({label:'E se...',text:thought,question:'E se você testasse isso em escala pequena antes de transformar em uma grande mudança?'}),
+    ()=>({label:'Olhe por outro ângulo',text:thought,question:'O que alguém de fora perceberia aqui que talvez você ainda não esteja vendo?'}),
+    ()=>({label:'Pequeno passo, grande efeito',text:thought,question:'Qual é o menor passo que já produziria uma evidência útil?'}),
+    ()=>({label:'Cenário real',text:thought,question:'Se isso acontecesse amanhã no seu projeto, como você saberia o que fazer?'}),
+    ()=>({label:'Pergunta que muda o rumo',text:thought,question:'Você está escolhendo isso porque é melhor ou apenas porque é o caminho mais familiar?'}),
+    ()=>({label:'Teste sua ideia',text:thought,question:'Como você poderia provar ou refutar essa ideia com um teste simples?'})
+  ];
+  return styles[(m.n*3+i)%styles.length]();
+}
+
 const lessonOverrides={
 'O que você vai construir':{explain:'Ao longo do Clica do Zero você transforma uma ideia em um projeto publicado: marca, site, páginas, conteúdo, descoberta e métricas. Programação é meio; o objetivo é saber construir, entender e validar.',task:'Crie a pasta do projeto e responda em uma frase: o que vou construir, para quem e qual ação quero que a pessoa realize?',result:'Você consegue explicar o projeto em uma frase.'},
 'O modelo que vamos usar':{explain:'A vitrine de afiliados é usada como laboratório porque permite treinar página, oferta, tráfego, SEO, confiança e medição sem exigir estoque no início. O aprendizado depois pode ser aplicado a serviços, produtos próprios e outras plataformas.',task:'Escolha provisoriamente físico, digital, serviço ou híbrido e registre por quê.',result:'Modelo inicial escolhido sem travar em perfeccionismo.'},
@@ -1111,7 +1210,7 @@ function renderLessonList(m){
 
 function openLesson(n,i){
   const m=modules.find(x=>x.n===n); if(!m)return;
-  const lesson=m.lessons[i]; const data=lessonContent(m,lesson); const key=lessonKey(n,i); const done=completed.includes(key);
+  const lesson=m.lessons[i]; const data=lessonContent(m,lesson); const reflection=reflectionFor(m,lesson,i); const key=lessonKey(n,i); const done=completed.includes(key);
   localStorage.setItem(lastLessonKey,JSON.stringify({n,i}));
   updateProgress();
   document.getElementById('drawerModule').textContent='Módulo '+m.n+' • Aula '+m.n+'.'+(i+1);
@@ -1123,6 +1222,12 @@ function openLesson(n,i){
       <div class="lesson-meta-row"><span class="lesson-pill">${lesson.d}</span><span class="lesson-pill">Aplicação prática</span><span class="lesson-pill">Método PAV</span></div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Antes de estudar, saiba o que deve mudar em você ou no projeto ao terminar esta aula.">Objetivo</h3><p>${data.objective}</p></div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Se você consegue explicar com suas palavras, já começou a transformar informação em conhecimento.">Entenda de verdade</h3><p>${data.explain}</p></div>
+      <div class="reflection-card">
+        <span class="reflection-label">${reflection.label}</span>
+        <h3>${lesson.t}</h3>
+        <p>${reflection.text}</p>
+        <p class="reflection-question">${reflection.question}</p>
+      </div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="O conceito fica mais claro quando você consegue enxergá-lo acontecendo em algo que é seu.">Demonstração no seu projeto</h3><p>${data.demo}</p></div>
       <div class="lesson-block"><h3 class="thought-tip" tabindex="0" data-thought="Conhecer um erro antes de cometê-lo pode economizar horas de correção depois.">Erro comum</h3><p>${data.error}</p></div>
       <div class="lesson-block lesson-task"><h3 class="thought-tip" tabindex="0" data-thought="Uma tarefa pequena concluída vale mais para o aprendizado do que dez ideias deixadas para depois.">Sua tarefa agora</h3><p>${data.task}</p></div>
