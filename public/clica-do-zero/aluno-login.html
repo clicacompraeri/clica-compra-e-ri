@@ -18,6 +18,14 @@ input{width:100%;height:48px;border:1px solid #dfe3e7;border-radius:12px;padding
 input:focus{border-color:#d6a900;box-shadow:0 0 0 3px rgba(255,210,28,.18)}
 button{width:100%;height:48px;border:0;border-radius:12px;background:var(--y);font-weight:900;margin-top:12px;cursor:pointer}
 .msg{font-size:12px;margin-top:12px;color:#8a3b2f;min-height:18px}
+.help{margin-top:22px;padding-top:18px;border-top:1px solid var(--l)}
+.help details{border:1px solid var(--l);border-radius:16px;padding:14px 16px;background:#fafbfc}
+.help summary{cursor:pointer;font-weight:900}
+.help p{font-size:13px;margin:8px 0 0}
+textarea{width:100%;min-height:110px;border:1px solid #dfe3e7;border-radius:12px;padding:12px 13px;font:inherit;outline:0;resize:vertical}
+textarea:focus{border-color:#d6a900;box-shadow:0 0 0 3px rgba(255,210,28,.18)}
+.support-msg{font-size:12px;margin-top:10px;min-height:18px}
+.honeypot{position:absolute;left:-9999px;opacity:0;pointer-events:none}
 .back{display:block;text-align:center;margin-top:18px;font-size:12px;font-weight:800;color:#555b62}
 </style>
 </head>
@@ -33,12 +41,47 @@ button{width:100%;height:48px;border:0;border-radius:12px;background:var(--y);fo
     <button type="submit">Entrar na área do aluno</button>
   </form>
   <div class="msg" id="msg"></div>
+
+  <div class="help" id="suporte">
+    <details id="supportDetails">
+      <summary>Não conseguiu acessar? Entre em contato conosco.</summary>
+      <p>Se você já comprou o Clica do Zero e o acesso não foi liberado, envie uma mensagem usando o mesmo e-mail da compra.</p>
+      <form method="post" action="/api/suporte">
+        <label for="supportName">Nome</label>
+        <input id="supportName" name="name" type="text" autocomplete="name" placeholder="Seu nome">
+
+        <label for="supportEmail">E-mail da compra</label>
+        <input id="supportEmail" name="email" type="email" autocomplete="email" required placeholder="seuemail@exemplo.com">
+
+        <label for="supportMessage">O que aconteceu?</label>
+        <textarea id="supportMessage" name="message" required placeholder="Conte o que aconteceu ao tentar acessar."></textarea>
+
+        <div class="honeypot" aria-hidden="true">
+          <label for="website">Website</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button type="submit">Enviar mensagem</button>
+        <div class="support-msg" id="supportMsg"></div>
+      </form>
+    </details>
+  </div>
+
   <a class="back" href="/clica-do-zero/">Voltar para o Clica do Zero</a>
 </main>
 <script>
 const p=new URLSearchParams(location.search);
 if(p.get('erro')==='acesso') document.getElementById('msg').textContent='Este e-mail ainda não possui acesso liberado.';
 if(p.get('erro')==='config') document.getElementById('msg').textContent='A área do aluno está sendo configurada. Tente novamente mais tarde.';
+const suporte=p.get('suporte');
+if(suporte){
+  document.getElementById('supportDetails').open=true;
+  const box=document.getElementById('supportMsg');
+  if(suporte==='enviado'){box.textContent='Mensagem enviada. Vamos localizar seu acesso pelo e-mail informado.';box.style.color='#2f6b3a';}
+  if(suporte==='erro'){box.textContent='Não foi possível enviar agora. Confira os campos e tente novamente.';box.style.color='#8a3b2f';}
+  if(suporte==='aguarde'){box.textContent='Aguarde um minuto antes de enviar outra mensagem.';box.style.color='#8a6a20';}
+}
+if(p.get('erro')==='acesso') document.getElementById('supportDetails').open=true;
 </script>
 </body>
 </html>
