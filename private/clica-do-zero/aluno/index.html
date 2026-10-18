@@ -543,6 +543,14 @@ a{color:inherit;text-decoration:none}
 .lesson-natural-step b{display:block;font-size:10.5px;margin-bottom:4px}.lesson-natural-step span{display:block;font-size:9.8px;line-height:1.45;color:#666d73}
 .lesson-natural-note{margin-top:10px;padding:9px 10px;border-left:3px solid #ffd21c;background:#fffdf3;border-radius:0 10px 10px 0;font-size:10px;line-height:1.5;color:#555b62}
 @media(max-width:620px){.lesson-natural-steps{grid-template-columns:1fr}.lesson-natural-title{flex-direction:column}}
+
+.lesson-quick-summary{margin:12px 0;border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}
+.lesson-quick-summary-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}
+.lesson-quick-summary-head h3{margin:0;font-size:13px}.lesson-quick-summary-head span{font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.5px;color:#2f5f27;background:#eef7ea;border-radius:999px;padding:5px 8px;white-space:nowrap}
+.lesson-quick-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.lesson-quick-summary-card{border:1px solid var(--line);border-radius:11px;padding:10px;background:#fafbfc}
+.lesson-quick-summary-card b{display:block;font-size:10px;margin-bottom:4px}.lesson-quick-summary-card p{margin:0;font-size:9.8px;line-height:1.48;color:#5f666d}
+@media(max-width:620px){.lesson-quick-summary-grid{grid-template-columns:1fr}.lesson-quick-summary-head{flex-direction:column}}
 </style>
 </head>
 <body>
@@ -2142,6 +2150,17 @@ function openLesson(n,i){
       <div class="lesson-cover" aria-hidden="true"><small>Módulo ${m.n} • Aula ${m.n}.${i+1}</small><strong>${lesson.t}</strong></div>
       <button class="lesson-back" onclick="renderLessonList(modules.find(x=>x.n===${n}));document.getElementById('drawerTitle').textContent=modules.find(x=>x.n===${n}).title;document.getElementById('drawerModule').textContent='Módulo '+${n};">← Voltar às aulas</button>
       <div class="lesson-meta-row"><span class="lesson-pill">${lesson.d}</span><span class="lesson-pill">Aplicação prática</span><span class="lesson-pill">Método PAV</span></div>
+      <div class="lesson-quick-summary">
+        <div class="lesson-quick-summary-head">
+          <h3>Resumo em 30 segundos</h3>
+          <span>Antes de começar</span>
+        </div>
+        <div class="lesson-quick-summary-grid">
+          <div class="lesson-quick-summary-card"><b>O que você vai entender</b><p>${data.objective}</p></div>
+          <div class="lesson-quick-summary-card"><b>O que você vai fazer</b><p>${data.task}</p></div>
+          <div class="lesson-quick-summary-card"><b>Como saber que deu certo</b><p>${data.result}</p></div>
+        </div>
+      </div>
       <div class="lesson-natural">
         <div class="lesson-natural-title">
           <h3>Aprenda do jeito mais natural possível</h3>
