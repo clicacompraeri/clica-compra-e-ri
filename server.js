@@ -10,6 +10,77 @@ const privateCoursePath = path.join(__dirname, "private", "clica-do-zero", "alun
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+const HOTMART_PRODUCT_ID = 8746722;
+const HOTMART_GRANT_EVENTS = new Set(["PURCHASE_APPROVED","PURCHASE_COMPLETE"]);
+const HOTMART_REVOKE_EVENTS = new Set(["PURCHASE_REFUNDED","PURCHASE_CHARGEBACK","PURCHASE_CANCELED","PURCHASE_EXPIRED"]);
+const STUDENT_SYNC_URL = "https://yahsrfgftsjioqgqmigk.supabase.co/functions/v1/clica-student-sync";
+
+async function syncStudentAccess(payload){
+  const secret = process.env.CLICA_STUDENT_ACCESS_SECRET;
+  if(!secret) throw new Error("Student sync secret missing");
+
+  const response = await fetch(STUDENT_SYNC_URL, {
+    method:"POST",
+    headers:{
+      "content-type":"application/json",
+      "x-clica-internal":secret
+    },
+    body:JSON.stringify(payload),
+    signal:AbortSignal.timeout(5000)
+  });
+
+  if(!response.ok) throw new Error("Student sync failed");
+}
+
+app.post("/api/hotmart/webhook", async (req, res) => {
+  const expected = process.env.HOTMART_HOTTOK || "";
+  const supplied = req.headers["x-hotmart-hottok"] || "";
+
+  if(!expected || supplied !== expected) return res.status(401).send("Unauthorized");
+
+  const event = String(req.body?.event || "").toUpperCase();
+  const data = req.body?.data || {};
+  const productId = Number(data?.product?.id || 0);
+
+  if(productId !== HOTMART_PRODUCT_ID){
+    return res.status(200).json({ok:true, ignored:"product"});
+  }
+
+  const email = String(data?.buyer?.email || "").trim().toLowerCase();
+  if(!email) return res.status(400).send("Buyer email missing");
+
+  try{
+    if(HOTMART_GRANT_EVENTS.has(event)){
+      await syncStudentAccess({
+        action:"grant",
+        email,
+        full_name:String(data?.buyer?.name || "").trim() || null,
+        transaction:String(data?.purchase?.transaction || "").trim() || null,
+        product_id:productId,
+        purchase_status:String(data?.purchase?.status || event),
+        purchase_date:data?.purchase?.order_date || null
+      });
+    }else if(HOTMART_REVOKE_EVENTS.has(event)){
+      const status = event === "PURCHASE_REFUNDED" ? "refunded"
+        : event === "PURCHASE_CHARGEBACK" ? "chargeback"
+        : event === "PURCHASE_CANCELED" ? "cancelled"
+        : "inactive";
+
+      await syncStudentAccess({
+        action:"revoke",
+        email,
+        status,
+        purchase_status:String(data?.purchase?.status || event)
+      });
+    }
+
+    return res.status(200).json({ok:true, event});
+  }catch(error){
+    console.error("Hotmart webhook error:", error.message);
+    return res.status(500).send("Webhook processing failed");
+  }
+});
+
 function parseCookies(req){
   const raw = req.headers.cookie || "";
   return Object.fromEntries(raw.split(";").map(v => v.trim()).filter(Boolean).map(v => {
