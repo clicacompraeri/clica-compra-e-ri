@@ -251,6 +251,128 @@ a{color:inherit;text-decoration:none}
   .lesson-nav{grid-template-columns:1fr}
   .module-nav{grid-template-columns:repeat(5,minmax(0,1fr))}
 }
+
+/* ui-polish: refinamento visual aditivo, sem alterar fluxos ou conteúdo */
+.panel{padding:26px}
+.panel-head{margin-bottom:20px}
+.panel-head p{max-width:760px;line-height:1.6}
+.module-card,.resource,.path-card,.knowledge,.idea-card,.access-card,.goal-learning,.diagnostic-learning,.route-navigator{transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease}
+.module-card:hover,.resource:hover,.idea-card:hover,.access-card:hover{box-shadow:0 10px 28px rgba(17,19,21,.07)}
+
+.primary,.lab-btn,.open-module,.mini-action,.lesson-secondary,.goal-step button,.diagnostic-actions button,.learning-bridge-actions button,.access-actions button,.route-choice,.goal-tab{
+  min-height:40px;
+}
+.primary,.lesson-complete{
+  box-shadow:0 5px 14px rgba(255,210,28,.18);
+}
+.primary:hover,.lesson-complete:hover{filter:brightness(.98);transform:translateY(-1px)}
+
+.access-grid{gap:12px}
+.access-card{padding:16px;min-height:0}
+.access-card b{font-size:13.5px}
+.access-card p{font-size:11.5px;line-height:1.55}
+.access-route{background:#fff;border-color:#e9eaec;line-height:1.55}
+
+.route-navigator,.goal-learning,.diagnostic-learning{
+  padding:20px;
+  background:#fff;
+  box-shadow:0 5px 18px rgba(17,19,21,.025);
+}
+.route-options,.goal-tabs{gap:8px}
+.route-choice,.goal-tab{
+  border-radius:12px;
+  padding:9px 12px;
+  background:#f8f9fa;
+}
+.route-choice.active,.goal-tab.active{box-shadow:0 4px 12px rgba(17,19,21,.12)}
+.route-result,.diagnostic-result{box-shadow:inset 0 0 0 1px rgba(255,210,28,.08)}
+
+.goal-step{padding:11px}
+.goal-step button{border-radius:10px}
+.goal-summary{padding:16px}
+
+.diagnostic-grid{gap:10px}
+.diagnostic-choice{padding:14px;min-height:92px}
+.diagnostic-choice strong{font-size:12px}
+.diagnostic-choice span{font-size:10.5px}
+
+.learning-bridge{
+  margin-top:12px;
+  padding-top:11px;
+  border-top:1px solid #eceef0;
+}
+.learning-bridge>strong{
+  color:#5f6267;
+  letter-spacing:.55px;
+}
+.learning-bridge-actions{gap:7px}
+.learning-bridge-actions button{
+  border-radius:10px;
+  padding:8px 10px;
+}
+.learning-bridge-actions .lb-module{background:#fffdf4}
+.learning-bridge-note{
+  margin-top:7px;
+  color:#777c82;
+}
+
+.related-learning{
+  margin-top:12px;
+  padding:13px;
+  background:#fcfcfd;
+}
+.related-learning>strong{color:#666a70}
+.related-learning-list{gap:6px}
+.related-learning-item{
+  padding:9px 10px;
+  border-color:#eceef0;
+}
+.related-learning-item button{
+  border-radius:9px;
+  padding:7px 10px;
+}
+.next-action{
+  margin-top:9px;
+  background:#fffdf6;
+}
+
+.idea-grid{gap:12px}
+.idea-card{background:#fff;border-color:#e7e9ec;min-height:112px}
+.idea-card::after{
+  background:#f1f2f3;
+  color:#111315;
+  box-shadow:inset 0 0 0 1px #e2e4e7;
+}
+.idea-card:hover::after,.idea-card.active::after{
+  background:#111315;
+  color:#ffd21c;
+}
+.lab-feature{box-shadow:0 10px 28px rgba(17,19,21,.12)}
+.idea-step{background:rgba(255,255,255,.045)}
+.idea-path-note{background:rgba(255,210,28,.055)}
+
+.lesson-reader{gap:13px}
+.lesson-block,.reflection-card,.good-path,.decision-check{padding:17px}
+.lesson-block h3,.good-path h3,.decision-check h3{line-height:1.35}
+.reflection-card{background:#fffdf5}
+.good-path{background:#f8fbf7}
+.decision-option{padding:11px 12px;border-radius:10px}
+.lesson-note{background:#fff}
+.lesson-nav button{min-height:42px}
+
+.path-grid{gap:14px}
+.path-card{padding:18px}
+.path-flow{font-size:10.5px;line-height:1.65}
+.path-access button{border-radius:10px;background:#fffdf4}
+
+@media(max-width:620px){
+  .panel{padding:18px}
+  .panel-head{margin-bottom:16px}
+  .route-navigator,.goal-learning,.diagnostic-learning{padding:16px}
+  .route-choice,.goal-tab{width:100%;text-align:left}
+  .idea-card{min-height:0}
+  .access-actions button,.learning-bridge-actions button,.diagnostic-actions button{min-height:42px}
+}
 </style>
 </head>
 <body>
