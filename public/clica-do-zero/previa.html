@@ -17,6 +17,17 @@ h1{font-size:clamp(38px,7vw,62px);line-height:1.02;letter-spacing:-2px;margin:10
 .form-wrap{margin-top:28px;padding:22px;border:1px solid #e5e7ea;border-radius:20px;background:#fff}
 .note{margin:12px 0 0;font-size:13px;color:#676d74;text-align:center}.student-area{margin:24px 0;padding:22px;border-radius:18px;background:#fff9df;border:1px solid #f0d970}.student-area h2{font-size:22px;line-height:1.15;margin:0 0 8px}.student-area p{margin:0;color:#555b62}.student-area ul{margin:12px 0 0;padding-left:18px;color:#555b62}.student-area li{margin:5px 0}.login-link{display:inline-block;margin-top:14px;font-weight:900;color:#111}
 small{color:#777d84}
+
+.inside-peek{margin:24px 0;padding:20px;border:1px solid #e6e8eb;border-radius:20px;background:#fbfcfd}
+.inside-peek h2{font-size:22px;line-height:1.15;margin:0 0 7px}
+.inside-peek>p{margin:0;color:#555b62}
+.inside-shot{position:relative;margin-top:14px;border-radius:16px;overflow:hidden;background:#111315;border:1px solid #e1e3e6;max-height:330px}
+.inside-shot img{display:block;width:100%;height:330px;object-fit:cover;object-position:top center}
+.inside-shot::after{content:"";position:absolute;inset:auto 0 0;height:42%;background:linear-gradient(transparent,rgba(17,19,21,.9))}
+.inside-shot-copy{position:absolute;z-index:2;left:14px;right:14px;bottom:13px;color:#fff;font-size:12px;line-height:1.45}
+.inside-shot-copy strong{display:block;font-size:13px;margin-bottom:2px}
+.inside-curiosity{margin-top:11px;font-size:12px;color:#6a7076;font-weight:700}
+@media(max-width:620px){.inside-peek{padding:16px}.inside-shot,.inside-shot img{height:260px}}
 </style>
 </head>
 <body>
@@ -37,6 +48,16 @@ small{color:#777d84}
         <li>Conteúdo centralizado na própria página do aluno.</li>
       </ul>
       <a class="login-link" href="/clica-do-zero/aluno-login.html">Já é aluno? Fazer login</a>
+    </div>
+
+    <div class="inside-peek">
+      <h2>Existe mais acontecendo por dentro do que esta página mostra.</h2>
+      <p>A Área do Aluno foi criada para acompanhar a jornada, guardar progresso, conectar assuntos e ajudar você a transformar aprendizado em ação.</p>
+      <div class="inside-shot">
+        <img src="/assets/clica-area-preview-1.webp" alt="Prévia parcial da Área do Aluno do Clica do Zero" loading="lazy">
+        <div class="inside-shot-copy"><strong>Um recorte, não a experiência completa.</strong>Você vê o suficiente para entender que há uma área própria esperando por você — o restante fica para quando entrar.</div>
+      </div>
+      <div class="inside-curiosity">Alguns detalhes foram suavizados de propósito para não revelar demais.</div>
     </div>
 
     <div class="box"><strong>Acesso gratuito.</strong><br>Preencha seu nome e e-mail para liberar a prévia completa.</div>
