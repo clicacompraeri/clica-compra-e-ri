@@ -54,6 +54,13 @@ footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
 @media(max-width:800px){.outcomes-grid{grid-template-columns:1fr}.who-grid{grid-template-columns:1fr}.mid-cta{flex-direction:column;align-items:stretch}.mid-cta .cta{width:100%}}
 </style>
 <link rel="stylesheet" href="/assets/theme-toggle.css">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1412704553705022');
+fbq('track','PageView');
+</script>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
 <header><div class="wrap head"><a href="/"><img class="logo" src="/logo.png" alt="Clica, Compra e Ri"></a><a class="back" href="/">Voltar para a loja</a></div></header>
@@ -262,6 +269,35 @@ footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
 </div></section>
 </main>
 <footer>Clica do Zero é um produto do Clica, Compra e Ri.</footer>
+<script>
+(function(){
+  function track(name,label){
+    if(typeof window.fbq==='function'){
+      window.fbq('trackCustom',name,{
+        page:'clica_do_zero',
+        label:label||''
+      });
+    }
+  }
+
+  document.addEventListener('click',function(event){
+    const link=event.target.closest('a');
+    if(!link)return;
+    const href=link.getAttribute('href')||'';
+    const text=(link.textContent||'').trim();
+
+    if(href.includes('pay.hotmart.com/D108063505L')){
+      track('ClickBuy',text||'Comprar agora');
+      return;
+    }
+
+    if(href==='/clica-do-zero/previa.html' || href.endsWith('/clica-do-zero/previa.html')){
+      track('ClickPreview',text||'Ver prévia');
+    }
+  },true);
+})();
+</script>
+
 <script type="text/javascript">
 function importHotmart(){
   var imported = document.createElement('script');
