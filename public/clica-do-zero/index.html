@@ -44,6 +44,14 @@ footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
 .student-peek-caption span{display:block;margin-top:3px;color:#d6d9dd;font-size:11px;line-height:1.45}
 .student-peek-note{margin-top:12px;padding:13px 14px;border-left:3px solid #ffd21c;background:#fff9df;border-radius:0 12px 12px 0;color:#555b62;font-size:12px}
 @media(max-width:820px){.student-peek-head{align-items:flex-start;flex-direction:column}.student-peek-grid{grid-template-columns:1fr}.student-peek-card{min-height:250px}.student-peek-badge{align-self:flex-start}}
+
+.outcomes-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.outcome-card{border:1px solid var(--line);border-radius:18px;padding:20px;background:#fff}
+.outcome-card strong{display:block;font-size:15px;margin-bottom:7px}.outcome-card p{margin:0;color:#5d6369;font-size:13px;line-height:1.55}
+.who-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}.who-card{border-radius:20px;padding:24px;border:1px solid var(--line);background:#fff}.who-card.good{background:#fffdf3;border-color:#f0dc77}.who-card h3{margin:0 0 12px;font-size:20px}.who-list{display:grid;gap:9px}.who-list div{font-size:13px;line-height:1.5;color:#535a60;padding-left:20px;position:relative}.who-list div:before{content:"✓";position:absolute;left:0;top:0;font-weight:900;color:#9b7600}.who-card.neutral .who-list div:before{content:"—";color:#777}
+.mid-cta{margin-top:28px;border-radius:20px;background:#111315;color:#fff;padding:26px;display:flex;align-items:center;justify-content:space-between;gap:20px}.mid-cta h3{margin:0 0 6px;font-size:22px}.mid-cta p{margin:0;color:#d6d9dc;font-size:13px;line-height:1.5;max-width:670px}.mid-cta .cta{flex:0 0 auto}
+.faq-list{margin-top:24px;border-top:1px solid var(--line)}.faq-item{border-bottom:1px solid var(--line);padding:0}.faq-item summary{cursor:pointer;list-style:none;padding:18px 0;font-weight:900;font-size:14px;display:flex;justify-content:space-between;gap:16px}.faq-item summary::-webkit-details-marker{display:none}.faq-item summary:after{content:"+";font-size:20px;line-height:1}.faq-item[open] summary:after{content:"–"}.faq-item p{margin:0;padding:0 0 18px;color:#5c6268;font-size:13px;line-height:1.6}
+@media(max-width:800px){.outcomes-grid{grid-template-columns:1fr}.who-grid{grid-template-columns:1fr}.mid-cta{flex-direction:column;align-items:stretch}.mid-cta .cta{width:100%}}
 </style>
 </head>
 <body>
@@ -94,6 +102,28 @@ footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
     <div>9. Conteúdo</div><div>10. Criativos com IA</div><div>11. Métricas</div>
     <div>12. Anúncios pagos</div><div>13. Produto próprio</div><div>14. Escala e operação</div>
   </div>
+
+  <div style="margin-top:34px">
+    <div class="eyebrow">Resultado prático</div>
+    <h2 class="title" style="margin-top:8px">O que você pode conseguir fazer ao terminar</h2>
+    <p class="sub">O objetivo não é decorar ferramentas. É sair sabendo transformar uma ideia em algo real, publicado, testável e melhorável.</p>
+    <div class="outcomes-grid">
+      <div class="outcome-card"><strong>Tirar uma ideia do papel</strong><p>Organizar objetivo, público, proposta e a menor versão possível para começar.</p></div>
+      <div class="outcome-card"><strong>Criar e publicar um projeto</strong><p>Entender a estrutura do site, fazer mudanças controladas e validar a versão publicada.</p></div>
+      <div class="outcome-card"><strong>Montar uma vitrine que faz sentido</strong><p>Organizar páginas, produtos, links e chamadas para facilitar a decisão de quem visita.</p></div>
+      <div class="outcome-card"><strong>Usar IA com mais controle</strong><p>Pedir com clareza, limitar mudanças e validar antes de continuar usando o Método PAV.</p></div>
+      <div class="outcome-card"><strong>Entender tráfego, SEO e métricas</strong><p>Saber o que observar antes de anunciar, medir ou tentar aparecer melhor nas buscas.</p></div>
+      <div class="outcome-card"><strong>Dar o primeiro passo para uma oferta própria</strong><p>Transformar uma dor real em uma versão simples de produto, entrega e validação.</p></div>
+    </div>
+  </div>
+
+  <div class="mid-cta">
+    <div><h3>Quer começar pelo caminho completo?</h3><p>Você pode comprar agora ou conhecer primeiro como funciona a experiência do Clica do Zero.</p></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a class="cta hotmart-fb hotmart__button-checkout" onclick="return false;" href="https://pay.hotmart.com/D108063505L?checkoutMode=2">Comprar agora</a>
+      <a class="cta secondary" href="/clica-do-zero/previa.html">Ver como é por dentro</a>
+    </div>
+  </div>
 </div></section>
 
 <section><div class="wrap">
@@ -107,6 +137,32 @@ footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
       <div class="student-access-item"><strong>Progresso e continuidade</strong><span>Marque aulas concluídas e continue de onde parou dentro da própria área.</span></div>
     </div>
     <a class="cta" href="/clica-do-zero/aluno-login.html">Já sou aluno — fazer login</a>
+  </div>
+
+  <div style="margin-top:42px">
+    <div class="eyebrow">Para quem é</div>
+    <h2 class="title" style="margin-top:8px">Você não precisa chegar sabendo. Precisa querer construir.</h2>
+    <div class="who-grid">
+      <div class="who-card good">
+        <h3>Faz sentido para você se...</h3>
+        <div class="who-list">
+          <div>Tem uma ideia e não sabe qual é o primeiro passo.</div>
+          <div>Quer usar IA para criar, mas sem deixar a ferramenta decidir tudo.</div>
+          <div>Quer aprender fazendo, mesmo sem começar dominando código.</div>
+          <div>Precisa de um caminho organizado para publicar, testar e melhorar.</div>
+          <div>Quer transformar conhecimento, afiliados ou uma ideia própria em projeto digital.</div>
+        </div>
+      </div>
+      <div class="who-card neutral">
+        <h3>Talvez não seja o momento se...</h3>
+        <div class="who-list">
+          <div>Você procura uma promessa de resultado automático sem aplicar nada.</div>
+          <div>Quer apenas copiar um projeto pronto sem entender as decisões.</div>
+          <div>Não pretende testar, revisar ou colocar nenhuma ideia em prática.</div>
+          <div>Espera que a IA substitua completamente seu julgamento.</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div></section>
 
@@ -156,6 +212,19 @@ footer{padding:32px 0;color:#7a7f85;font-size:12px;text-align:center}
       </figure>
     </div>
     <div class="student-peek-note">Estes recortes mostram partes reais da experiência da Área do Aluno, sem entregar o conteúdo completo antes do acesso.</div>
+  </div>
+</div></section>
+
+<section class="alt"><div class="wrap">
+  <div class="eyebrow">Dúvidas antes de entrar</div>
+  <h2 class="title" style="margin-top:8px">Perguntas que muita gente faria antes de comprar</h2>
+  <div class="faq-list">
+    <details class="faq-item"><summary>Preciso saber programar?</summary><p>Não precisa começar dominando código. O curso foi estruturado para levar você do entendimento básico até ações práticas, usando IA como copiloto e validando cada etapa.</p></details>
+    <details class="faq-item"><summary>O curso depende de videoaulas?</summary><p>Não. A experiência principal acontece diretamente na Área do Aluno, com conteúdo organizado, exemplos, tarefas, prompts, anotações, revisão, desafios e caminhos de aprendizado.</p></details>
+    <details class="faq-item"><summary>Posso estudar no meu ritmo?</summary><p>Sim. A Área do Aluno permite marcar aulas concluídas, continuar de onde parou, revisar conteúdos e manter anotações no próprio navegador.</p></details>
+    <details class="faq-item"><summary>Preciso pagar várias ferramentas para começar?</summary><p>Não é necessário contratar tudo de uma vez. O curso trabalha com a ideia de começar pequeno, aproveitar opções gratuitas quando fizer sentido e só assumir custos quando houver uma necessidade clara.</p></details>
+    <details class="faq-item"><summary>Como recebo acesso depois da compra?</summary><p>Depois que a compra for confirmada pela Hotmart, use o mesmo e-mail da compra para acessar a Área do Aluno. Alguns meios de pagamento podem levar mais tempo para serem confirmados.</p></details>
+    <details class="faq-item"><summary>E se eu estiver completamente no zero?</summary><p>Esse é justamente o ponto de partida. As aulas foram organizadas para reduzir decisões, explicar conceitos em linguagem simples e transformar cada etapa em uma ação pequena e verificável.</p></details>
   </div>
 </div></section>
 
