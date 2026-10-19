@@ -105,3 +105,17 @@ html[data-theme="dark"] .digital-benefits span{background:#f4f5f7!important;colo
 html[data-theme="dark"] .product-btn,
 html[data-theme="dark"] .badge,
 html[data-theme="dark"] .favorite-btn.active{color:#111315!important}
+
+/* Livros mantêm o visual claro original mesmo com o modo escuro ativo */
+html[data-theme="dark"] .book-card{background:#fff!important;color:#15171a!important;border-color:#e8eaed!important}
+html[data-theme="dark"] .book-card-image{background:#f7f8fa!important}
+html[data-theme="dark"] .book-card h3,
+html[data-theme="dark"] .book-card .book-price strong,
+html[data-theme="dark"] .book-card .book-rating{color:#15171a!important}
+html[data-theme="dark"] .book-card p{color:#656a70!important}
+html[data-theme="dark"] .book-card .book-author{color:#6d7278!important}
+html[data-theme="dark"] .book-card .book-price span{color:#747980!important}
+html[data-theme="dark"] .book-card .book-note{color:#8a8f95!important}
+html[data-theme="dark"] .book-card .book-card-kicker{color:#008f80!important}
+html[data-theme="dark"] .book-card .stars{color:#f3a600!important}
+html[data-theme="dark"] .book-card .book-cta{background:#ffd21c!important;color:#111315!important}
