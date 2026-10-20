@@ -12,8 +12,8 @@ h1{font-size:28px;margin:6px 0}h2{font-size:17px}.muted{color:#626f7b}.notice{ba
 @media(max-width:760px){.cards,.two{grid-template-columns:1fr 1fr}}@media(max-width:460px){.cards,.two{grid-template-columns:1fr}}
 .chart{display:flex;align-items:flex-end;gap:8px;height:170px;padding:12px 0 0;border-bottom:1px solid #cad3db}.chart-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:5px}.chart-bar{width:70%;max-width:44px;background:#506f86;border-radius:6px 6px 0 0;min-height:2px}.chart-label{font-size:12px;color:#626f7b}.filters{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}.filters select{padding:9px;border:1px solid #b7c4cf;border-radius:8px;background:#fff}.metric-note{font-size:12px;color:#647381}
 </style></head><body><header class="wrap"><div><div class="muted">Clica, Compra e Ri</div><h1>Central de Análises</h1></div><div><strong>Protótipo interno</strong><form method="post" action="/admin/logout"><button type="submit">Sair da conta</button></form></div></header>
-<main class="wrap"><div class="notice"><strong>Somente demonstração.</strong> Nenhum dado real é exibido. Este arquivo não implementa login, coleta de visitantes nem conexão com banco de dados. Não publicar como painel administrativo.</div>
-<div class="filters"><label for="period">Período dos dados:</label><select id="period"><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option><option value="1">Hoje</option></select><strong>DEMONSTRAÇÃO — não são dados de visitantes reais</strong><span id="filter-error" role="status" aria-live="polite"></span></div>
+<main class="wrap"><div class="notice" id="report-notice"><strong>Somente demonstração.</strong> Nenhum dado real é exibido. Este arquivo não implementa login, coleta de visitantes nem conexão com banco de dados. Não publicar como painel administrativo.</div>
+<div class="filters"><label for="period">Período dos dados:</label><select id="period"><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option><option value="1">Hoje</option></select><strong id="report-kind">DEMONSTRAÇÃO — não são dados de visitantes reais</strong><span id="filter-error" role="status" aria-live="polite"></span></div>
 <section class="cards" aria-label="Indicadores demonstrativos">
 <div class="card"><span class="muted">Visualizações de página</span><div class="value" id="views">—</div><div class="metric-note">Não equivale a visitantes únicos</div></div>
 <div class="card"><span class="muted">Produtos visualizados</span><div class="value" id="products">—</div></div>
@@ -56,7 +56,7 @@ async function refreshReport(){
   const response=await fetch("/admin/report?days="+encodeURIComponent(requested),{credentials:"same-origin",cache:"no-store"});
   if(!response.ok)throw Error("Relatório indisponível");
   const next=await response.json();
-  if(next.simulation!==true||!next.metrics||String(next.days)!==requested)throw Error("Dados inesperados");
+  if(typeof next.simulation!=="boolean"||!next.metrics||String(next.days)!==requested)throw Error("Dados inesperados");
   renderReport(next);
  }catch{
   period.value=String(lastValidReport.days);
@@ -67,6 +67,12 @@ async function refreshReport(){
 let lastValidReport=null;
 function renderReport(report){
  lastValidReport=report;
+ if(report.simulation===false){
+  const notice=document.getElementById("report-notice");
+  if(notice)notice.textContent="Indicadores anônimos de navegação e cliques. Não representam vendas confirmadas dos afiliados nem do curso.";
+  const kind=document.getElementById("report-kind");
+  if(kind)kind.textContent="DADOS AGREGADOS DE EVENTOS — não são compras confirmadas";
+ }
  const warning=document.getElementById("filter-error");if(warning)warning.textContent="";
   for(const [id,value] of Object.entries({
     views:report.metrics.pageViews,
@@ -104,7 +110,7 @@ function renderReport(report){
   if(!hint){hint=document.createElement("p");hint.id="chart-note";hint.className="muted";chart.parentElement.append(hint);}
   hint.textContent="Série diária e indicadores calculados a partir de eventos fictícios.";
 }
-if(report && report.simulation===true && report.metrics){
+if(report && typeof report.simulation==="boolean" && report.metrics){
  renderReport(report);
  period.addEventListener("change",refreshReport);
 }else{
