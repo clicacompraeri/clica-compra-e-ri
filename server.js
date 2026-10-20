@@ -267,6 +267,11 @@ app.get("/clica-do-zero/aluno/", async (req, res) => {
   res.sendFile(privateCoursePath);
 });
 
+// Central de Analises: opt-in, isolada e desativada por padrao.
+if (process.env.CCR_ANALYTICS_ENABLED === "true") {
+  require("./drafts/admin-analytics/analytics-mount.cjs").attachAnalyticsIfEnabled(app);
+}
+
 app.use(express.static(publicPath));
 
 app.use((req, res) => {
