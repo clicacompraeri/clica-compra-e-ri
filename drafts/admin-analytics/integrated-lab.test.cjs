@@ -36,6 +36,10 @@ test("laboratorio integrado: login, painel, relatorio e logout",async()=>{
   assert.equal(logout.status,303);
   assert.equal((await request(port,"/admin","GET","",cookie)).status,401);
   assert.equal((await request(port,"/admin/report","GET","",cookie)).status,401);
+  const restarted=http.createServer(createIntegratedHandler({directory:dir,secret:process.env.ADMIN_TEST_SIGNING_KEY}));
+  await new Promise(resolve=>restarted.listen(0,"127.0.0.1",resolve));
+  try{assert.equal((await request(restarted.address().port,"/admin","GET","",cookie)).status,401);}
+  finally{await new Promise(resolve=>restarted.close(resolve));}
   assert.equal((await request(port,"/admin","GET","",logout.cookie.split(";")[0])).status,401);
  }finally{await new Promise(resolve=>server.close(resolve));fs.rmSync(dir,{recursive:true,force:true});}
 });
