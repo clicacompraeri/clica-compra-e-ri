@@ -76,7 +76,11 @@ test("Chromium HTTPS: login, Secure cookie, live report, period filter, logout a
   assert.equal(session.secure,true);
   assert.equal(session.sameSite,"Strict");
   assert.equal(session.path,"/admin");
-  assert.ok(!(await context.cookies(origin+"/")), "Cookie should not be sent to the storefront root");
+  const storefrontRoot=await page.goto(origin+"/");
+  assert.equal(storefrontRoot.status(),404,"Isolated handler does not serve the storefront");
+  const rootHit=requestTrace.filter(x=>x.path==="/").at(-1);
+  assert.equal(rootHit?.hasCookie,false,"Admin cookie must not be sent to the storefront root");
+  await page.goto(origin+"/admin");
   await page.locator("#period").selectOption("30");
   await page.waitForFunction(()=>document.getElementById("views").textContent.trim()==="21");
   assert.equal((await page.locator("#period").inputValue()),"30");
