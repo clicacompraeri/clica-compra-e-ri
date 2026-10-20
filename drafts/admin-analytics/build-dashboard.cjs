@@ -4,9 +4,9 @@
 const fs=require("node:fs");
 const path=require("node:path");
 const {buildDemoReport,syntheticEvents}=require("./dashboard-adapter.cjs");
-function createDemoDashboard(){
+function createDemoDashboard(reportOverride){
  const html=fs.readFileSync(path.join(__dirname,"index.html"),"utf8");
- const report=buildDemoReport(syntheticEvents());
+ const report=reportOverride||buildDemoReport(syntheticEvents());
  const json=JSON.stringify(report).replace(/</g,"\\u003c");
  const tag="<script>window.__demoReport="+json+";</script>";
  if(!html.includes("</head>"))throw Error("Template incompleto");
