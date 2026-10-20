@@ -2,6 +2,14 @@
 // Explicit opt-in mount. Safe to import: with feature flag off, installs nothing.
 const {createAnalyticsHandler}=require("./analytics-http-candidate.cjs");
 const {createSupabaseAnalyticsStore}=require("./supabase-analytics-store.cjs");
+function startAnalyticsRetention(store,{schedule=setInterval,intervalMs=24*60*60*1000}={}){
+ if(!store||typeof store.purge!=="function")throw Error("Private retention store missing");
+ const purge=()=>Promise.resolve().then(()=>store.purge()).catch(()=>{ /* Retry on the next interval */ });
+ void purge();
+ const task=schedule(purge,intervalMs);
+ if(task&&typeof task.unref==="function")task.unref();
+ return task;
+}
 function attachAnalyticsIfEnabled(app,env=process.env){
  if(env.CCR_ANALYTICS_ENABLED!=="true")return false;
  const required=[
@@ -22,6 +30,7 @@ function attachAnalyticsIfEnabled(app,env=process.env){
   signingKey:env.CCR_ANALYTICS_SIGNING_KEY,
   store
  }));
+ startAnalyticsRetention(store);
  return true;
 }
-module.exports={attachAnalyticsIfEnabled};
+module.exports={attachAnalyticsIfEnabled,startAnalyticsRetention};
