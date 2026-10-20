@@ -15,18 +15,20 @@ test("filtro privado solicita 30 dias e atualiza os indicadores sem recarregar",
  assert.ok(js,"Script da interface nao encontrado");
  new vm.Script(js);
  const registry=new Map();
- for(const id of ["period","views","products","outbound","course","sources","ranking","chart","filter-error"])
+ for(const id of ["period","views","products","outbound","course","sources","ranking","chart","filter-error","report-notice","report-kind"])
   registry.set(id,element(registry));
  const parent=element(registry);
  registry.get("chart").parentElement=parent;
  const document={getElementById:id=>registry.get(id)||null,createElement:()=>element(registry)};
- const first={simulation:true,days:7,metrics:{pageViews:2,productViews:1,outboundClicks:1,courseCheckoutClicks:0},daily:[{date:"2026-10-20",pageViews:2}],sources:[],products:[]};
- const next={simulation:true,days:30,metrics:{pageViews:21,productViews:8,outboundClicks:4,courseCheckoutClicks:2},daily:[{date:"2026-10-20",pageViews:21}],sources:[{name:"google",value:5}],products:[]};
+ const first={simulation:false,days:7,metrics:{pageViews:2,productViews:1,outboundClicks:1,courseCheckoutClicks:0},daily:[{date:"2026-10-20",pageViews:2}],sources:[],products:[]};
+ const next={simulation:false,days:30,metrics:{pageViews:21,productViews:8,outboundClicks:4,courseCheckoutClicks:2},daily:[{date:"2026-10-20",pageViews:21}],sources:[{name:"google",value:5}],products:[]};
  let called="";
  let fail=false;
  const fetch=async url=>{called=url;return fail?{ok:false}:{ok:true,json:async()=>next};};
  vm.runInNewContext(js,{window:{__demoReport:first},document,fetch}, {timeout:2000});
  assert.equal(registry.get("views").textContent,"2");
+ assert.match(registry.get("report-kind").textContent,/DADOS AGREGADOS/);
+ assert.match(registry.get("report-notice").textContent,/não representam vendas confirmadas/);
  assert.equal(registry.get("period").value,"7");
  registry.get("period").value="30";
  await registry.get("period").listeners.change();
