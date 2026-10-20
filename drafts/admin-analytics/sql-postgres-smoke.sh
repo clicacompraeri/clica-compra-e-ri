@@ -29,6 +29,12 @@ done
 [[ "$(query "set role service_role; select jsonb_array_length(public.ccr_analytics_report(30)->'daily')")" == "30" ]]
 [[ "$(query "set role service_role; select jsonb_array_length(public.ccr_analytics_report(1)->'daily')")" == "1" ]]
 
+# Use exactly the same upsert expected by the private PostgREST session revocation adapter.
+# A denied UPSERT here would make logout return 503 in production.
+run -q -c "set role service_role; insert into public.ccr_analytics_revoked_sessions(token_sha256,expires_at) values (repeat('a',64),now()+interval '30 minutes') on conflict (token_sha256) do update set expires_at=excluded.expires_at"
+run -q -c "set role service_role; insert into public.ccr_analytics_revoked_sessions(token_sha256,expires_at) values (repeat('a',64),now()+interval '40 minutes') on conflict (token_sha256) do update set expires_at=excluded.expires_at"
+[[ "$(query "set role service_role; select count(*) from public.ccr_analytics_revoked_sessions where token_sha256=repeat('a',64)")" == "1" ]]
+
 run -q -c "insert into public.ccr_analytics_events(event_type,source,occurred_at) values ('page_view','direct',now()-interval '31 days')"
 [[ "$(query "set role service_role; select public.ccr_analytics_purge()")" == "1" ]]
 [[ "$(query "select count(*) from public.ccr_analytics_events")" == "1" ]]
