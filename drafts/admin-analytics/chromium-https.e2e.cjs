@@ -42,7 +42,7 @@ test("Chromium HTTPS: login, Secure cookie, live report, period filter, logout a
    publicOrigin:origin+"/",adminEmail:"admin@example.invalid",
    passwordHash:hashPassword("fake-admin-password-very-strong-2026"),signingKey:secret,store
   });
-  browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_BIN||"/usr/bin/google-chrome",args:["--no-sandbox"]});
+  browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_BIN||"/usr/bin/google-chrome",args:["--no-sandbox","--allow-insecure-localhost"]});
   const context=await browser.newContext({ignoreHTTPSErrors:true,viewport:{width:390,height:844}});
   const page=await context.newPage();
   const errors=[];
