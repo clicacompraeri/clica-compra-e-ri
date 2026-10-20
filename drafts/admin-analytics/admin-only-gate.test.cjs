@@ -36,7 +36,13 @@ test("admin enabled with collection flag absent: login works but event collectio
   });
   assert.equal(good,true);
   assert.equal(typeof handler,"function");
-  server=createServer((req,res)=>handler(req,res,()=>{res.writeHead(200);res.end("storefront")}));
+  server=createServer((req,res)=>{
+   // Express response functions needed by the actual middleware under test.
+   res.status=(code)=>{res.statusCode=code;return res;};
+   res.set=(name,value)=>{res.setHeader(name,value);return res;};
+   res.send=(body)=>{res.end(body);return res;};
+   handler(req,res,()=>{res.writeHead(200);res.end("storefront")});
+  });
   await new Promise(resolve=>server.listen(0,"127.0.0.1",resolve));
   const base="http://127.0.0.1:"+server.address().port;
   const event=await oldFetch(base+"/api/analytics/event",{
