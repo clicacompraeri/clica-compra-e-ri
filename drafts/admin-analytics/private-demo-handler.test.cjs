@@ -28,6 +28,7 @@ test("painel visual nao aparece antes de autenticar",async()=>{
   assert.equal(allowed.status,200);
   assert.match(allowed.body,/Central de Análises/);
   assert.match(allowed.body,/DEMONSTRAÇÃO/);
+  assert.match(allowed.body,/"pageViews":0/);
   assert.equal((await request(port,"/admin/report",cookie)).status,200);
  }finally{await new Promise(resolve=>server.close(resolve));fs.rmSync(directory,{recursive:true,force:true});}
 });
