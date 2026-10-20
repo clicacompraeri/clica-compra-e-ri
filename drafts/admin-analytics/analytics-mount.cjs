@@ -20,6 +20,22 @@ async function checkAnalyticsStorage(store){
  if(await store.isRevoked(probe))throw Error("Unexpected revoked probe");
  return true;
 }
+function startAnalyticsReadiness(store,{schedule=setTimeout,retryMs=60*1000,healthyMs=5*60*1000,onFirstReady=()=>{}}={}){
+ if(!Number.isSafeInteger(retryMs)||retryMs<1||!Number.isSafeInteger(healthyMs)||healthyMs<1)
+  throw Error("Analytics retry interval invalid");
+ let ready=false,started=false;
+ const check=async()=>{
+  try{
+   await checkAnalyticsStorage(store);
+   ready=true;
+   if(!started){started=true;try{onFirstReady();}catch{/* Do not bypass readiness or break reports */}}
+  }catch{ready=false;}
+  const task=schedule(()=>{void check();},ready?healthyMs:retryMs);
+  if(task&&typeof task.unref==="function")task.unref();
+ };
+ void check();
+ return Object.freeze({isReady:()=>ready});
+}
 function attachAnalyticsIfEnabled(app,env=process.env){
  if(env.CCR_ANALYTICS_ENABLED!=="true")return false;
  const required=[
@@ -40,17 +56,13 @@ function attachAnalyticsIfEnabled(app,env=process.env){
   signingKey:env.CCR_ANALYTICS_SIGNING_KEY,
   store
  });
- let ready=false;
- void checkAnalyticsStorage(store).then(()=>{
-  ready=true;
-  startAnalyticsRetention(store);
- }).catch(()=>{ready=false;});
+ const readiness=startAnalyticsReadiness(store,{onFirstReady:()=>{startAnalyticsRetention(store);}});
  app.use((req,res,next)=>{
   const path=(req.originalUrl||req.url||"").split("?")[0];
   if(!["/admin","/admin/login","/admin/report","/admin/logout","/api/analytics/event"].includes(path))return next();
-  if(!ready)return res.status(503).set("Cache-Control","no-store").send("Analytics indisponível");
+  if(!readiness.isReady())return res.status(503).set("Cache-Control","no-store").send("Analytics indisponível");
   return handler(req,res,next);
  });
  return true;
 }
-module.exports={attachAnalyticsIfEnabled,startAnalyticsRetention,checkAnalyticsStorage};
+module.exports={attachAnalyticsIfEnabled,startAnalyticsRetention,checkAnalyticsStorage,startAnalyticsReadiness};
