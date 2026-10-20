@@ -35,9 +35,13 @@ jobs:
           node --check drafts/admin-analytics/analytics-http-candidate.cjs
       - name: Executar todos os testes do laboratorio
         run: node --test drafts/admin-analytics/*.test.cjs
-      - name: Preparar navegador Chromium
+      - name: Preparar navegador Chromium e cadeia local de certificados
         run: |
           npm install --prefix drafts/admin-analytics --no-save --ignore-scripts playwright-core@1.57.0
+          if ! command -v certutil >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y libnss3-tools
+          fi
           CHROME_BIN="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
           test -n "$CHROME_BIN"
           echo "CHROME_BIN=$CHROME_BIN" >> "$GITHUB_ENV"
