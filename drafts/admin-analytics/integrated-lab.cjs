@@ -12,7 +12,7 @@ function createIntegratedHandler({directory,secret,eventSecret}){
  const sessions=createPersistentSessionRegistry({directory});
  const receiver=eventSecret?createLocalEventReceiver({directory,secret:eventSecret}):null;
  return (req,res)=>{
-  const path=(req.url||"").split("?")[0];
+  const path=new URL(req.url||"/","http://127.0.0.1").pathname;
   if(path==="/lab/events"){
    if(!receiver){res.writeHead(404,{"Cache-Control":"no-store"});return res.end("Nao encontrado");}
    return receiver(req,res);
