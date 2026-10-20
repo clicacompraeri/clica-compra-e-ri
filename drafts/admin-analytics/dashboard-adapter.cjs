@@ -2,18 +2,26 @@
 // Ponte entre eventos fictícios e o formato do painel.
 // Isolada: não importa o servidor público nem disponibiliza rotas.
 const {createDemoStore}=require("./demo-event-store.cjs");
+const {normalizeEvent}=require("./event-model.cjs");
 const {dailySeries}=require("./daily-series.cjs");
 const ALLOWED=["page_view","product_view","affiliate_outbound","course_checkout_click"];
 function buildDemoReport(rows,{days=7}={}){
- const store=createDemoStore({capacity:10000});
+ const now=Date.now();
+ const store=createDemoStore({capacity:10000,clock:()=>now});
  if(!Array.isArray(rows)||rows.length>10000)throw Error("Limite de eventos de laboratorio excedido");
+ // O grafico e os totais usam as mesmas datas UTC do calendario.
+ const daily=dailySeries(rows,{days,now});
+ const visibleDates=new Set(daily.map(day=>day.date));
  let accepted=0,rejected=0;
  for(const item of rows){
-  if(store.add(item).accepted)accepted++;else rejected++;
+  const event=normalizeEvent(item);
+  if(!event){rejected++;continue;}
+  accepted++;
+  if(visibleDates.has(event.at.slice(0,10)))store.add(event);
  }
  const report=store.report({days});
  return {
-  simulation:true,days,accepted,rejected,daily:dailySeries(rows,{days}),
+  simulation:true,days,accepted,rejected,daily,
   metrics:{
    pageViews:report.totals.page_view,
    productViews:report.totals.product_view,
