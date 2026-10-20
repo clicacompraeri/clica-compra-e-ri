@@ -19,6 +19,9 @@ test("relatorio local exige sessao valida",async()=>{
  try{
   const port=server.address().port;
   assert.equal((await get(port,"/admin/report")).status,401);
+  assert.equal((await get(port,"/outra-rota")).status,404);
+  assert.equal((await get(port,"/admin")).status,404);
+  assert.equal((await get(port,"/admin/report?days=0","ccr_admin="+createAdminToken(secret))).status,400);
   assert.equal((await get(port,"/admin/report","ccr_admin=invalid")).status,401);
   const cookie="ccr_admin="+createAdminToken(secret);
   assert.equal((await get(port,"/admin/report?days=45",cookie)).status,400);
