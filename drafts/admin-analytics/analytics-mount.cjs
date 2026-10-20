@@ -10,6 +10,16 @@ function startAnalyticsRetention(store,{schedule=setInterval,intervalMs=24*60*60
  if(task&&typeof task.unref==="function")task.unref();
  return task;
 }
+async function checkAnalyticsStorage(store){
+ if(!store||typeof store.report!=="function"||typeof store.isRevoked!=="function")throw Error("Invalid analytics store");
+ const report=await store.report(1);
+ if(!report||report.simulation!==false||report.days!==1||!report.metrics||!Array.isArray(report.daily))
+  throw Error("Analytics database report not ready");
+ // The administrative revocation table must also exist and be readable.
+ const probe="not-a-valid-session-token-storage-probe";
+ if(await store.isRevoked(probe))throw Error("Unexpected revoked probe");
+ return true;
+}
 function attachAnalyticsIfEnabled(app,env=process.env){
  if(env.CCR_ANALYTICS_ENABLED!=="true")return false;
  const required=[
@@ -33,4 +43,4 @@ function attachAnalyticsIfEnabled(app,env=process.env){
  startAnalyticsRetention(store);
  return true;
 }
-module.exports={attachAnalyticsIfEnabled,startAnalyticsRetention};
+module.exports={attachAnalyticsIfEnabled,startAnalyticsRetention,checkAnalyticsStorage};
