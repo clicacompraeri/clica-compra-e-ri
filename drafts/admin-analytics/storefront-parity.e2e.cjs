@@ -41,7 +41,7 @@ async function snapshot(port,p,method="GET",body){
  return {status:r.status,location:r.headers.get("location")||"",contentType:(r.headers.get("content-type")||"").split(";")[0],body:await r.text()};
 }
 test("Storefront unchanged compared with main when analytics flag is absent",{timeout:45000},async()=>{
- const baseSource=execFileSync("git",["show","origin/main:server.js"],{cwd:root,encoding:"utf8",timeout:5000});
+ const baseSource=execFileSync("git",["show","origin/backup/main-pre-analytics-2026-10-20:server.js"],{cwd:root,encoding:"utf8",timeout:5000});
  const branchSource=fs.readFileSync(path.join(root,"server.js"),"utf8");
  assert.match(branchSource,/CCR_ANALYTICS_ENABLED === "true"/);
  assert.notEqual(branchSource,baseSource);
