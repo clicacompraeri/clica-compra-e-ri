@@ -12,6 +12,7 @@ const {createAnalyticsHandler}=require("./analytics-http-candidate.cjs");
 test("Chromium HTTPS: login, Secure cookie, live report, period filter, logout and revoked session", {timeout:90000},async()=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),"ccr-browser-"));
  let server,browser;
+ const requestTrace=[];
  const revoked=new Set();
  const secret="fictitious-signing-key-for-isolated-chromium-test-2026";
  const store={
@@ -30,7 +31,11 @@ test("Chromium HTTPS: login, Secure cookie, live report, period filter, logout a
   const result=spawnSync("openssl",["req","-x509","-newkey","rsa:2048","-nodes","-keyout",key,"-out",cert,"-days","1","-subj","/CN=localhost","-addext","subjectAltName=IP:127.0.0.1"],{encoding:"utf8",timeout:15000});
   assert.equal(result.status,0,result.stderr||String(result.error));
   let handler;
-  server=https.createServer({key:fs.readFileSync(key),cert:fs.readFileSync(cert)},(req,res)=>handler(req,res));
+  server=https.createServer({key:fs.readFileSync(key),cert:fs.readFileSync(cert)},(req,res)=>{
+   const original=res.writeHead.bind(res);
+   res.writeHead=(status,...args)=>{requestTrace.push({method:req.method,path:req.url,status,host:req.headers.host,origin:req.headers.origin,hasCookie:Boolean(req.headers.cookie)});return original(status,...args);};
+   handler(req,res);
+  });
   await new Promise(resolve=>server.listen(0,"127.0.0.1",resolve));
   const origin="https://127.0.0.1:"+server.address().port;
   handler=createAnalyticsHandler({
@@ -47,7 +52,8 @@ test("Chromium HTTPS: login, Secure cookie, live report, period filter, logout a
   assert.match(await page.title(),/Central de Análises/);
   await page.locator('input[name="email"]').fill("admin@example.invalid");
   await page.locator('input[name="password"]').fill("fake-admin-password-very-strong-2026");
-  await Promise.all([page.waitForURL(origin+"/admin"),page.locator('button').click()]);
+  try{await Promise.all([page.waitForURL(origin+"/admin",{timeout:12000}),page.locator('button').click()]);}
+  catch(e){throw Error("Browser login did not complete: "+e.message+"; sanitized HTTP trace="+JSON.stringify(requestTrace));}
   assert.match(await page.locator("h1").innerText(),/Central de Análises/);
   assert.equal((await page.locator("#views").innerText()).trim(),"5");
   assert.match(await page.locator("#report-kind").innerText(),/DADOS AGREGADOS/);
