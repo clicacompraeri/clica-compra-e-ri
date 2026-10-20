@@ -59,6 +59,12 @@ test("admin enabled with collection flag absent: login works but event collectio
   assert.equal(await home.text(),"storefront");
  }finally{
   globalThis.fetch=oldFetch;
-  if(server)await new Promise(resolve=>server.close(resolve));
+  if(server){
+   server.closeAllConnections();
+   await Promise.race([
+    new Promise(resolve=>server.close(resolve)),
+    new Promise((_,reject)=>setTimeout(()=>reject(Error("Test server did not close in 3s")),3000))
+   ]);
+  }
  }
 });
