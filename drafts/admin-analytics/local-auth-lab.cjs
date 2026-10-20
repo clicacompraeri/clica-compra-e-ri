@@ -32,13 +32,13 @@ function createHandler(){
   if(method==="GET"&&path==="/login")return send(res,200,loginPage());
   if(method==="GET"&&path==="/admin"){
    if(!auth.verifyAdminToken(parseCookie(req),secrets.signingKey))return send(res,401,html("<h1>Acesso restrito</h1>"));
-   return send(res,200,html("<h1>Protótipo privado</h1><p>Dados reais ainda não conectados.</p><form method='post' action='/logout'><button>Sair</button></form>"));
+   return send(res,200,html("<h1>Protótipo privado</h1><p>Dados reais ainda não conectados.</p><form method='post' action='/admin/logout'><button>Sair</button></form>"));
   }
-  if(method==="POST"&&(path==="/login"||path==="/logout")){
+  if(method==="POST"&&(path==="/login"||path==="/admin/logout")){
    // Em ambiente de teste local, exigir Host e Origin locais para POST.
    const host=req.headers.host||"",origin=req.headers.origin||"";
    if(!/^127\.0\.0\.1:[0-9]+$/.test(host)||origin!=="http://"+host)return send(res,403,"Proibido");
-   if(path==="/logout")return send(res,303,"",{"Location":"/login","Set-Cookie":auth.clearAdminCookie()});
+   if(path==="/admin/logout")return send(res,303,"",{"Location":"/login","Set-Cookie":auth.clearAdminCookie()});
    const key="login-local";
    if(!limiter.check(key).allowed)return send(res,429,html("<p>Tentativas excessivas. Aguarde.</p>"));
    let body="";for await(const chunk of req){body+=chunk;if(body.length>4096)return send(res,413,"Limite excedido");}
