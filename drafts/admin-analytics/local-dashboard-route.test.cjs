@@ -21,6 +21,8 @@ test("relatorio local exige sessao valida",async()=>{
   assert.equal((await get(port,"/admin/report")).status,401);
   assert.equal((await get(port,"/outra-rota")).status,404);
   assert.equal((await get(port,"/admin")).status,404);
+  const forbidden=await new Promise((resolve,reject)=>{const q=http.request({hostname:"127.0.0.1",port,path:"/admin/report",method:"POST"},res=>{res.resume();res.on("end",()=>resolve(res.statusCode));});q.on("error",reject);q.end();});
+  assert.equal(forbidden,404);
   assert.equal((await get(port,"/admin/report?days=0","ccr_admin="+createAdminToken(secret))).status,400);
   assert.equal((await get(port,"/admin/report","ccr_admin=invalid")).status,401);
   const cookie="ccr_admin="+createAdminToken(secret);
