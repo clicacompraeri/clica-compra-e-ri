@@ -11,18 +11,18 @@ h1{font-size:28px;margin:6px 0}h2{font-size:17px}.muted{color:#626f7b}.notice{ba
 .bar{height:12px;background:#e9edf1;border-radius:10px;margin:14px 0}.bar span{display:block;height:100%;border-radius:10px;background:#899eae}
 @media(max-width:760px){.cards,.two{grid-template-columns:1fr 1fr}}@media(max-width:460px){.cards,.two{grid-template-columns:1fr}}
 .chart{display:flex;align-items:flex-end;gap:8px;height:170px;padding:12px 0 0;border-bottom:1px solid #cad3db}.chart-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:5px}.chart-bar{width:70%;max-width:44px;background:#506f86;border-radius:6px 6px 0 0;min-height:2px}.chart-label{font-size:12px;color:#626f7b}.filters{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}.filters select{padding:9px;border:1px solid #b7c4cf;border-radius:8px;background:#fff}.metric-note{font-size:12px;color:#647381}
-</style></head><body><header class="wrap"><div><div class="muted">Clica, Compra e Ri</div><h1>Central de Análises</h1></div><div><strong>Protótipo interno</strong><form method="post" action="/admin/logout"><button type="submit">Sair da conta</button></form></div></header>
+</style></head><body><header class="wrap"><div><div class="muted">Clica, Compra e Ri</div><h1>Central de Análises</h1></div><div><strong id="panel-status">Protótipo interno</strong><form method="post" action="/admin/logout"><button type="submit">Sair da conta</button></form></div></header>
 <main class="wrap"><div class="notice" id="report-notice"><strong>Somente demonstração.</strong> Nenhum dado real é exibido. Este arquivo não implementa login, coleta de visitantes nem conexão com banco de dados. Não publicar como painel administrativo.</div>
 <div class="filters"><label for="period">Período dos dados:</label><select id="period"><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option><option value="1">Hoje</option></select><strong id="report-kind">DEMONSTRAÇÃO — não são dados de visitantes reais</strong><span id="filter-error" role="status" aria-live="polite"></span></div>
-<section class="cards" aria-label="Indicadores demonstrativos">
+<section id="metrics-section" class="cards" aria-label="Indicadores demonstrativos">
 <div class="card"><span class="muted">Visualizações de página</span><div class="value" id="views">—</div><div class="metric-note">Não equivale a visitantes únicos</div></div>
 <div class="card"><span class="muted">Produtos visualizados</span><div class="value" id="products">—</div></div>
 <div class="card"><span class="muted">Cliques para lojas</span><div class="value" id="outbound">—</div></div>
 <div class="card"><span class="muted">Cliques no checkout do curso</span><div class="value" id="course">—</div></div></section>
 <div class="two"><section class="card panel"><h2>Visualizações por dia</h2><div class="chart" id="chart" role="img" aria-label="Gráfico de barras com visualizações fictícias por dia"></div></section>
-<section class="card panel"><h2>Origens dos acessos (simulação)</h2><div id="sources"></div></section></div>
-<section class="card panel"><h2>Interesse em produtos (simulação)</h2><div id="ranking"></div></section>
-<section class="card panel"><h2>Etapas futuras</h2><p>Autenticação administrativa independente, captura de eventos sem dados pessoais desnecessários, armazenamento seguro, relatórios por período e testes antes de qualquer publicação.</p></section>
+<section class="card panel"><h2 id="sources-title">Origens dos acessos (simulação)</h2><div id="sources"></div></section></div>
+<section class="card panel"><h2 id="products-title">Interesse em produtos (simulação)</h2><div id="ranking"></div></section>
+<section class="card panel"><h2 id="guide-title">Etapas futuras</h2><p id="guide-copy">Autenticação administrativa independente, captura de eventos sem dados pessoais desnecessários, armazenamento seguro, relatórios por período e testes antes de qualquer publicação.</p></section>
 </main><script>
 // Dados locais FIXOS e FICTÍCIOS: este protótipo não envia nem coleta informações.
 const days=[
@@ -68,10 +68,20 @@ let lastValidReport=null;
 function renderReport(report){
  lastValidReport=report;
  if(report.simulation===false){
-  const notice=document.getElementById("report-notice");
-  if(notice)notice.textContent="Indicadores anônimos de navegação e cliques. Não representam vendas confirmadas dos afiliados nem do curso.";
-  const kind=document.getElementById("report-kind");
-  if(kind)kind.textContent="DADOS AGREGADOS DE EVENTOS — não são compras confirmadas";
+  document.title="Central de Análises — Clica, Compra e Ri";
+  for(const [id,value] of [
+    ["panel-status","Painel privado"],
+    ["sources-title","Origens dos acessos"],
+    ["products-title","Produtos mais visualizados"],
+    ["guide-title","Como interpretar os dados"],
+    ["guide-copy","Visualizações e cliques são sinais de interesse, não comprovantes de pedidos ou vendas. As origens são estimativas por referências e parâmetros de campanha; não identificam visitantes."],
+    ["report-notice","Indicadores agregados de navegação e cliques. Não representam vendas confirmadas dos afiliados nem do curso."],
+    ["report-kind","DADOS AGREGADOS DE EVENTOS — não são compras confirmadas"]
+  ]){
+   const el=document.getElementById(id);if(el)el.textContent=value;
+  }
+  const section=document.getElementById("metrics-section");
+  if(section)section.setAttribute("aria-label","Indicadores agregados de eventos");
  }
  const warning=document.getElementById("filter-error");if(warning)warning.textContent="";
   for(const [id,value] of Object.entries({
@@ -105,10 +115,10 @@ function renderReport(report){
     col.append(count,bar,day);chart.append(col);
   }
   chart.setAttribute("role","img");
-  chart.setAttribute("aria-label","Visualizações diárias de demonstração calculadas a partir de eventos fictícios");
+  chart.setAttribute("aria-label",report.simulation===false?"Gráfico de visualizações diárias de páginas":"Visualizações diárias de demonstração calculadas a partir de eventos fictícios");
   let hint=document.getElementById("chart-note");
   if(!hint){hint=document.createElement("p");hint.id="chart-note";hint.className="muted";chart.parentElement.append(hint);}
-  hint.textContent="Série diária e indicadores calculados a partir de eventos fictícios.";
+  hint.textContent=report.simulation===false?"Série diária e indicadores agregados dos últimos "+report.days+" dia(s). Não são visitantes únicos.":"Série diária e indicadores calculados a partir de eventos fictícios.";
 }
 if(report && typeof report.simulation==="boolean" && report.metrics){
  renderReport(report);
