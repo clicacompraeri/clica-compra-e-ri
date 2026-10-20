@@ -24,7 +24,7 @@ function html(body){return "<!doctype html><html lang='pt-BR'><meta charset='utf
 function loginPage(){return html("<h1>Clica, Compra e Ri — laboratório</h1><p>Somente teste local. Não utilizar credenciais reais.</p><form method='post' action='/login'><label>E-mail <input name='email' type='email' required></label><label>Senha <input name='password' type='password' required></label><button>Entrar</button></form>");}
 function parseCookie(req){
  const part=(req.headers.cookie||"").split(";").map(s=>s.trim()).find(s=>s.startsWith("ccr_admin="));
- return part?decodeURIComponent(part.slice("ccr_admin=".length)):"";
+ try{return part?decodeURIComponent(part.slice("ccr_admin=".length)):"";}catch{return "";}
 }
 function createHandler(){
  return async(req,res)=>{
