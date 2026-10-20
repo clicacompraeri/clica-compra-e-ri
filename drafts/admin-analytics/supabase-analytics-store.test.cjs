@@ -36,3 +36,19 @@ test("chave moderna sb_secret usa apenas apikey, nunca Authorization bearer",asy
  assert.equal(Object.hasOwn(sent,"authorization"),false);
  assert.throws(()=>createSupabaseAnalyticsStore({baseUrl:"https://test-project.supabase.co",serviceRoleKey:"sb_publishable_abc123123123123123123123123123",fetchFn:async()=>{}}),/Chave publica/);
 });
+
+test("revogacao trata retorno minimo HTTP 201 sem JSON, como PostgREST",async()=>{
+ let requested=false;
+ const store=createSupabaseAnalyticsStore({
+  baseUrl:"https://test-project.supabase.co",
+  serviceRoleKey:"chave-ficticia-privada-com-32-caracteres",
+  fetchFn:async(url,opts)=>{
+   requested=true;
+   assert.match(opts.headers.Prefer,/return=minimal/);
+   return {ok:true,status:201,json:async()=>{throw Error("201 Created has empty body");}};
+  }
+ });
+ const future=Math.floor(Date.now()/1000)+1800;
+ assert.equal(await store.revoke(future+".nonce.signature"),true);
+ assert.equal(requested,true);
+});
