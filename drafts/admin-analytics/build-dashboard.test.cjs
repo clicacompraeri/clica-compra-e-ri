@@ -7,5 +7,5 @@ test("HTML de demonstracao incorpora resumo simulado",()=>{
  assert.ok(html.includes("window.__demoReport="));
  assert.ok(html.includes('"simulation":true'));
  assert.ok(html.includes('"pageViews":14'));
- assert.ok(html.includes("Série diária e indicadores obtidos de eventos fictícios"));
+ assert.ok(html.includes("Série diária e indicadores calculados a partir de eventos fictícios."));
 });
