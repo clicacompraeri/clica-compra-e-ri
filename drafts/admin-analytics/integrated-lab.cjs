@@ -4,11 +4,11 @@
 const http=require("node:http");
 const {createHandler}=require("./local-auth-lab.cjs");
 const {createPrivateDemoHandler}=require("./private-demo-handler.cjs");
-const {createSessionRegistry}=require("./session-registry.cjs");
+const {createPersistentSessionRegistry}=require("./persistent-session-registry.cjs");
 function createIntegratedHandler({directory,secret}){
  const login=createHandler();
  const dashboard=createPrivateDemoHandler({directory,secret});
- const sessions=createSessionRegistry();
+ const sessions=createPersistentSessionRegistry({directory});
  return (req,res)=>{
   const path=(req.url||"").split("?")[0];
   if(path==="/admin/logout"){
