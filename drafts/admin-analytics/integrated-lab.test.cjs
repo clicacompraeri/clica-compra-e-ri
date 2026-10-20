@@ -34,6 +34,8 @@ test("laboratorio integrado: login, painel, relatorio e logout",async()=>{
   assert.equal((await request(port,"/admin/report","GET","",cookie)).status,200);
   const logout=await request(port,"/admin/logout","POST","",cookie);
   assert.equal(logout.status,303);
+  assert.equal((await request(port,"/admin","GET","",cookie)).status,401);
+  assert.equal((await request(port,"/admin/report","GET","",cookie)).status,401);
   assert.equal((await request(port,"/admin","GET","",logout.cookie.split(";")[0])).status,401);
  }finally{await new Promise(resolve=>server.close(resolve));fs.rmSync(dir,{recursive:true,force:true});}
 });
