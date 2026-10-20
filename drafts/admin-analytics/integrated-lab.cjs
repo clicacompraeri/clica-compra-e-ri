@@ -4,12 +4,27 @@
 const http=require("node:http");
 const {createHandler}=require("./local-auth-lab.cjs");
 const {createPrivateDemoHandler}=require("./private-demo-handler.cjs");
+const {createSessionRegistry}=require("./session-registry.cjs");
 function createIntegratedHandler({directory,secret}){
  const login=createHandler();
  const dashboard=createPrivateDemoHandler({directory,secret});
+ const sessions=createSessionRegistry();
  return (req,res)=>{
   const path=(req.url||"").split("?")[0];
-  if(path==="/login"||path==="/admin/logout")return login(req,res);
+  if(path==="/admin/logout"){
+   const cookie=(req.headers.cookie||"").split(";").map(x=>x.trim()).find(x=>x.startsWith("ccr_admin="));
+   let token="";try{token=cookie?decodeURIComponent(cookie.slice("ccr_admin=".length)):"";}catch{}
+   if(!sessions.isActive(token,secret)){res.writeHead(401,{"Cache-Control":"no-store"});return res.end("Acesso restrito");}
+   const originalEnd=res.end.bind(res);
+   res.end=function(...args){if(res.statusCode===303)sessions.revoke(token,secret);return originalEnd(...args);};
+   return login(req,res);
+  }
+  if(path==="/login")return login(req,res);
+  if(path==="/admin"||path==="/admin/report"){
+   const cookie=(req.headers.cookie||"").split(";").map(x=>x.trim()).find(x=>x.startsWith("ccr_admin="));
+   let token="";try{token=cookie?decodeURIComponent(cookie.slice("ccr_admin=".length)):"";}catch{}
+   if(!sessions.isActive(token,secret)){res.writeHead(401,{"Cache-Control":"no-store"});return res.end("Acesso restrito");}
+  }
   return dashboard(req,res);
  };
 }
