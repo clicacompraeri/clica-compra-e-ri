@@ -21,6 +21,8 @@ async function run(){
   {name:"student-login",path:"/clica-do-zero/aluno-login.html",status:200,contains:"Clica do Zero"},
   {name:"student-protected",path:"/clica-do-zero/aluno/",status:302,location:"/clica-do-zero/aluno-login.html"},
   {name:"support-api-protected",path:"/api/suporte/mensagens",status:401,contains:"ok"},
+  {name:"admin-login-still-disabled",path:"/admin/login",status:200,contains:"Clica, Compra e Ri | Achados e Ofertas"},
+  {name:"admin-report-still-disabled",path:"/admin/report?days=7",status:200,contains:"Clica, Compra e Ri | Achados e Ofertas"},
   {name:"webhook-rejects-unauthorized",path:"/api/hotmart/webhook",status:401,method:"POST",
    body:'{"event":"PURCHASE_APPROVED"}',contains:"Unauthorized"}
  ];
@@ -31,6 +33,6 @@ async function run(){
   if(row.location)assert.ok(r.location.startsWith(row.location),row.name+": unexpected redirect");
   console.log("PASS",row.name,r.status);
  }
- console.log("PASS all 6 public production smoke checks");
+ console.log("PASS all 8 public production smoke checks");
 }
 run().catch(e=>{console.error(String(e));process.exitCode=1;});
