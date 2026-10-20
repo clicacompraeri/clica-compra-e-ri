@@ -12,7 +12,7 @@ function createSupabaseAnalyticsStore({baseUrl,serviceRoleKey,fetchFn=globalThis
  async function call(method,pathname,payload,extra={}){
   const response=await fetchFn(base+pathname,{method,headers:{...headers,...extra},body:payload===undefined?undefined:JSON.stringify(payload),signal:AbortSignal.timeout(5000)});
   if(!response.ok)throw Error("Armazenamento privado de analytics indisponivel");
-  if(response.status===204)return null;
+  if(response.status===204||String(extra.Prefer||"").includes("return=minimal"))return null;
   return response.json();
  }
  const digest=token=>crypto.createHash("sha256").update(token).digest("hex");
