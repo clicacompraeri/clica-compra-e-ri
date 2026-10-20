@@ -10,13 +10,42 @@ h1{font-size:28px;margin:6px 0}h2{font-size:17px}.muted{color:#626f7b}.notice{ba
 .value{font-size:30px;font-weight:750;margin-top:15px}.panel{margin-top:20px}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .bar{height:12px;background:#e9edf1;border-radius:10px;margin:14px 0}.bar span{display:block;height:100%;border-radius:10px;background:#899eae}
 @media(max-width:760px){.cards,.two{grid-template-columns:1fr 1fr}}@media(max-width:460px){.cards,.two{grid-template-columns:1fr}}
+.chart{display:flex;align-items:flex-end;gap:8px;height:170px;padding:12px 0 0;border-bottom:1px solid #cad3db}.chart-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:5px}.chart-bar{width:70%;max-width:44px;background:#506f86;border-radius:6px 6px 0 0;min-height:2px}.chart-label{font-size:12px;color:#626f7b}.filters{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}.filters select{padding:9px;border:1px solid #b7c4cf;border-radius:8px;background:#fff}.metric-note{font-size:12px;color:#647381}
 </style></head><body><header class="wrap"><div><div class="muted">Clica, Compra e Ri</div><h1>Central de Análises</h1></div><strong>Protótipo interno</strong></header>
 <main class="wrap"><div class="notice"><strong>Somente demonstração.</strong> Nenhum dado real é exibido. Este arquivo não implementa login, coleta de visitantes nem conexão com banco de dados. Não publicar como painel administrativo.</div>
-<section class="cards" aria-label="Indicadores planejados">
-<div class="card"><span class="muted">Visitantes</span><div class="value">—</div></div>
-<div class="card"><span class="muted">Produtos visualizados</span><div class="value">—</div></div>
-<div class="card"><span class="muted">Cliques para lojas</span><div class="value">—</div></div>
-<div class="card"><span class="muted">Cliques no Clica do Zero</span><div class="value">—</div></div>
-</section><div class="two"><section class="card panel"><h2>Produtos com maior interesse</h2><p class="muted">Aparecerão aqui após configuração e consentimento do rastreamento.</p><div class="bar"><span style="width:0"></span></div></section><section class="card panel"><h2>Origem do tráfego</h2><p class="muted">Facebook, Google, acesso direto e outras fontes quando identificáveis.</p><div class="bar"><span style="width:0"></span></div></section></div>
+<div class="filters"><label for="period">Período fictício:</label><select id="period"><option value="7">Últimos 7 dias</option><option value="3">Últimos 3 dias</option><option value="1">Hoje</option></select><strong>DEMONSTRAÇÃO — não são dados de visitantes reais</strong></div>
+<section class="cards" aria-label="Indicadores demonstrativos">
+<div class="card"><span class="muted">Visualizações de página</span><div class="value" id="views">—</div><div class="metric-note">Não equivale a visitantes únicos</div></div>
+<div class="card"><span class="muted">Produtos visualizados</span><div class="value" id="products">—</div></div>
+<div class="card"><span class="muted">Cliques para lojas</span><div class="value" id="outbound">—</div></div>
+<div class="card"><span class="muted">Cliques no checkout do curso</span><div class="value" id="course">—</div></div></section>
+<div class="two"><section class="card panel"><h2>Visualizações por dia</h2><div class="chart" id="chart" role="img" aria-label="Gráfico de barras com visualizações fictícias por dia"></div></section>
+<section class="card panel"><h2>Origens dos acessos (simulação)</h2><div id="sources"></div></section></div>
+<section class="card panel"><h2>Interesse em produtos (simulação)</h2><div id="ranking"></div></section>
 <section class="card panel"><h2>Etapas futuras</h2><p>Autenticação administrativa independente, captura de eventos sem dados pessoais desnecessários, armazenamento seguro, relatórios por período e testes antes de qualquer publicação.</p></section>
-</main></body></html>
+</main><script>
+// Dados locais FIXOS e FICTÍCIOS: este protótipo não envia nem coleta informações.
+const days=[
+ {d:"Seg",v:37,p:13,o:6,c:2,source:{Google:15,Facebook:12,Direto:10},items:{"Potes herméticos":6,"Livros Kindle":4,"Mini seladora":3}},
+ {d:"Ter",v:43,p:15,o:7,c:3,source:{Google:18,Facebook:14,Direto:11},items:{"Potes herméticos":7,"Livros Kindle":5,"Mini seladora":3}},
+ {d:"Qua",v:49,p:18,o:8,c:2,source:{Google:20,Facebook:17,Direto:12},items:{"Potes herméticos":8,"Livros Kindle":6,"Mini seladora":4}},
+ {d:"Qui",v:51,p:21,o:9,c:3,source:{Google:19,Facebook:22,Direto:10},items:{"Potes herméticos":9,"Livros Kindle":7,"Mini seladora":5}},
+ {d:"Sex",v:62,p:26,o:11,c:5,source:{Google:22,Facebook:25,Direto:15},items:{"Potes herméticos":12,"Livros Kindle":8,"Mini seladora":6}},
+ {d:"Sáb",v:55,p:23,o:10,c:4,source:{Google:20,Facebook:23,Direto:12},items:{"Potes herméticos":10,"Livros Kindle":8,"Mini seladora":5}},
+ {d:"Dom",v:66,p:29,o:14,c:6,source:{Google:26,Facebook:27,Direto:13},items:{"Potes herméticos":13,"Livros Kindle":9,"Mini seladora":7}}
+];
+function aggregate(rows,key){return rows.reduce((sum,row)=>sum+row[key],0);}
+function tally(rows,key){const out={};rows.forEach(row=>Object.entries(row[key]).forEach(([name,n])=>out[name]=(out[name]||0)+n));return Object.entries(out).sort((a,b)=>b[1]-a[1]);}
+function render(){
+ const count=Number(document.getElementById("period").value),rows=days.slice(-count);
+ for(const [id,key] of Object.entries({views:"v",products:"p",outbound:"o",course:"c"}))document.getElementById(id).textContent=aggregate(rows,key).toLocaleString("pt-BR");
+ const chart=document.getElementById("chart");chart.replaceChildren();const max=Math.max(...rows.map(r=>r.v));
+ rows.forEach(r=>{const col=document.createElement("div");col.className="chart-col";const n=document.createElement("span");n.className="chart-label";n.textContent=String(r.v);const bar=document.createElement("div");bar.className="chart-bar";bar.style.height=(r.v/max*125)+"px";const label=document.createElement("span");label.className="chart-label";label.textContent=r.d;col.append(n,bar,label);chart.append(col);});
+ for(const [id,key] of [["sources","source"],["ranking","items"]]){
+  const box=document.getElementById(id);box.replaceChildren();
+  const entries=tally(rows,key),maxValue=entries[0]?.[1]||1;
+  entries.forEach(([name,n])=>{const p=document.createElement("p");p.textContent=name+" — "+n;const track=document.createElement("div");track.className="bar";const fill=document.createElement("span");fill.style.width=n/maxValue*100+"%";track.append(fill);box.append(p,track);});
+ }
+}
+document.getElementById("period").addEventListener("change",render);render();
+</script></body></html>
