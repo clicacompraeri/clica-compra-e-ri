@@ -45,6 +45,28 @@ function createFileStore({directory,filename="events.jsonl"}={}){
   }
   return out;
  }
- return Object.freeze({append,read});
+ function prune({now=Date.now(),retentionDays=30}={}){
+  if(!Number.isSafeInteger(retentionDays)||retentionDays<1||retentionDays>30)throw Error("Retencao invalida");
+  if(!fs.existsSync(file))return {kept:0,removed:0};
+  safeFile();
+  const original=fs.readFileSync(file,"utf8").split("\n").filter(Boolean);
+  const cutoff=now-retentionDays*86400000;
+  const kept=[];
+  for(const line of original){
+   try{
+    const entry=JSON.parse(line);
+    const timestamp=new Date(entry.at).getTime();
+    if(Number.isFinite(timestamp)&&timestamp>=cutoff&&timestamp<=now+300000){
+     const safe=normalizeEvent(entry);
+     if(safe)kept.push(JSON.stringify(safe));
+    }
+   }catch{}
+  }
+  const temp=file+".tmp";
+  fs.writeFileSync(temp,kept.length?kept.join("\n")+"\n":"",{mode:0o600,flag:"wx"});
+  try{fs.renameSync(temp,file);}catch(e){try{fs.unlinkSync(temp);}catch{}throw e;}
+  return {kept:kept.length,removed:original.length-kept.length};
+ }
+ return Object.freeze({append,read,prune});
 }
 module.exports={createFileStore};
