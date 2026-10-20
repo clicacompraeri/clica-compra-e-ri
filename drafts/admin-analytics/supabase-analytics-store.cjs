@@ -6,7 +6,9 @@ function createSupabaseAnalyticsStore({baseUrl,serviceRoleKey,fetchFn=globalThis
  if(typeof serviceRoleKey!=="string"||serviceRoleKey.length<20)throw Error("Chave privada obrigatoria");
  if(typeof fetchFn!=="function")throw Error("Cliente HTTP obrigatorio");
  const base=baseUrl.replace(/\/$/,"");
- const headers={apikey:serviceRoleKey,authorization:"Bearer "+serviceRoleKey,"content-type":"application/json","cache-control":"no-store"};
+ if(serviceRoleKey.startsWith("sb_publishable_"))throw Error("Chave publica nao autorizada");
+ const headers={apikey:serviceRoleKey,"content-type":"application/json","cache-control":"no-store"};
+ if(!serviceRoleKey.startsWith("sb_secret_"))headers.authorization="Bearer "+serviceRoleKey;
  async function call(method,pathname,payload,extra={}){
   const response=await fetchFn(base+pathname,{method,headers:{...headers,...extra},body:payload===undefined?undefined:JSON.stringify(payload),signal:AbortSignal.timeout(5000)});
   if(!response.ok)throw Error("Armazenamento privado de analytics indisponivel");
