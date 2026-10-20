@@ -37,9 +37,8 @@ function syntheticEvents(now=new Date()){
  for(let day=0;day<7;day++){
   for(let i=0;i<defs.length;i++){
    const d=new Date(now.getTime()-day*86400000);
-   // O protótipo atual aceita eventos criados nas últimas 24 horas.
-   // Geramos apenas eventos válidos para testar o contrato presente.
-   if(day!==0)continue;
+   // Eventos de demonstração em sete datas diferentes.
+
    const [type,product,store,source]=defs[i];
    result.push({type,product,store,source,at:d.toISOString()});
   }
