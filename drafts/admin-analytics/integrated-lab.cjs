@@ -20,7 +20,9 @@ function createIntegratedHandler({directory,secret,eventSecret}){
   if(path==="/admin/logout"){
    const cookie=(req.headers.cookie||"").split(";").map(x=>x.trim()).find(x=>x.startsWith("ccr_admin="));
    let token="";try{token=cookie?decodeURIComponent(cookie.slice("ccr_admin=".length)):"";}catch{}
-   if(!sessions.isActive(token,secret)){res.writeHead(401,{"Cache-Control":"no-store"});return res.end("Acesso restrito");}
+   let active=false;
+   try{active=sessions.isActive(token,secret);}catch{res.writeHead(503,{"Cache-Control":"no-store"});return res.end("Autenticacao temporariamente indisponivel");}
+   if(!active){res.writeHead(401,{"Cache-Control":"no-store"});return res.end("Acesso restrito");}
    if(req.method!=="POST"){res.writeHead(404,{"Cache-Control":"no-store"});return res.end("Nao encontrado");}
    const host=req.headers.host||"",origin=req.headers.origin||"";
    if(!/^127\.0\.0\.1:[0-9]+$/.test(host)||origin!=="http://"+host){res.writeHead(403,{"Cache-Control":"no-store"});return res.end("Proibido");}
@@ -35,7 +37,9 @@ function createIntegratedHandler({directory,secret,eventSecret}){
   if(path==="/admin"||path==="/admin/report"){
    const cookie=(req.headers.cookie||"").split(";").map(x=>x.trim()).find(x=>x.startsWith("ccr_admin="));
    let token="";try{token=cookie?decodeURIComponent(cookie.slice("ccr_admin=".length)):"";}catch{}
-   if(!sessions.isActive(token,secret)){res.writeHead(401,{"Cache-Control":"no-store"});return res.end("Acesso restrito");}
+   let active=false;
+   try{active=sessions.isActive(token,secret);}catch{res.writeHead(503,{"Cache-Control":"no-store"});return res.end("Autenticacao temporariamente indisponivel");}
+   if(!active){res.writeHead(401,{"Cache-Control":"no-store"});return res.end("Acesso restrito");}
   }
   return dashboard(req,res);
  };
