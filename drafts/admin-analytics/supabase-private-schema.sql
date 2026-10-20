@@ -23,7 +23,7 @@ create table if not exists public.ccr_analytics_revoked_sessions (
 create index if not exists ccr_analytics_revoked_exp_idx on public.ccr_analytics_revoked_sessions(expires_at);
 alter table public.ccr_analytics_revoked_sessions enable row level security;
 revoke all on table public.ccr_analytics_revoked_sessions from public, anon, authenticated;
-grant select, insert, delete on public.ccr_analytics_revoked_sessions to service_role;
+grant select, insert, update, delete on public.ccr_analytics_revoked_sessions to service_role;
 
 -- Daily cap prevents unbounded anonymous-event storage and accidental charges.
 create or replace function public.ccr_analytics_ingest(p_event_type text,p_source text,p_product text default '',p_store text default 'other')
