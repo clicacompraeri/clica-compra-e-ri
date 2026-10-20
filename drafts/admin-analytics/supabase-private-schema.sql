@@ -72,10 +72,10 @@ begin
   'productViews',(select count(*) from selected where event_type='product_view'),
   'outboundClicks',(select count(*) from selected where event_type='affiliate_outbound'),
   'courseCheckoutClicks',(select count(*) from selected where event_type='course_checkout_click')),
- 'daily',(select pg_catalog.coalesce(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object('date',day::text,'pageViews',page_views,'productViews',product_views,'outboundClicks',outbound_clicks,'courseCheckoutClicks',checkout_clicks)order by day),'[]'::jsonb)from daily),
- 'sources',(select pg_catalog.coalesce(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object('name',name,'value',value)),'[]'::jsonb)from sources),
- 'products',(select pg_catalog.coalesce(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object('name',name,'value',value)),'[]'::jsonb)from products),
- 'stores',(select pg_catalog.coalesce(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object('name',name,'value',value)),'[]'::jsonb)from stores)
+ 'daily',(select coalesce(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object('date',day::text,'pageViews',page_views,'productViews',product_views,'outboundClicks',outbound_clicks,'courseCheckoutClicks',checkout_clicks)order by day),'[]'::jsonb)from daily),
+ 'sources',(select coalesce(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object('name',name,'value',value)),'[]'::jsonb)from sources),
+ 'products',(select coalesce(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object('name',name,'value',value)),'[]'::jsonb)from products),
+ 'stores',(select coalesce(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object('name',name,'value',value)),'[]'::jsonb)from stores)
  )into result;
  return result;
 end;$$;
