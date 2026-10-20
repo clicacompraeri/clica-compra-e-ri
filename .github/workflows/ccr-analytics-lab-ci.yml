@@ -48,8 +48,10 @@ jobs:
           node --check server.js
           node --check drafts/admin-analytics/integrated-lab.cjs
           node --check drafts/admin-analytics/analytics-http-candidate.cjs
+      - name: Verificar isoladamente bloqueio da coleta
+        run: timeout 25s node --test drafts/admin-analytics/admin-only-gate.test.cjs
       - name: Executar todos os testes do laboratorio
-        run: node --test drafts/admin-analytics/*.test.cjs
+        run: timeout 180s node --test drafts/admin-analytics/*.test.cjs
       - name: Testar integração real com Express 5 (sem produção)
         run: |
           npm install --no-save --ignore-scripts express@5.1.0
