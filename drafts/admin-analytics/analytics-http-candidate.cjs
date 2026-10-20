@@ -11,7 +11,7 @@ function createAnalyticsHandler({publicOrigin,adminEmail,passwordHash,signingKey
  if(!adminEmail||!passwordHash||typeof signingKey!=="string"||signingKey.length<32||!store)throw Error("Private analytics credentials and persistent store required");
  const loginLimiter=createAttemptLimiter({maxAttempts:8,windowMs:15*60*1000,blockMs:15*60*1000});
  const eventLimiter=createAttemptLimiter({maxAttempts:100,windowMs:60*1000,blockMs:60*1000});
- function headers(type="text/plain; charset=utf-8"){return {"Content-Type":type,"Cache-Control":"no-store","X-Content-Type-Options":"nosniff","X-Frame-Options":"DENY","Referrer-Policy":"no-referrer","X-Robots-Tag":"noindex,nofollow","Content-Security-Policy":"default-src 'none'; frame-ancestors 'none'; form-action 'self'"};}
+ function headers(type="text/plain; charset=utf-8"){return {"Content-Type":type,"Cache-Control":"no-store","X-Content-Type-Options":"nosniff","X-Frame-Options":"DENY","Referrer-Policy":"same-origin","X-Robots-Tag":"noindex,nofollow","Content-Security-Policy":"default-src 'none'; frame-ancestors 'none'; form-action 'self'"};}
  function send(res,status,body="",type){res.writeHead(status,headers(type));res.end(body);}
  function redirect(res,url,cookie){res.writeHead(303,{...headers(),Location:url,...(cookie?{"Set-Cookie":cookie}:{})});res.end();}
  function goodOrigin(req){return req.headers.host===expected.host&&req.headers.origin===expected.origin;}
