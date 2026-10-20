@@ -8,7 +8,7 @@ function request(port,path,{method="GET",origin="https://site.example",cookie=""
   if(cookie)headers.Cookie=cookie;
   if(method==="POST"){headers["Content-Type"]=contentType;headers["Content-Length"]=Buffer.byteLength(body);}
   const req=http.request({hostname:"127.0.0.1",port,path,method,headers},res=>{
-   let text="";res.on("data",chunk=>text+=chunk);res.on("end",()=>resolve({status:res.statusCode,body:text,cookie:res.headers["set-cookie"]?.[0]||""}));
+   let text="";res.on("data",chunk=>text+=chunk);res.on("end",()=>resolve({status:res.statusCode,body:text,cookie:res.headers["set-cookie"]?.[0]||"",referrerPolicy:res.headers["referrer-policy"]}));
   });req.on("error",reject);req.end(body);
  });
 }
@@ -31,7 +31,9 @@ test("rotas privadas: login, relatorio real agregado, logout e bloqueio do token
   const port=server.address().port;
   assert.equal((await request(port,"/admin")).status,401);
   assert.equal((await request(port,"/admin/report?days=7")).status,401);
-  assert.equal((await request(port,"/admin/login")).status,200);
+  const loginPage=await request(port,"/admin/login");
+  assert.equal(loginPage.status,200);
+  assert.equal(loginPage.referrerPolicy,"same-origin");
   const form="email=admin%40example.invalid&password="+encodeURIComponent("senha-ficticia-forte-do-painel-2026");
   assert.equal((await request(port,"/admin/login",{method:"POST",origin:"http://site.example",body:form})).status,403);
   assert.equal((await request(port,"/admin/login",{method:"POST",body:"email=admin%40example.invalid&password=wrong"})).status,401);
