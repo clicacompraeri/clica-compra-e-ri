@@ -15,24 +15,37 @@ async function check(path,init={}){
  throw new Error("Public smoke network failure on "+path+": "+String(last?.message||last));
 }
 async function run(){
+ // Readiness polls the private Supabase store; allow a short warm-up window.
+ let readiness;
+ for(let attempt=0;attempt<24;attempt++){
+  readiness=await check("/admin/login");
+  if(readiness.status===200)break;
+  if(readiness.status!==503)throw Error("Unexpected admin readiness status "+readiness.status);
+  await new Promise(resolve=>setTimeout(resolve,2500));
+ }
+ assert.equal(readiness.status,200,"Private admin storage readiness must pass before testing");
  const routes=[
   {name:"storefront",path:"/",status:200,contains:"Clica, Compra e Ri"},
   {name:"free-preview",path:"/clica-do-zero/previa-gratuita.html",status:200,contains:"pay.hotmart.com/D108063505L"},
   {name:"student-login",path:"/clica-do-zero/aluno-login.html",status:200,contains:"Clica do Zero"},
   {name:"student-protected",path:"/clica-do-zero/aluno/",status:302,location:"/clica-do-zero/aluno-login.html"},
   {name:"support-api-protected",path:"/api/suporte/mensagens",status:401,contains:"ok"},
-  {name:"admin-login-still-disabled",path:"/admin/login",status:200,contains:"Clica, Compra e Ri | Achados e Ofertas"},
-  {name:"admin-report-still-disabled",path:"/admin/report?days=7",status:200,contains:"Clica, Compra e Ri | Achados e Ofertas"},
+  {name:"admin-login-private-active",path:"/admin/login",status:200,contains:"Central de Análises — Login"},
+  {name:"admin-report-protected",path:"/admin/report?days=7",status:401,contains:"Acesso restrito"},
+  {name:"admin-home-protected",path:"/admin",status:401,contains:"Acesso restrito"},
+  {name:"visitor-event-collection-disabled",path:"/api/analytics/event",status:404,method:"POST",
+   headers:{"origin":origin,"content-type":"application/json"},
+   body:JSON.stringify({type:"page_view",source:"direct",product:"",store:"other"}),contains:"Não encontrado"},
   {name:"webhook-rejects-unauthorized",path:"/api/hotmart/webhook",status:401,method:"POST",
    body:'{"event":"PURCHASE_APPROVED"}',contains:"Unauthorized"}
  ];
  for(const row of routes){
-  const r=await check(row.path,row.method?{method:row.method,headers:{"content-type":"application/json"},body:row.body}:{});
+  const r=await check(row.path,row.method?{method:row.method,headers:row.headers||{"content-type":"application/json"},body:row.body}:{});
   assert.equal(r.status,row.status,row.name+": unexpected status "+r.status);
   if(row.contains)assert.ok(r.body.includes(row.contains),row.name+": expected content missing");
   if(row.location)assert.ok(r.location.startsWith(row.location),row.name+": unexpected redirect");
   console.log("PASS",row.name,r.status);
  }
- console.log("PASS all 8 public production smoke checks");
+ console.log("PASS all 10 public production smoke checks");
 }
 run().catch(e=>{console.error(String(e));process.exitCode=1;});
