@@ -12,6 +12,7 @@ Estado: **código preparado, coleta e banco NÃO ativados**.
 
 ## Variáveis privadas (sem armazenar valores no GitHub)
 - CCR_ANALYTICS_ENABLED=false (ou ausente: todas as rotas novas desligadas)
+- CCR_ANALYTICS_COLLECTION_ENABLED=false (ou ausente: coletor desligado MESMO quando login privado estiver habilitado)
 - CCR_ANALYTICS_PUBLIC_ORIGIN=https://dominio-do-site/
 - CCR_ANALYTICS_ADMIN_EMAIL: conta administrativa independente
 - CCR_ANALYTICS_ADMIN_PASSWORD_HASH: hash scrypt local
@@ -25,6 +26,7 @@ Estado: **código preparado, coleta e banco NÃO ativados**.
 - Server.js só registra as rotas se CCR_ANALYTICS_ENABLED for exatamente true.
 - Módulos prontos: analytics-mount.cjs, analytics-http-candidate.cjs e supabase-analytics-store.cjs.
 - O cliente analytics-client-candidate.js não coleta nada sem data-ccr-analytics="enabled".
+- O backend também rejeita toda coleta com HTTP 404 sem CCR_ANALYTICS_COLLECTION_ENABLED=true. A ativação do painel não autoriza coleta.
 - O cliente AINDA NÃO foi carregado nas páginas públicas.
 - Não alterar links dos afiliados, preço ou checkout para instrumentar cliques.
 
@@ -35,7 +37,7 @@ Estado: **código preparado, coleta e banco NÃO ativados**.
 4. Testar Chromium HTTPS real, cookies Secure/HttpOnly/SameSite e Origin.
 5. Testar eventos fictícios de produto e checkout, GPC e DNT.
 6. Confirmar links originais, webhook Hotmart, área do aluno e suporte.
-7. Monitorar métricas e usar CCR_ANALYTICS_ENABLED=false como desligamento de emergência.
+7. Monitorar métricas e usar CCR_ANALYTICS_ENABLED=false como desligamento de emergência. Manter CCR_ANALYTICS_COLLECTION_ENABLED=false durante todo o primeiro rollout.
 8. Só depois ativar cliente e coleta real com revisão de privacidade.
 
 **PARE:** se houver bloqueio de permissão, custo não aprovado, segredo ausente ou falha de segurança.
