@@ -25,7 +25,7 @@ function createIntegratedHandler({directory,secret,eventSecret}){
    if(!active){res.writeHead(401,{"Cache-Control":"no-store"});return res.end("Acesso restrito");}
    if(req.method!=="POST"){res.writeHead(404,{"Cache-Control":"no-store"});return res.end("Nao encontrado");}
    const host=req.headers.host||"",origin=req.headers.origin||"";
-   if(!/^127\.0\.0\.1:[0-9]+$/.test(host)||origin!=="http://"+host){res.writeHead(403,{"Cache-Control":"no-store"});return res.end("Proibido");}
+   if(!/^127\.0\.0\.1:[0-9]+$/.test(host)||origin!==(req.socket.encrypted===true?"https://":"http://")+host){res.writeHead(403,{"Cache-Control":"no-store"});return res.end("Proibido");}
    try{
     if(!sessions.revoke(token,secret)){res.writeHead(503,{"Cache-Control":"no-store"});return res.end("Saida nao confirmada");}
    }catch{res.writeHead(503,{"Cache-Control":"no-store"});return res.end("Saida nao confirmada");}
