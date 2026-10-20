@@ -41,7 +41,7 @@ function createIntegratedHandler({directory,secret,eventSecret}){
  };
 }
 function run(){
- const {ADMIN_TEST_EMAIL,ADMIN_TEST_PASSWORD_HASH,ADMIN_TEST_SIGNING_KEY,ADMIN_TEST_DATA_DIR}=process.env;
+ const {ADMIN_TEST_EMAIL,ADMIN_TEST_PASSWORD_HASH,ADMIN_TEST_SIGNING_KEY,ADMIN_TEST_DATA_DIR,ADMIN_TEST_EVENT_KEY}=process.env;
  if(!ADMIN_TEST_EMAIL||!ADMIN_TEST_PASSWORD_HASH||!ADMIN_TEST_SIGNING_KEY||ADMIN_TEST_SIGNING_KEY.length<32||!ADMIN_TEST_DATA_DIR)throw Error("Variaveis locais de teste obrigatorias");
  const server=http.createServer(createIntegratedHandler({directory:ADMIN_TEST_DATA_DIR,secret:ADMIN_TEST_SIGNING_KEY,eventSecret:ADMIN_TEST_EVENT_KEY}));
  server.listen(Number(process.env.ADMIN_TEST_PORT||49183),"127.0.0.1");
