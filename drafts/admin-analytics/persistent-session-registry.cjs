@@ -33,6 +33,8 @@ function createPersistentSessionRegistry({directory,now=Date.now}={}){
  }
  function isActive(token,secret){
   if(!verifyAdminToken(token,secret,now()))return false;
+  // Em caso de interrupcao durante uma revogacao, bloquear ate revisao manual.
+  if(fs.existsSync(lock))return false;
   return !Object.prototype.hasOwnProperty.call(load(),hashed(token));
  }
  function revoke(token,secret){
