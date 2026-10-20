@@ -37,7 +37,7 @@ function createHandler(){
   if(method==="POST"&&(path==="/login"||path==="/admin/logout")){
    // Em ambiente de teste local, exigir Host e Origin locais para POST.
    const host=req.headers.host||"",origin=req.headers.origin||"";
-   if(!/^127\.0\.0\.1:[0-9]+$/.test(host)||origin!=="http://"+host)return send(res,403,"Proibido");
+   if(!/^127\.0\.0\.1:[0-9]+$/.test(host)||origin!==(req.socket.encrypted===true?"https://":"http://")+host)return send(res,403,"Proibido");
    if(path==="/admin/logout")return send(res,303,"",{"Location":"/login","Set-Cookie":auth.clearAdminCookie()});
    const key="login-local";
    if(!limiter.check(key).allowed)return send(res,429,html("<p>Tentativas excessivas. Aguarde.</p>"));
