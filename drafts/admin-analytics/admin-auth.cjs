@@ -10,6 +10,12 @@ function hashPassword(password,salt=crypto.randomBytes(16).toString("hex")){
 function verifyPassword(password,stored){
   if(typeof password!=="string"||typeof stored!=="string")return false;
   const parts=stored.split("$");
+  if(parts[0]==="pbkdf2-sha256"){
+    if(parts.length!==4||parts[1]!=="600000"||!/^[a-f0-9]{32}$/.test(parts[2])||!/^[a-f0-9]{64}$/.test(parts[3])||Buffer.byteLength(password,"utf8")>1024)return false;
+    const expected=Buffer.from(parts[3],"hex");
+    const actual=crypto.pbkdf2Sync(password,Buffer.from(parts[2],"hex"),600000,32,"sha256");
+    return crypto.timingSafeEqual(actual,expected);
+  }
   if(parts.length!==3||parts[0]!=="scrypt"||!/^[a-f0-9]{32}$/.test(parts[1])||!/^[a-f0-9]{128}$/.test(parts[2]))return false;
   const actual=crypto.scryptSync(password,parts[1],64),expected=Buffer.from(parts[2],"hex");
   return crypto.timingSafeEqual(actual,expected);
