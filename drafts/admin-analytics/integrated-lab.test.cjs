@@ -32,6 +32,10 @@ test("laboratorio integrado: login, painel, relatorio e logout",async()=>{
   const cookie=login.cookie.split(";")[0];
   assert.equal((await request(port,"/admin","GET","",cookie)).status,200);
   assert.equal((await request(port,"/admin/report","GET","",cookie)).status,200);
+  fs.writeFileSync(path.join(dir,"revoked-sessions.lock"),"simulated interruption");
+  const blocked=await request(port,"/admin/logout","POST","",cookie);
+  assert.equal(blocked.status,401);
+  fs.unlinkSync(path.join(dir,"revoked-sessions.lock"));
   const logout=await request(port,"/admin/logout","POST","",cookie);
   assert.equal(logout.status,303);
   assert.equal((await request(port,"/admin","GET","",cookie)).status,401);
