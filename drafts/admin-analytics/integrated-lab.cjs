@@ -15,9 +15,15 @@ function createIntegratedHandler({directory,secret}){
    const cookie=(req.headers.cookie||"").split(";").map(x=>x.trim()).find(x=>x.startsWith("ccr_admin="));
    let token="";try{token=cookie?decodeURIComponent(cookie.slice("ccr_admin=".length)):"";}catch{}
    if(!sessions.isActive(token,secret)){res.writeHead(401,{"Cache-Control":"no-store"});return res.end("Acesso restrito");}
-   const originalEnd=res.end.bind(res);
-   res.end=function(...args){if(res.statusCode===303)sessions.revoke(token,secret);return originalEnd(...args);};
-   return login(req,res);
+   if(req.method!=="POST"){res.writeHead(404,{"Cache-Control":"no-store"});return res.end("Nao encontrado");}
+   const host=req.headers.host||"",origin=req.headers.origin||"";
+   if(!/^127\\.0\\.0\\.1:[0-9]+$/.test(host)||origin!=="http://"+host){res.writeHead(403,{"Cache-Control":"no-store"});return res.end("Proibido");}
+   try{
+    if(!sessions.revoke(token,secret)){res.writeHead(503,{"Cache-Control":"no-store"});return res.end("Saida nao confirmada");}
+   }catch{res.writeHead(503,{"Cache-Control":"no-store"});return res.end("Saida nao confirmada");}
+   const {clearAdminCookie}=require("./admin-auth.cjs");
+   res.writeHead(303,{"Location":"/login","Set-Cookie":clearAdminCookie(),"Cache-Control":"no-store"});
+   return res.end();
   }
   if(path==="/login")return login(req,res);
   if(path==="/admin"||path==="/admin/report"){
