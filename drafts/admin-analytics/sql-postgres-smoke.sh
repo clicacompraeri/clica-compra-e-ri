@@ -5,8 +5,10 @@ set -euo pipefail
 run(){ psql -X -v ON_ERROR_STOP=1 -h 127.0.0.1 -U ccrci -d ccr_analytics_ci "$@"; }
 query(){ run -qAt -c "$1"; }
 
-run -q -c "create role anon nologin; create role authenticated nologin; create role service_role nologin"
+run -q -c "create role anon nologin; create role authenticated nologin; create role service_role nologin bypassrls"
 run -q -f drafts/admin-analytics/supabase-private-schema.sql
+# Supabase service_role has BYPASSRLS; anon and authenticated do not.
+[[ "$(query "select rolbypassrls from pg_roles where rolname='service_role'")" == "t" ]]
 [[ "$(query "select relrowsecurity from pg_class where oid='public.ccr_analytics_events'::regclass")" == "t" ]]
 [[ "$(query "select relrowsecurity from pg_class where oid='public.ccr_analytics_revoked_sessions'::regclass")" == "t" ]]
 
