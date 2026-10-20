@@ -8,8 +8,8 @@ function normalizeEvent(value){
   if(!TYPES.has(value.type)) return null;
   const timestamp=new Date(value.at);
   if(!Number.isFinite(timestamp.getTime())) return null;
-  const age=Math.abs(Date.now()-timestamp.getTime());
-  if(age>24*60*60*1000) return null;
+  const age=Date.now()-timestamp.getTime();
+  if(age< -5*60*1000 || age>30*24*60*60*1000) return null;
   const product=typeof value.product==="string" ? value.product.trim().slice(0,80) : "";
   const store=typeof value.store==="string" ? value.store.toLowerCase().trim() : "";
   if(value.type==="affiliate_outbound" && !STORES.has(store)) return null;
