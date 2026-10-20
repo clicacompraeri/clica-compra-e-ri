@@ -6,12 +6,14 @@ on:
     paths:
       - 'drafts/admin-analytics/**'
       - '.github/workflows/ccr-analytics-lab-ci.yml'
+      - 'server.js'
   pull_request:
     branches:
       - main
     paths:
       - 'drafts/admin-analytics/**'
       - '.github/workflows/ccr-analytics-lab-ci.yml'
+      - 'server.js'
 permissions:
   contents: read
 jobs:
@@ -26,7 +28,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validar sintaxe do servidor
-        run: node --check drafts/admin-analytics/integrated-lab.cjs
+      - name: Validar sintaxe de ambos os servidores
+        run: |
+          node --check server.js
+          node --check drafts/admin-analytics/integrated-lab.cjs
+          node --check drafts/admin-analytics/analytics-http-candidate.cjs
       - name: Executar todos os testes do laboratorio
         run: node --test drafts/admin-analytics/*.test.cjs
