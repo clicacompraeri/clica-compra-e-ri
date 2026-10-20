@@ -1,0 +1,32 @@
+name: Central de Analises - Testes Isolados
+on:
+  push:
+    branches:
+      - feature/painel-analytics-privado
+    paths:
+      - 'drafts/admin-analytics/**'
+      - '.github/workflows/ccr-analytics-lab-ci.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'drafts/admin-analytics/**'
+      - '.github/workflows/ccr-analytics-lab-ci.yml'
+permissions:
+  contents: read
+jobs:
+  laboratorio:
+    name: Node.js 22 - suite completa
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar sintaxe do servidor
+        run: node --check drafts/admin-analytics/integrated-lab.cjs
+      - name: Executar todos os testes do laboratorio
+        run: node --test drafts/admin-analytics/*.test.cjs
