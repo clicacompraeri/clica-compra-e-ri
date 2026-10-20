@@ -28,8 +28,20 @@ test("Chromium HTTPS: login, Secure cookie, live report, period filter, logout a
  };
  try{
   const key=path.join(dir,"key.pem"),cert=path.join(dir,"cert.pem");
-  const result=spawnSync("openssl",["req","-x509","-newkey","rsa:2048","-nodes","-keyout",key,"-out",cert,"-days","1","-subj","/CN=localhost","-addext","subjectAltName=IP:127.0.0.1"],{encoding:"utf8",timeout:15000});
-  assert.equal(result.status,0,result.stderr||String(result.error));
+  const caKey=path.join(dir,"ca-key.pem"),caCert=path.join(dir,"ca.pem");
+  const csr=path.join(dir,"server.csr"),ext=path.join(dir,"server.ext");
+  const command=(executable,args)=>{
+   const result=spawnSync(executable,args,{encoding:"utf8",timeout:20000});
+   assert.equal(result.status,0,executable+": "+(result.stderr||String(result.error)));
+  };
+  command("openssl",["req","-x509","-newkey","rsa:2048","-nodes","-keyout",caKey,"-out",caCert,"-days","1","-subj","/CN=CCR Local Browser Test CA","-addext","basicConstraints=critical,CA:TRUE","-addext","keyUsage=critical,keyCertSign,cRLSign"]);
+  command("openssl",["req","-new","-newkey","rsa:2048","-nodes","-keyout",key,"-out",csr,"-subj","/CN=localhost"]);
+  fs.writeFileSync(ext,"subjectAltName=DNS:localhost,IP:127.0.0.1\nbasicConstraints=critical,CA:FALSE\nextendedKeyUsage=serverAuth\nkeyUsage=digitalSignature,keyEncipherment\n");
+  command("openssl",["x509","-req","-in",csr,"-CA",caCert,"-CAkey",caKey,"-CAcreateserial","-out",cert,"-days","1","-extfile",ext]);
+  const trustDb=path.join(dir,".pki","nssdb");
+  fs.mkdirSync(trustDb,{recursive:true,mode:0o700});
+  command("certutil",["-N","-d","sql:"+trustDb,"--empty-password"]);
+  command("certutil",["-A","-d","sql:"+trustDb,"-n","CCR local temporary test CA","-t","C,,","-i",caCert]);
   let handler;
   server=https.createServer({key:fs.readFileSync(key),cert:fs.readFileSync(cert)},(req,res)=>{
    const original=res.writeHead.bind(res);
@@ -42,7 +54,7 @@ test("Chromium HTTPS: login, Secure cookie, live report, period filter, logout a
    publicOrigin:origin+"/",adminEmail:"admin@example.invalid",
    passwordHash:hashPassword("fake-admin-password-very-strong-2026"),signingKey:secret,store
   });
-  browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_BIN||"/usr/bin/google-chrome",args:["--no-sandbox","--allow-insecure-localhost"]});
+  browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_BIN||"/usr/bin/google-chrome",args:["--no-sandbox"],env:{...process.env,HOME:dir}});
   const context=await browser.newContext({ignoreHTTPSErrors:true,viewport:{width:390,height:844}});
   const page=await context.newPage();
   const errors=[];
