@@ -27,3 +27,12 @@ test("revogacao persistente envia somente SHA-256 do token, nunca o token origin
  assert.doesNotMatch(sent.map(x=>x.url+x.req.body).join(","),/\.nonce\.signature/);
  assert.match(sent[0].req.body,/token_sha256/);
 });
+
+test("chave moderna sb_secret usa apenas apikey, nunca Authorization bearer",async()=>{
+ let sent;
+ const store=createSupabaseAnalyticsStore({baseUrl:"https://test-project.supabase.co",serviceRoleKey:"sb_secret_abc123123123123123123123123123",fetchFn:async(url,opts)=>{sent=opts.headers;return {ok:true,status:200,json:async()=>true};}});
+ await store.report(7);
+ assert.ok(sent.apikey.startsWith("sb_secret_"));
+ assert.equal(Object.hasOwn(sent,"authorization"),false);
+ assert.throws(()=>createSupabaseAnalyticsStore({baseUrl:"https://test-project.supabase.co",serviceRoleKey:"sb_publishable_abc123123123123123123123123123",fetchFn:async()=>{}}),/Chave publica/);
+});
