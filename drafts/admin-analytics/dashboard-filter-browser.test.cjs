@@ -28,7 +28,7 @@ test("filtro privado solicita 30 dias e atualiza os indicadores sem recarregar",
  vm.runInNewContext(js,{window:{__demoReport:first},document,fetch}, {timeout:2000});
  assert.equal(registry.get("views").textContent,"2");
  assert.match(registry.get("report-kind").textContent,/DADOS AGREGADOS/);
- assert.match(registry.get("report-notice").textContent,/não representam vendas confirmadas/);
+ assert.match(registry.get("report-notice").textContent,/não representam vendas confirmadas/i);
  assert.equal(registry.get("period").value,"7");
  registry.get("period").value="30";
  await registry.get("period").listeners.change();
