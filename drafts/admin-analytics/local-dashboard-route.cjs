@@ -17,7 +17,11 @@ function createDashboardHandler({directory,secret}){
   try{token=cookie?decodeURIComponent(cookie.slice(10)):"";}catch{}
   const rawDays=url.searchParams.get("days");
   const days=rawDays===null?7:Number(rawDays);
-  const result=read(token,days);
+  let result;
+  try{result=read(token,days);}catch{
+   res.writeHead(503,{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store","X-Content-Type-Options":"nosniff"});
+   return res.end(JSON.stringify({error:"Relatorio temporariamente indisponivel"}));
+  }
   res.setHeader("Cache-Control","no-store");
   res.setHeader("X-Content-Type-Options","nosniff");
   res.setHeader("Content-Security-Policy","default-src 'none'; frame-ancestors 'none'");
