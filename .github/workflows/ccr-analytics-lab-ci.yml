@@ -49,6 +49,10 @@ jobs:
           node --check drafts/admin-analytics/analytics-http-candidate.cjs
       - name: Executar todos os testes do laboratorio
         run: node --test drafts/admin-analytics/*.test.cjs
+      - name: Testar integração real com Express 5 (sem produção)
+        run: |
+          npm install --no-save --ignore-scripts express@5.1.0
+          node --test drafts/admin-analytics/express-integration.e2e.cjs
       - name: Validar migracao SQL no PostgreSQL descartavel
         env:
           PGPASSWORD: disposable-ci-only-password
