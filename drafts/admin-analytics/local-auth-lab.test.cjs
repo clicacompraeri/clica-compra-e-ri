@@ -34,7 +34,7 @@ test("login administrativo local e protecoes HTTP",async()=>{
   assert.match(login.headers["set-cookie"][0],/HttpOnly/);
   const cookie=login.headers["set-cookie"][0].split(";")[0];
   assert.equal((await request(port,"/admin",{cookie})).status,200);
-  const logout=await request(port,"/logout",{method:"POST",origin,cookie});
+  const logout=await request(port,"/admin/logout",{method:"POST",origin,cookie});
   assert.equal(logout.status,303);
   assert.match(logout.headers["set-cookie"][0],/Max-Age=0/);
   assert.equal((await request(port,"/admin",{cookie:logout.headers["set-cookie"][0].split(";")[0]})).status,401);
