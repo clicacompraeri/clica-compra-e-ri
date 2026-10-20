@@ -5,7 +5,8 @@ const {createDemoStore}=require("./demo-event-store.cjs");
 const {dailySeries}=require("./daily-series.cjs");
 const ALLOWED=["page_view","product_view","affiliate_outbound","course_checkout_click"];
 function buildDemoReport(rows,{days=7}={}){
- const store=createDemoStore({capacity:500});
+ const store=createDemoStore({capacity:10000});
+ if(!Array.isArray(rows)||rows.length>10000)throw Error("Limite de eventos de laboratorio excedido");
  let accepted=0,rejected=0;
  for(const item of rows){
   if(store.add(item).accepted)accepted++;else rejected++;
