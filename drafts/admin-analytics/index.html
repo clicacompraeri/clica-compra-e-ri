@@ -47,5 +47,30 @@ function render(){
   entries.forEach(([name,n])=>{const p=document.createElement("p");p.textContent=name+" — "+n;const track=document.createElement("div");track.className="bar";const fill=document.createElement("span");fill.style.width=n/maxValue*100+"%";track.append(fill);box.append(p,track);});
  }
 }
-document.getElementById("period").addEventListener("change",render);render();
+document.getElementById("period").addEventListener("change",render);
+render();
+const report=window.__demoReport;
+if(report && report.simulation===true && report.metrics){
+  for(const [id,value] of Object.entries({
+    views:report.metrics.pageViews,
+    products:report.metrics.productViews,
+    outbound:report.metrics.outboundClicks,
+    course:report.metrics.courseCheckoutClicks
+  })){const target=document.getElementById(id);if(target)target.textContent=Number(value).toLocaleString("pt-BR");}
+  for(const [id,entries] of [["sources",report.sources],["ranking",report.products]]){
+    const target=document.getElementById(id);target.replaceChildren();
+    const max=Math.max(1,...entries.map(x=>x.value));
+    for(const item of entries){
+      const name=document.createElement("p");name.textContent=item.name+" — "+item.value;
+      const bar=document.createElement("div");bar.className="bar";
+      const fill=document.createElement("span");fill.style.width=item.value/max*100+"%";
+      bar.append(fill);target.append(name,bar);
+    }
+  }
+  document.getElementById("period").disabled=true;
+  document.getElementById("chart").setAttribute("aria-label","Gráfico meramente ilustrativo; não representa o relatório calculado");
+  const hint=document.createElement("p");hint.className="muted";hint.textContent="Indicadores e rankings: eventos de simulação calculados pelo adaptador. Gráfico de barras: ilustração independente. Filtro indisponível neste modo.";
+  document.getElementById("chart").parentElement.append(hint);
+}
+
 </script></body></html>
