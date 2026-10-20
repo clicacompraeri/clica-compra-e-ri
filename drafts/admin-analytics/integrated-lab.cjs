@@ -9,7 +9,7 @@ function createIntegratedHandler({directory,secret}){
  const dashboard=createPrivateDemoHandler({directory,secret});
  return (req,res)=>{
   const path=(req.url||"").split("?")[0];
-  if(path==="/login"||path==="/logout")return login(req,res);
+  if(path==="/login"||path==="/admin/logout")return login(req,res);
   return dashboard(req,res);
  };
 }
