@@ -22,12 +22,19 @@ function createPrivateDemoHandler({directory,secret}){
    res.writeHead(401,{"Content-Type":"text/plain; charset=utf-8","Cache-Control":"no-store"});
    return res.end("Acesso restrito");
   }
+  let body;
+  try{
+   const result=read(token,7);
+   if(result.status!==200)throw Error("Report unavailable");
+   body=createDemoDashboard(result.report);
+  }catch{
+   res.writeHead(503,{"Content-Type":"text/plain; charset=utf-8","Cache-Control":"no-store","X-Content-Type-Options":"nosniff"});
+   return res.end("Relatorio indisponivel");
+  }
   res.writeHead(200,{"Content-Type":"text/html; charset=utf-8","Cache-Control":"no-store",
    "X-Content-Type-Options":"nosniff","X-Frame-Options":"DENY",
    "Content-Security-Policy":"default-src 'self' 'unsafe-inline'; frame-ancestors 'none'"});
-  const result=read(token,7);
-  if(result.status!==200)return res.end("Relatorio indisponivel");
-  res.end(createDemoDashboard(result.report));
+  res.end(body);
  };
 }
 module.exports={createPrivateDemoHandler};
