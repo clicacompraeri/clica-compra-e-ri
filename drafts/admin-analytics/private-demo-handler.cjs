@@ -5,8 +5,10 @@ const {URL}=require("node:url");
 const {verifyAdminToken}=require("./admin-auth.cjs");
 const {createDemoDashboard}=require("./build-dashboard.cjs");
 const {createDashboardHandler}=require("./local-dashboard-route.cjs");
+const {createProtectedReport}=require("./protected-report.cjs");
 function createPrivateDemoHandler({directory,secret}){
  const api=createDashboardHandler({directory,secret});
+ const read=createProtectedReport({directory,secret});
  return (req,res)=>{
   const url=new URL(req.url,"http://localhost");
   if(req.method==="GET"&&url.pathname==="/admin/report")return api(req,res);
@@ -23,7 +25,9 @@ function createPrivateDemoHandler({directory,secret}){
   res.writeHead(200,{"Content-Type":"text/html; charset=utf-8","Cache-Control":"no-store",
    "X-Content-Type-Options":"nosniff","X-Frame-Options":"DENY",
    "Content-Security-Policy":"default-src 'self' 'unsafe-inline'; frame-ancestors 'none'"});
-  res.end(createDemoDashboard());
+  const result=read(token,7);
+  if(result.status!==200)return res.end("Relatorio indisponivel");
+  res.end(createDemoDashboard(result.report));
  };
 }
 module.exports={createPrivateDemoHandler};
