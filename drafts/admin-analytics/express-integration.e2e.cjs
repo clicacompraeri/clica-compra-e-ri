@@ -4,9 +4,9 @@
 const test=require("node:test"),assert=require("node:assert/strict");
 const express=require("express");
 const {createServer}=require("node:http");
-const {createHash}=require("node:crypto");
 const {hashPassword}=require("./admin-auth.cjs");
 const {attachAnalyticsIfEnabled}=require("./analytics-mount.cjs");
+const nativeFetch=globalThis.fetch;
 
 function listen(app){
  return new Promise(resolve=>{
@@ -21,7 +21,7 @@ async function request(port,route,{method="GET",origin,cookie,body,contentType="
  if(method==="POST"){
   headers["Content-Type"]=contentType;
  }
- const result=await fetch("http://127.0.0.1:"+port+route,{
+ const result=await nativeFetch("http://127.0.0.1:"+port+route,{
   method,headers,body,redirect:"manual"
  });
  return {status:result.status,text:await result.text(),headers:result.headers};
