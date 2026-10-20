@@ -72,9 +72,20 @@ if(report && report.simulation===true && report.metrics){
   chart.replaceChildren();
   chart.removeAttribute("role");
   chart.removeAttribute("aria-label");
+  const series=Array.isArray(report.daily)?report.daily:[];
+  const maxViews=Math.max(1,...series.map(d=>d.pageViews));
+  for(const d of series){
+    const col=document.createElement("div");col.className="chart-col";
+    const count=document.createElement("span");count.className="chart-label";count.textContent=String(d.pageViews);
+    const bar=document.createElement("div");bar.className="chart-bar";bar.style.height=(d.pageViews/maxViews*120)+"px";
+    const day=document.createElement("span");day.className="chart-label";day.textContent=d.date.slice(5);
+    col.append(count,bar,day);chart.append(col);
+  }
+  chart.setAttribute("role","img");
+  chart.setAttribute("aria-label","Visualizações diárias de demonstração calculadas a partir de eventos fictícios");
   const hint=document.createElement("p");hint.className="muted";
-  hint.textContent="Gráfico por dia indisponível neste modo: o relatório de eventos simulados ainda não fornece séries diárias. O filtro está desativado para evitar resultados enganosos.";
-  chart.append(hint);
+  hint.textContent="Série diária e indicadores obtidos de eventos fictícios. Filtro desativado neste modo para evitar totais inconsistentes.";
+  chart.parentElement.append(hint);
 }
 
 </script></body></html>
