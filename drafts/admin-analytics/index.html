@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Protótipo interno — Central de Análises</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#1b242d;background:#f3f5f7}
+*{box-sizing:border-box}body{margin:0}.wrap{max-width:1100px;margin:auto;padding:28px 20px}
+header{display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1px solid #dde2e6}
+h1{font-size:28px;margin:6px 0}h2{font-size:17px}.muted{color:#626f7b}.notice{background:#fff5d8;border:1px solid #e6cf91;padding:14px;border-radius:12px;margin:25px 0}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.card{background:#fff;border:1px solid #e0e5e9;border-radius:16px;padding:20px}
+.value{font-size:30px;font-weight:750;margin-top:15px}.panel{margin-top:20px}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.bar{height:12px;background:#e9edf1;border-radius:10px;margin:14px 0}.bar span{display:block;height:100%;border-radius:10px;background:#899eae}
+@media(max-width:760px){.cards,.two{grid-template-columns:1fr 1fr}}@media(max-width:460px){.cards,.two{grid-template-columns:1fr}}
+</style></head><body><header class="wrap"><div><div class="muted">Clica, Compra e Ri</div><h1>Central de Análises</h1></div><strong>Protótipo interno</strong></header>
+<main class="wrap"><div class="notice"><strong>Somente demonstração.</strong> Nenhum dado real é exibido. Este arquivo não implementa login, coleta de visitantes nem conexão com banco de dados. Não publicar como painel administrativo.</div>
+<section class="cards" aria-label="Indicadores planejados">
+<div class="card"><span class="muted">Visitantes</span><div class="value">—</div></div>
+<div class="card"><span class="muted">Produtos visualizados</span><div class="value">—</div></div>
+<div class="card"><span class="muted">Cliques para lojas</span><div class="value">—</div></div>
+<div class="card"><span class="muted">Cliques no Clica do Zero</span><div class="value">—</div></div>
+</section><div class="two"><section class="card panel"><h2>Produtos com maior interesse</h2><p class="muted">Aparecerão aqui após configuração e consentimento do rastreamento.</p><div class="bar"><span style="width:0"></span></div></section><section class="card panel"><h2>Origem do tráfego</h2><p class="muted">Facebook, Google, acesso direto e outras fontes quando identificáveis.</p><div class="bar"><span style="width:0"></span></div></section></div>
+<section class="card panel"><h2>Etapas futuras</h2><p>Autenticação administrativa independente, captura de eventos sem dados pessoais desnecessários, armazenamento seguro, relatórios por período e testes antes de qualquer publicação.</p></section>
+</main></body></html>
