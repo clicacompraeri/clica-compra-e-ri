@@ -48,6 +48,8 @@ jobs:
           node --check server.js
           node --check drafts/admin-analytics/integrated-lab.cjs
           node --check drafts/admin-analytics/analytics-http-candidate.cjs
+      - name: HTTP smoke publico - loja e area do aluno, sem compras
+        run: node drafts/admin-analytics/production-smoke.e2e.cjs
       - name: Verificar isoladamente bloqueio da coleta
         run: timeout 25s node --test drafts/admin-analytics/admin-only-gate.test.cjs
       - name: Executar todos os testes do laboratorio
