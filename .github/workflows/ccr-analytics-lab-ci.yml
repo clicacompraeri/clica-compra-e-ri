@@ -35,3 +35,11 @@ jobs:
           node --check drafts/admin-analytics/analytics-http-candidate.cjs
       - name: Executar todos os testes do laboratorio
         run: node --test drafts/admin-analytics/*.test.cjs
+      - name: Preparar navegador Chromium
+        run: |
+          npm install --prefix drafts/admin-analytics --no-save --ignore-scripts playwright-core@1.57.0
+          CHROME_BIN="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$CHROME_BIN"
+          echo "CHROME_BIN=$CHROME_BIN" >> "$GITHUB_ENV"
+      - name: Executar fluxo HTTPS real no Chromium
+        run: node --test drafts/admin-analytics/chromium-https.e2e.cjs
