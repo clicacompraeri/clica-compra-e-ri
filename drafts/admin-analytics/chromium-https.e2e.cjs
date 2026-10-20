@@ -69,6 +69,11 @@ test("Chromium HTTPS: login, Secure cookie, live report, period filter, logout a
   assert.match(await page.locator("h1").innerText(),/Central de Análises/);
   assert.equal((await page.locator("#views").innerText()).trim(),"5");
   assert.match(await page.locator("#report-kind").innerText(),/DADOS AGREGADOS/);
+  assert.equal((await page.locator("#panel-status").innerText()).trim(),"Painel privado");
+  assert.equal((await page.locator("#sources-title").innerText()).trim(),"Origens dos acessos");
+  assert.equal((await page.locator("#products-title").innerText()).trim(),"Produtos mais visualizados");
+  assert.equal((await page.locator("#guide-title").innerText()).trim(),"Como interpretar os dados");
+  assert.equal(await page.title(),"Central de Análises — Clica, Compra e Ri");
   const cookies=await context.cookies(origin+"/admin");
   const session=cookies.find(x=>x.name==="ccr_admin");
   assert.ok(session,"Browser did not store administrative cookie");
