@@ -60,6 +60,10 @@ function attachAnalyticsIfEnabled(app,env=process.env){
  app.use((req,res,next)=>{
   const path=(req.originalUrl||req.url||"").split("?")[0];
   if(!["/admin","/admin/login","/admin/report","/admin/logout","/api/analytics/event"].includes(path))return next();
+  // Coleta é uma segunda autorização, independente do login administrativo.
+  // Nunca receber eventos no primeiro rollout privado por padrão.
+  if(path==="/api/analytics/event"&&env.CCR_ANALYTICS_COLLECTION_ENABLED!=="true")
+   return res.status(404).set("Cache-Control","no-store").send("Não encontrado");
   if(!readiness.isReady())return res.status(503).set("Cache-Control","no-store").send("Analytics indisponível");
   return handler(req,res,next);
  });
