@@ -8,6 +8,7 @@ const {verifyAdminToken}=require("./admin-auth.cjs");
 function createPersistentSessionRegistry({directory,now=Date.now}={}){
  if(typeof directory!=="string"||!path.isAbsolute(directory))throw Error("Diretorio absoluto necessario");
  const file=path.join(directory,"revoked-sessions.json");
+ const lock=path.join(directory,"revoked-sessions.lock");
  const hashed=t=>crypto.createHash("sha256").update(t).digest("hex");
  function load(){
   if(!fs.existsSync(file))return {};
@@ -36,10 +37,15 @@ function createPersistentSessionRegistry({directory,now=Date.now}={}){
  }
  function revoke(token,secret){
   if(!verifyAdminToken(token,secret,now()))return false;
-  const data=clean(load());
-  data[hashed(token)]=Number(token.split(".")[0]);
-  save(data);
-  return true;
+  fs.mkdirSync(directory,{recursive:true,mode:0o700});
+  let fd;
+  try{fd=fs.openSync(lock,"wx",0o600);}catch{return false;}
+  try{
+   const data=clean(load());
+   data[hashed(token)]=Number(token.split(".")[0]);
+   save(data);
+   return true;
+  }finally{fs.closeSync(fd);fs.unlinkSync(lock);}
  }
  return Object.freeze({isActive,revoke});
 }
