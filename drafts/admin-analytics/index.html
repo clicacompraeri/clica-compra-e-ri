@@ -68,9 +68,13 @@ if(report && report.simulation===true && report.metrics){
     }
   }
   document.getElementById("period").disabled=true;
-  document.getElementById("chart").setAttribute("aria-label","Gráfico meramente ilustrativo; não representa o relatório calculado");
-  const hint=document.createElement("p");hint.className="muted";hint.textContent="Indicadores e rankings: eventos de simulação calculados pelo adaptador. Gráfico de barras: ilustração independente. Filtro indisponível neste modo.";
-  document.getElementById("chart").parentElement.append(hint);
+  const chart=document.getElementById("chart");
+  chart.replaceChildren();
+  chart.removeAttribute("role");
+  chart.removeAttribute("aria-label");
+  const hint=document.createElement("p");hint.className="muted";
+  hint.textContent="Gráfico por dia indisponível neste modo: o relatório de eventos simulados ainda não fornece séries diárias. O filtro está desativado para evitar resultados enganosos.";
+  chart.append(hint);
 }
 
 </script></body></html>
