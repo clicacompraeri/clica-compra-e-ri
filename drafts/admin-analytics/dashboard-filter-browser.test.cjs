@@ -15,7 +15,7 @@ test("filtro privado solicita 30 dias e atualiza os indicadores sem recarregar",
  assert.ok(js,"Script da interface nao encontrado");
  new vm.Script(js);
  const registry=new Map();
- for(const id of ["period","views","products","outbound","course","sources","ranking","chart","filter-error","report-notice","report-kind"])
+ for(const id of ["period","views","products","outbound","course","sources","ranking","chart","filter-error","report-notice","report-kind","panel-status","sources-title","products-title","guide-title","guide-copy","metrics-section"])
   registry.set(id,element(registry));
  const parent=element(registry);
  registry.get("chart").parentElement=parent;
@@ -29,6 +29,13 @@ test("filtro privado solicita 30 dias e atualiza os indicadores sem recarregar",
  assert.equal(registry.get("views").textContent,"2");
  assert.match(registry.get("report-kind").textContent,/DADOS AGREGADOS/);
  assert.match(registry.get("report-notice").textContent,/não representam vendas confirmadas/i);
+ assert.equal(document.title,"Central de Análises — Clica, Compra e Ri");
+ assert.equal(registry.get("panel-status").textContent,"Painel privado");
+ assert.equal(registry.get("sources-title").textContent,"Origens dos acessos");
+ assert.equal(registry.get("products-title").textContent,"Produtos mais visualizados");
+ assert.equal(registry.get("guide-title").textContent,"Como interpretar os dados");
+ assert.match(registry.get("guide-copy").textContent,/não comprovantes de pedidos/);
+ assert.match(registry.get("chart").parentElement.children.at(-1).textContent,/indicadores agregados/);
  assert.equal(registry.get("period").value,"7");
  registry.get("period").value="30";
  await registry.get("period").listeners.change();
