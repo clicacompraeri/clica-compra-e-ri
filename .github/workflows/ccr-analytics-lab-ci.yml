@@ -20,7 +20,21 @@ jobs:
   laboratorio:
     name: Node.js 22 - suite completa
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: ccr_analytics_ci
+          POSTGRES_USER: ccrci
+          POSTGRES_PASSWORD: disposable-ci-only-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ccrci -d ccr_analytics_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,6 +49,15 @@ jobs:
           node --check drafts/admin-analytics/analytics-http-candidate.cjs
       - name: Executar todos os testes do laboratorio
         run: node --test drafts/admin-analytics/*.test.cjs
+      - name: Validar migracao SQL no PostgreSQL descartavel
+        env:
+          PGPASSWORD: disposable-ci-only-password
+        run: |
+          if ! command -v psql >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y postgresql-client
+          fi
+          bash drafts/admin-analytics/sql-postgres-smoke.sh
       - name: Preparar navegador Chromium e cadeia local de certificados
         run: |
           npm install --prefix drafts/admin-analytics --no-save --ignore-scripts playwright-core@1.57.0
