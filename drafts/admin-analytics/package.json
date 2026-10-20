@@ -1,0 +1,14 @@
+{
+  "name": "ccr-analytics-lab",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Testes privados do painel; nao instalar em producao",
+  "scripts": {
+    "test": "node --test ./*.test.cjs",
+    "test:integrated": "node --test ./integrated-lab.test.cjs ./integrated-events.test.cjs",
+    "test:security": "node --test ./persistent-session-registry.test.cjs ./persistent-session-safety.test.cjs ./session-lock.test.cjs ./interrupted-lock.test.cjs ./lock-recovery.test.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

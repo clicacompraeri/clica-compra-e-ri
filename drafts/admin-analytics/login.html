@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Login administrativo — Protótipo</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f3f5f7;color:#17212b}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px}
+main{background:#fff;width:min(100%,440px);padding:34px;border:1px solid #dfe4e8;border-radius:20px;box-shadow:0 14px 50px #14202a15}
+.brand{font-weight:800;letter-spacing:.01em}.muted{color:#63717d;font-size:14px;line-height:1.5}
+h1{font-size:25px;margin:24px 0 9px}label{display:block;font-weight:700;margin:18px 0 7px;font-size:14px}
+input{width:100%;height:48px;border:1px solid #b9c3cb;border-radius:10px;padding:0 12px;font:inherit}
+button{margin-top:24px;width:100%;height:48px;border:0;border-radius:10px;background:#17212b;color:#fff;font:inherit;font-weight:750}
+button:disabled{opacity:.55;cursor:not-allowed}.note{border:1px solid #f2d598;background:#fff6dd;padding:12px;border-radius:10px;margin:20px 0;font-size:13px}
+</style></head><body><main>
+<div class="brand">Clica, Compra e Ri</div><h1>Central Administrativa</h1>
+<p class="muted">Acesso reservado ao administrador do site.</p>
+<p class="note"><strong>Protótipo não publicado.</strong> Autenticação ainda não conectada. Não informe senhas reais nesta tela.</p>
+<form onsubmit="return false" autocomplete="off">
+<label for="email">E-mail administrativo</label><input id="email" type="email" name="email" autocomplete="off" disabled placeholder="Acesso ainda não ativado">
+<label for="password">Senha</label><input id="password" type="password" name="password" autocomplete="off" disabled placeholder="Acesso ainda não ativado">
+<button type="button" disabled>Entrar — em desenvolvimento</button>
+</form><p class="muted">O login definitivo exigirá validação no servidor, proteção contra tentativas repetidas e sessão segura.</p>
+</main></body></html>

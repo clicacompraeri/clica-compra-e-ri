@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Protótipo interno — Central de Análises</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#1b242d;background:#f3f5f7}
+*{box-sizing:border-box}body{margin:0}.wrap{max-width:1100px;margin:auto;padding:28px 20px}
+header{display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1px solid #dde2e6}
+h1{font-size:28px;margin:6px 0}h2{font-size:17px}.muted{color:#626f7b}.notice{background:#fff5d8;border:1px solid #e6cf91;padding:14px;border-radius:12px;margin:25px 0}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.card{background:#fff;border:1px solid #e0e5e9;border-radius:16px;padding:20px}
+.value{font-size:30px;font-weight:750;margin-top:15px}.panel{margin-top:20px}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.bar{height:12px;background:#e9edf1;border-radius:10px;margin:14px 0}.bar span{display:block;height:100%;border-radius:10px;background:#899eae}
+@media(max-width:760px){.cards,.two{grid-template-columns:1fr 1fr}}@media(max-width:460px){.cards,.two{grid-template-columns:1fr}}
+.chart{display:flex;align-items:flex-end;gap:8px;height:170px;padding:12px 0 0;border-bottom:1px solid #cad3db}.chart-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:5px}.chart-bar{width:70%;max-width:44px;background:#506f86;border-radius:6px 6px 0 0;min-height:2px}.chart-label{font-size:12px;color:#626f7b}.filters{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}.filters select{padding:9px;border:1px solid #b7c4cf;border-radius:8px;background:#fff}.metric-note{font-size:12px;color:#647381}
+</style></head><body><header class="wrap"><div><div class="muted">Clica, Compra e Ri</div><h1>Central de Análises</h1></div><div><strong id="panel-status">Protótipo interno</strong><form method="post" action="/admin/logout"><button type="submit">Sair da conta</button></form></div></header>
+<main class="wrap"><div class="notice" id="report-notice"><strong>Somente demonstração.</strong> Nenhum dado real é exibido. Este arquivo não implementa login, coleta de visitantes nem conexão com banco de dados. Não publicar como painel administrativo.</div>
+<div class="filters"><label for="period">Período dos dados:</label><select id="period"><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option><option value="1">Hoje</option></select><strong id="report-kind">DEMONSTRAÇÃO — não são dados de visitantes reais</strong><span id="filter-error" role="status" aria-live="polite"></span></div>
+<section id="metrics-section" class="cards" aria-label="Indicadores demonstrativos">
+<div class="card"><span class="muted">Visualizações de página</span><div class="value" id="views">—</div><div class="metric-note">Não equivale a visitantes únicos</div></div>
+<div class="card"><span class="muted">Produtos visualizados</span><div class="value" id="products">—</div></div>
+<div class="card"><span class="muted">Cliques para lojas</span><div class="value" id="outbound">—</div></div>
+<div class="card"><span class="muted">Cliques no checkout do curso</span><div class="value" id="course">—</div></div></section>
+<div class="two"><section class="card panel"><h2>Visualizações por dia</h2><div class="chart" id="chart" role="img" aria-label="Gráfico de barras com visualizações fictícias por dia"></div></section>
+<section class="card panel"><h2 id="sources-title">Origens dos acessos (simulação)</h2><div id="sources"></div></section></div>
+<section class="card panel"><h2 id="products-title">Interesse em produtos (simulação)</h2><div id="ranking"></div></section>
+<section class="card panel"><h2 id="guide-title">Etapas futuras</h2><p id="guide-copy">Autenticação administrativa independente, captura de eventos sem dados pessoais desnecessários, armazenamento seguro, relatórios por período e testes antes de qualquer publicação.</p></section>
+</main><script>
+// Dados locais FIXOS e FICTÍCIOS: este protótipo não envia nem coleta informações.
+const days=[
+ {d:"Seg",v:37,p:13,o:6,c:2,source:{Google:15,Facebook:12,Direto:10},items:{"Potes herméticos":6,"Livros Kindle":4,"Mini seladora":3}},
+ {d:"Ter",v:43,p:15,o:7,c:3,source:{Google:18,Facebook:14,Direto:11},items:{"Potes herméticos":7,"Livros Kindle":5,"Mini seladora":3}},
+ {d:"Qua",v:49,p:18,o:8,c:2,source:{Google:20,Facebook:17,Direto:12},items:{"Potes herméticos":8,"Livros Kindle":6,"Mini seladora":4}},
+ {d:"Qui",v:51,p:21,o:9,c:3,source:{Google:19,Facebook:22,Direto:10},items:{"Potes herméticos":9,"Livros Kindle":7,"Mini seladora":5}},
+ {d:"Sex",v:62,p:26,o:11,c:5,source:{Google:22,Facebook:25,Direto:15},items:{"Potes herméticos":12,"Livros Kindle":8,"Mini seladora":6}},
+ {d:"Sáb",v:55,p:23,o:10,c:4,source:{Google:20,Facebook:23,Direto:12},items:{"Potes herméticos":10,"Livros Kindle":8,"Mini seladora":5}},
+ {d:"Dom",v:66,p:29,o:14,c:6,source:{Google:26,Facebook:27,Direto:13},items:{"Potes herméticos":13,"Livros Kindle":9,"Mini seladora":7}}
+];
+function aggregate(rows,key){return rows.reduce((sum,row)=>sum+row[key],0);}
+function tally(rows,key){const out={};rows.forEach(row=>Object.entries(row[key]).forEach(([name,n])=>out[name]=(out[name]||0)+n));return Object.entries(out).sort((a,b)=>b[1]-a[1]);}
+function render(){
+ const count=Number(document.getElementById("period").value),rows=days.slice(-count);
+ for(const [id,key] of Object.entries({views:"v",products:"p",outbound:"o",course:"c"}))document.getElementById(id).textContent=aggregate(rows,key).toLocaleString("pt-BR");
+ const chart=document.getElementById("chart");chart.replaceChildren();const max=Math.max(...rows.map(r=>r.v));
+ rows.forEach(r=>{const col=document.createElement("div");col.className="chart-col";const n=document.createElement("span");n.className="chart-label";n.textContent=String(r.v);const bar=document.createElement("div");bar.className="chart-bar";bar.style.height=(r.v/max*125)+"px";const label=document.createElement("span");label.className="chart-label";label.textContent=r.d;col.append(n,bar,label);chart.append(col);});
+ for(const [id,key] of [["sources","source"],["ranking","items"]]){
+  const box=document.getElementById(id);box.replaceChildren();
+  const entries=tally(rows,key),maxValue=entries[0]?.[1]||1;
+  entries.forEach(([name,n])=>{const p=document.createElement("p");p.textContent=name+" — "+n;const track=document.createElement("div");track.className="bar";const fill=document.createElement("span");fill.style.width=n/maxValue*100+"%";track.append(fill);box.append(p,track);});
+ }
+}
+const report=window.__demoReport;
+const period=document.getElementById("period");
+async function refreshReport(){
+ const requested=period.value;
+ period.disabled=true;
+ try{
+  const response=await fetch("/admin/report?days="+encodeURIComponent(requested),{credentials:"same-origin",cache:"no-store"});
+  if(!response.ok)throw Error("Relatório indisponível");
+  const next=await response.json();
+  if(typeof next.simulation!=="boolean"||!next.metrics||String(next.days)!==requested)throw Error("Dados inesperados");
+  renderReport(next);
+ }catch{
+  period.value=String(lastValidReport.days);
+  const notice=document.getElementById("filter-error");
+  if(notice)notice.textContent="Não foi possível atualizar os dados. Tente novamente.";
+ }finally{period.disabled=false;}
+}
+let lastValidReport=null;
+function renderReport(report){
+ lastValidReport=report;
+ if(report.simulation===false){
+  document.title="Central de Análises — Clica, Compra e Ri";
+  for(const [id,value] of [
+    ["panel-status","Painel privado"],
+    ["sources-title","Origens dos acessos"],
+    ["products-title","Produtos mais visualizados"],
+    ["guide-title","Como interpretar os dados"],
+    ["guide-copy","Visualizações e cliques são sinais de interesse, não comprovantes de pedidos ou vendas. As origens são estimativas por referências e parâmetros de campanha; não identificam visitantes."],
+    ["report-notice","Indicadores agregados de navegação e cliques. Não representam vendas confirmadas dos afiliados nem do curso."],
+    ["report-kind","DADOS AGREGADOS DE EVENTOS — não são compras confirmadas"]
+  ]){
+   const el=document.getElementById(id);if(el)el.textContent=value;
+  }
+  const section=document.getElementById("metrics-section");
+  if(section)section.setAttribute("aria-label","Indicadores agregados de eventos");
+ }
+ const warning=document.getElementById("filter-error");if(warning)warning.textContent="";
+  for(const [id,value] of Object.entries({
+    views:report.metrics.pageViews,
+    products:report.metrics.productViews,
+    outbound:report.metrics.outboundClicks,
+    course:report.metrics.courseCheckoutClicks
+  })){const target=document.getElementById(id);if(target)target.textContent=Number(value).toLocaleString("pt-BR");}
+  for(const [id,entries] of [["sources",report.sources],["ranking",report.products]]){
+    const target=document.getElementById(id);target.replaceChildren();
+    const max=Math.max(1,...entries.map(x=>x.value));
+    for(const item of entries){
+      const name=document.createElement("p");name.textContent=item.name+" — "+item.value;
+      const bar=document.createElement("div");bar.className="bar";
+      const fill=document.createElement("span");fill.style.width=item.value/max*100+"%";
+      bar.append(fill);target.append(name,bar);
+    }
+  }
+  period.value=String(report.days);
+  const chart=document.getElementById("chart");
+  chart.replaceChildren();
+  chart.removeAttribute("role");
+  chart.removeAttribute("aria-label");
+  const series=Array.isArray(report.daily)?report.daily:[];
+  const maxViews=Math.max(1,...series.map(d=>d.pageViews));
+  for(const d of series){
+    const col=document.createElement("div");col.className="chart-col";
+    const count=document.createElement("span");count.className="chart-label";count.textContent=String(d.pageViews);
+    const bar=document.createElement("div");bar.className="chart-bar";bar.style.height=(d.pageViews/maxViews*120)+"px";
+    const day=document.createElement("span");day.className="chart-label";day.textContent=d.date.slice(5);
+    col.append(count,bar,day);chart.append(col);
+  }
+  chart.setAttribute("role","img");
+  chart.setAttribute("aria-label",report.simulation===false?"Gráfico de visualizações diárias de páginas":"Visualizações diárias de demonstração calculadas a partir de eventos fictícios");
+  let hint=document.getElementById("chart-note");
+  if(!hint){hint=document.createElement("p");hint.id="chart-note";hint.className="muted";chart.parentElement.append(hint);}
+  hint.textContent=report.simulation===false?"Série diária e indicadores agregados dos últimos "+report.days+" dia(s). Não são visitantes únicos.":"Série diária e indicadores calculados a partir de eventos fictícios.";
+}
+if(report && typeof report.simulation==="boolean" && report.metrics){
+ renderReport(report);
+ period.addEventListener("change",refreshReport);
+}else{
+ period.addEventListener("change",render);
+ render();
+}
+
+</script></body></html>

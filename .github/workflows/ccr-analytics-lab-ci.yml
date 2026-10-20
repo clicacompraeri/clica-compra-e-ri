@@ -1,0 +1,82 @@
+name: Central de Analises - Testes Isolados
+on:
+  push:
+    branches:
+      - feature/painel-analytics-privado
+    paths:
+      - 'drafts/admin-analytics/**'
+      - '.github/workflows/ccr-analytics-lab-ci.yml'
+      - 'server.js'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'drafts/admin-analytics/**'
+      - '.github/workflows/ccr-analytics-lab-ci.yml'
+      - 'server.js'
+permissions:
+  contents: read
+jobs:
+  laboratorio:
+    name: Node.js 22 - suite completa
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: ccr_analytics_ci
+          POSTGRES_USER: ccrci
+          POSTGRES_PASSWORD: disposable-ci-only-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ccrci -d ccr_analytics_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar sintaxe de ambos os servidores
+        run: |
+          node --check server.js
+          node --check drafts/admin-analytics/integrated-lab.cjs
+          node --check drafts/admin-analytics/analytics-http-candidate.cjs
+      - name: HTTP smoke publico - loja e area do aluno, sem compras
+        run: node drafts/admin-analytics/production-smoke.e2e.cjs
+      - name: Verificar isoladamente bloqueio da coleta
+        run: timeout 25s node --test drafts/admin-analytics/admin-only-gate.test.cjs
+      - name: Executar todos os testes do laboratorio
+        run: timeout 180s node --test drafts/admin-analytics/*.test.cjs
+      - name: Testar integração real com Express 5 (sem produção)
+        run: |
+          npm install --no-save --ignore-scripts express@5.1.0
+          node --test drafts/admin-analytics/express-integration.e2e.cjs
+          node --test drafts/admin-analytics/storefront-parity.e2e.cjs
+      - name: Validar migracao SQL no PostgreSQL descartavel
+        env:
+          PGPASSWORD: disposable-ci-only-password
+        run: |
+          if ! command -v psql >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y postgresql-client
+          fi
+          bash drafts/admin-analytics/sql-postgres-smoke.sh
+      - name: Preparar navegador Chromium e cadeia local de certificados
+        run: |
+          npm install --prefix drafts/admin-analytics --no-save --ignore-scripts playwright-core@1.57.0
+          if ! command -v certutil >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y libnss3-tools
+          fi
+          CHROME_BIN="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$CHROME_BIN"
+          echo "CHROME_BIN=$CHROME_BIN" >> "$GITHUB_ENV"
+      - name: Executar fluxo HTTPS real no Chromium
+        run: node --test drafts/admin-analytics/chromium-https.e2e.cjs
