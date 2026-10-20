@@ -83,6 +83,7 @@ test("Express 5: opt-in login, protected report, events, revocation, routes unto
  try{
   const activated=attachAnalyticsIfEnabled(app,{
    CCR_ANALYTICS_ENABLED:"true",
+   CCR_ANALYTICS_COLLECTION_ENABLED:"true",
    CCR_ANALYTICS_PUBLIC_ORIGIN:origin+"/",
    CCR_ANALYTICS_ADMIN_EMAIL:"sample-admin@example.invalid",
    CCR_ANALYTICS_ADMIN_PASSWORD_HASH:hashPassword("fake-admin-password-only-test"),
