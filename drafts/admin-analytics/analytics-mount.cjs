@@ -33,14 +33,24 @@ function attachAnalyticsIfEnabled(app,env=process.env){
   baseUrl:env.CCR_ANALYTICS_SUPABASE_URL,
   serviceRoleKey:env.CCR_ANALYTICS_SUPABASE_SERVICE_ROLE_KEY
  });
- app.use(createAnalyticsHandler({
+ const handler=createAnalyticsHandler({
   publicOrigin:env.CCR_ANALYTICS_PUBLIC_ORIGIN,
   adminEmail:env.CCR_ANALYTICS_ADMIN_EMAIL,
   passwordHash:env.CCR_ANALYTICS_ADMIN_PASSWORD_HASH,
   signingKey:env.CCR_ANALYTICS_SIGNING_KEY,
   store
- }));
- startAnalyticsRetention(store);
+ });
+ let ready=false;
+ void checkAnalyticsStorage(store).then(()=>{
+  ready=true;
+  startAnalyticsRetention(store);
+ }).catch(()=>{ready=false;});
+ app.use((req,res,next)=>{
+  const path=(req.originalUrl||req.url||"").split("?")[0];
+  if(!["/admin","/admin/login","/admin/report","/admin/logout","/api/analytics/event"].includes(path))return next();
+  if(!ready)return res.status(503).set("Cache-Control","no-store").send("Analytics indisponível");
+  return handler(req,res,next);
+ });
  return true;
 }
 module.exports={attachAnalyticsIfEnabled,startAnalyticsRetention,checkAnalyticsStorage};
