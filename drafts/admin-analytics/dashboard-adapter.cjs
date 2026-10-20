@@ -2,6 +2,7 @@
 // Ponte entre eventos fictícios e o formato do painel.
 // Isolada: não importa o servidor público nem disponibiliza rotas.
 const {createDemoStore}=require("./demo-event-store.cjs");
+const {dailySeries}=require("./daily-series.cjs");
 const ALLOWED=["page_view","product_view","affiliate_outbound","course_checkout_click"];
 function buildDemoReport(rows,{days=7}={}){
  const store=createDemoStore({capacity:500});
@@ -11,7 +12,7 @@ function buildDemoReport(rows,{days=7}={}){
  }
  const report=store.report({days});
  return {
-  simulation:true,days,accepted,rejected,
+  simulation:true,days,accepted,rejected,daily:dailySeries(rows,{days}),
   metrics:{
    pageViews:report.totals.page_view,
    productViews:report.totals.product_view,
