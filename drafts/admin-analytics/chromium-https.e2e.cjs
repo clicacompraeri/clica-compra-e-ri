@@ -55,7 +55,7 @@ test("Chromium HTTPS: login, Secure cookie, live report, period filter, logout a
    passwordHash:hashPassword("fake-admin-password-very-strong-2026"),signingKey:secret,store
   });
   browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_BIN||"/usr/bin/google-chrome",args:["--no-sandbox"],env:{...process.env,HOME:dir}});
-  const context=await browser.newContext({ignoreHTTPSErrors:true,viewport:{width:390,height:844}});
+  const context=await browser.newContext({ignoreHTTPSErrors:false,viewport:{width:390,height:844}});
   const page=await context.newPage();
   const errors=[];
   page.on("pageerror",error=>errors.push(error.message));
@@ -74,6 +74,15 @@ test("Chromium HTTPS: login, Secure cookie, live report, period filter, logout a
   assert.equal((await page.locator("#products-title").innerText()).trim(),"Produtos mais visualizados");
   assert.equal((await page.locator("#guide-title").innerText()).trim(),"Como interpretar os dados");
   assert.equal(await page.title(),"Central de Análises — Clica, Compra e Ri");
+  for(const width of [1280,390,320]){
+   await page.setViewportSize({width,height:844});
+   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),true,"Horizontal overflow at "+width+"px");
+   for(const [id,value] of [["views","5"],["products","2"],["outbound","1"],["course","0"]]){
+    assert.equal((await page.locator("#"+id).innerText()).trim(),value,"Incorrect metric "+id+" at "+width+"px");
+    assert.equal(await page.locator("#"+id).isVisible(),true);
+   }
+   assert.equal(await page.locator('form[action="/admin/logout"] button').isVisible(),true);
+  }
   const cookies=await context.cookies(origin+"/admin");
   const session=cookies.find(x=>x.name==="ccr_admin");
   assert.ok(session,"Browser did not store administrative cookie");

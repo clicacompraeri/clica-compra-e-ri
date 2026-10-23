@@ -40,7 +40,7 @@ async function snapshot(port,p,method="GET",body){
  const r=await fetch("http://127.0.0.1:"+port+p,{method,headers:h,body,redirect:"manual",signal:AbortSignal.timeout(3000)});
  return {status:r.status,location:r.headers.get("location")||"",contentType:(r.headers.get("content-type")||"").split(";")[0],body:await r.text()};
 }
-test("Storefront unchanged compared with main when analytics flag is absent",{timeout:45000},async()=>{
+test("Storefront unchanged compared with frozen pre-analytics baseline when analytics flag is absent",{timeout:45000},async()=>{
  const baseSource=execFileSync("git",["show","50d3ec830421f196e0ec0d69c807b80d65260ad3:server.js"],{cwd:root,encoding:"utf8",timeout:5000});
  const branchSource=fs.readFileSync(path.join(root,"server.js"),"utf8");
  assert.match(branchSource,/CCR_ANALYTICS_ENABLED === "true"/);
