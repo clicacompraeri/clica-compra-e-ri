@@ -102,8 +102,16 @@ test("Chromium HTTPS: login, Secure cookie, live report, period filter, logout a
   const oldCookie="ccr_admin="+encodeURIComponent(session.value);
   await Promise.all([page.waitForURL(origin+"/admin/login"),page.locator('form[action="/admin/logout"] button').click()]);
   assert.equal((await context.cookies(origin+"/admin")).filter(x=>x.name==="ccr_admin").length,0);
-  const unauth=await context.request.get(origin+"/admin/report?days=7",{headers:{Cookie:oldCookie}});
-  assert.equal(unauth.status(),401,"Revoked session should not authorize report");
+  // Node's HTTP client does not use Chromium's NSS trust store.
+  // Trust only this test CA and keep TLS verification enabled.
+  const unauthStatus=await new Promise((resolve,reject)=>{
+   const request=https.get(origin+"/admin/report?days=7",{
+    ca:fs.readFileSync(caCert),rejectUnauthorized:true,headers:{Cookie:oldCookie},timeout:10000
+   },response=>{response.resume();response.on("end",()=>resolve(response.statusCode));});
+   request.on("error",reject);
+   request.on("timeout",()=>request.destroy(new Error("Revocation check timed out")));
+  });
+  assert.equal(unauthStatus,401,"Revoked session should not authorize report");
   await context.close();
  }finally{
   if(browser)await browser.close();
