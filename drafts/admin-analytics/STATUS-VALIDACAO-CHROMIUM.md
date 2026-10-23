@@ -1,3 +1,19 @@
+# Atualização final — 23/10/2026
+
+Após autorização explícita, alterações enviadas exclusivamente à branch de desenvolvimento.
+
+- `c85ec66`: conteúdo idêntico ao commit local aprovado d2f7878.
+- `76411c0`: cliente HTTPS Node da checagem de revogação recebe explicitamente a CA temporária; validação TLS permanece ativa. O erro anterior era a diferença entre a confiança NSS do Chromium e a confiança do cliente Node.
+- CI aprovado: https://github.com/clicacompraeri/clica-compra-e-ri/actions/runs/40024696149
+- 69 testes distintos aprovados, zero reprovados; mais 8 verificações públicas e roteiro PostgreSQL 17 aprovado.
+- Chromium validou certificado, login, cookie, métricas fictícias, filtro, logout, revogação e verificações de overflow/visibilidade em 1280, 390 e 320 pixels. Não houve inspeção visual manual por capturas de tela.
+- Não houve merge, deploy, mudança de flags, coleta real ou alteração no Supabase.
+- Pendências: revisão visual manual, confirmação direta da flag de coleta false (valor oculto pelo OAuth) e autorização separada para disponibilizar demonstração HTTPS.
+
+O registro abaixo é histórico; as pendências de envio e execução do teste estrito foram resolvidas pela atualização acima.
+
+---
+
 # Validação da Central de Análises — 23/10/2026
 
 ## Evidências reproduzidas
