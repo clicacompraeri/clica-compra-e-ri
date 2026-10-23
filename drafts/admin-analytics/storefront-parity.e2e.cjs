@@ -1,5 +1,5 @@
 "use strict";
-// Compare the exact running storefront server.js with main under a disabled flag.
+// Compare storefront responses with the frozen, verified pre-analytics commit; never compare against moving main.
 // No production deployment and no external requests or credentials.
 const test=require("node:test"),assert=require("node:assert/strict");
 const fs=require("node:fs"),path=require("node:path"),net=require("node:net");
@@ -41,7 +41,7 @@ async function snapshot(port,p,method="GET",body){
  return {status:r.status,location:r.headers.get("location")||"",contentType:(r.headers.get("content-type")||"").split(";")[0],body:await r.text()};
 }
 test("Storefront unchanged compared with main when analytics flag is absent",{timeout:45000},async()=>{
- const baseSource=execFileSync("git",["show","origin/backup/main-pre-analytics-2026-10-20:server.js"],{cwd:root,encoding:"utf8",timeout:5000});
+ const baseSource=execFileSync("git",["show","50d3ec830421f196e0ec0d69c807b80d65260ad3:server.js"],{cwd:root,encoding:"utf8",timeout:5000});
  const branchSource=fs.readFileSync(path.join(root,"server.js"),"utf8");
  assert.match(branchSource,/CCR_ANALYTICS_ENABLED === "true"/);
  assert.notEqual(branchSource,baseSource);
